@@ -3,6 +3,17 @@
 Le sujet, sur le site du Master CSI : [lien](https://mastercsi.labri.fr/wp-content/uploads/2018/01/TER18.pdf#16) .
 
 
+## Rapport
+
+Le rapport se trouve dans le dossier `rapport` du répertoire.
+Essayons de le séparer en plusieurs fichiers `.tex` (un par chapitre semble raisonnable) pour faciliter la lisibilité et la rédaction.
+
+```bash
+# générer le rapport
+pdflatex rapport/main.tex
+```
+
+
 ## Aide
 
 #### Git
