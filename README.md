@@ -19,7 +19,7 @@ pdflatex rapport/main.tex
 #### Git
 
 ```bash
-# récupérer les commits du répertoire distant et mettre à jour la branche locale
+# récupérer les commits du dépôt distant et mettre à jour la branche locale
 git pull --rebase
 
 # ajouter ses changements à l'index
@@ -30,7 +30,7 @@ git add -p
 # sauvegarder les changements de l'index en local
 git commit
 
-# envoyer ses commits sur le répertoire distant
+# envoyer ses commits sur le dépôt distant
 git push
 
 # lire "l'historique" du projet (joliment)
