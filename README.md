@@ -22,6 +22,9 @@ pdflatex rapport/main.tex
 # récupérer les commits du dépôt distant et mettre à jour la branche locale
 git pull --rebase
 
+# afficher le statut du dépôt local
+git status
+
 # ajouter ses changements à l'index
 git add <nom de fichier>
 # ou
