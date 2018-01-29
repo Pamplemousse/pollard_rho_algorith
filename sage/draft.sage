@@ -1,7 +1,21 @@
 import pdb
 
 
-def rho_table(alpha=2, beta=228, modulus=383, order=191):
+def rho_solve(alpha=2, beta=228, modulus=383, order=191):
+    table = rho_table(alpha, beta, modulus, order)
+    print_table(table)
+
+    a = table[1][-1]
+    b = table[2][-1]
+    A = table[4][-1]
+    B = table[5][-1]
+
+    solution = solve(a, b, A, B, order)
+    print "\nlog_" + str(alpha) + "(" + str(beta) + ") = " \
+      + str(solution) + " mod " + str(order)
+
+
+def rho_table(alpha, beta, modulus, order):
     x = [1]; X = [1]
     a = [0]; A = [0]
     b = [0]; B = [0]
@@ -25,10 +39,8 @@ def rho_table(alpha=2, beta=228, modulus=383, order=191):
         if (next_x == next_X):
             break;
 
-    print("i\txi\tai\tbi\tx2i\ta2i\tb2i\n")
-    for i in range(len(x)):
-        print str(i) + "\t" + str(x[i]) + "\t" + str(a[i]) + "\t" + str(b[i]) \
-          + "\t" + str(X[i]) + "\t" + str(A[i]) + "\t" + str(B[i])
+    return (x, a, b, X, A, B)
+
 
 
 def f(xi, ai, bi, alpha, beta, modulus, order):
@@ -46,3 +58,16 @@ def f(xi, ai, bi, alpha, beta, modulus, order):
         next_b = bi
 
     return (next_x, next_a, next_b)
+
+
+def solve(ai, bi, a2i, b2i, order):
+    return (a2i - ai) * (inverse_mod((bi - b2i), order)) % order
+
+
+def print_table(table):
+    (x, a, b, X, A, B) = table
+
+    print("i\txi\tai\tbi\tx2i\ta2i\tb2i\n")
+    for i in range(len(x)):
+        print str(i) + "\t" + str(x[i]) + "\t" + str(a[i]) + "\t" + str(b[i]) \
+          + "\t" + str(X[i]) + "\t" + str(A[i]) + "\t" + str(B[i])
