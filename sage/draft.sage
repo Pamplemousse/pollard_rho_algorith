@@ -2,25 +2,33 @@ import pdb
 
 
 def rho_table(alpha=2, beta=228, modulus=383, order=191):
-    x = [1]
-    a = [0]
-    b = [0]
+    x = [1]; X = [1]
+    a = [0]; A = [0]
+    b = [0]; B = [0]
 
-    for i in range(14):
+    for i in range(order):
         (next_x, next_a, next_b) = f(x[i], a[i], b[i],
                                      alpha, beta, modulus, order)
+
+        (next_X, next_A, next_B) = f(X[i], A[i], B[i],
+                                     alpha, beta, modulus, order)
+        (next_X, next_A, next_B) = f(next_X, next_A, next_B,
+                                     alpha, beta, modulus, order)
+
         x.append(next_x)
         a.append(next_a)
         b.append(next_b)
+        X.append(next_X)
+        A.append(next_A)
+        B.append(next_B)
 
-    print x
-    print a
-    print b
+        if (next_x == next_X):
+            break;
 
-    # print("i\txi\tai\tbi\tx2i\ta2i\tb2i\n")
-    # for i in range(1, 15):
-    #     print str(i) + "\t" + str(x[i]) + "\t" + str(a[i]) + "\t" + str(b[i]) \
-    #       + "\t" + str(x[2 * i]) + "\t" + str(a[2 * i]) + "\t" + str(b[2 * i])
+    print("i\txi\tai\tbi\tx2i\ta2i\tb2i\n")
+    for i in range(len(x)):
+        print str(i) + "\t" + str(x[i]) + "\t" + str(a[i]) + "\t" + str(b[i]) \
+          + "\t" + str(X[i]) + "\t" + str(A[i]) + "\t" + str(B[i])
 
 
 def f(xi, ai, bi, alpha, beta, modulus, order):
