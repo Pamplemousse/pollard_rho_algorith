@@ -3,7 +3,7 @@
     % TODO: rédiger une petite intro : présentation de Rho de Pollard dans les grandes lignes.
 
         \subsection{La fonction d'itération}
-        On définit la fonction d'itération comme la fonction permettant de calculer les différents éléments de notre séquence $x_0, x_1, x_2, \ldots$, $x_0 = 1$ de la façon suivante :
+        On définit la fonction d'itération comme la fonction permettant de calculer les différents éléments de notre séquence $x_0, x_1, x_2, \ldots$, $x_0 = 1$ de la façon suivante~:
 
         \begin{align*}
           x_{i+1} =
@@ -14,27 +14,27 @@
           \end{cases}
         \end{align*}
 
-        Ainsi, en définissant les suites $(a_i)$ et $(b_i)$, avec $a_0 = 0$ et $b_0 = 0$ comme suit :
+        Ainsi, en définissant les suites $(a_i)$ et $(b_i)$, avec $a_0 = 0$ et $b_0 = 0$ comme suit~:
 
         \begin{align*}
           a_{i+1} =
           \begin{cases}
             a_i                   & \text{si } x_i \in S_1 \\
-            2a_i \text{ mod n}    & \text{si } x_i \in S_2 \\
-            a_i + 1 \text{ mod n} & \text{si } x_i \in S_3
+            2a_i \text{\ mod n}    & \text{si } x_i \in S_2 \\
+            a_i + 1 \text{\ mod n} & \text{si } x_i \in S_3
           \end{cases}
         \end{align*}
 
         \begin{align*}
           b_{i+1} =
           \begin{cases}
-            b_i + 1 \text{ mod n} & \text{si } x_i \in S_1 \\
-            2b_i \text{ mod n}    & \text{si } x_i \in S_2 \\
+            b_i + 1 \text{\ mod n} & \text{si } x_i \in S_1 \\
+            2b_i \text{\ mod n}    & \text{si } x_i \in S_2 \\
             b_i                   & \text{si } x_i \in S_3
           \end{cases}
         \end{align*}
 
-        On obtient l'égalité suivante :
+        On obtient l'égalité suivante~:
         \begin{equation} \label{eq:1}
           x_i = \alpha^{a_i} \cdot \beta^{b_i}
         \end{equation}
@@ -43,7 +43,7 @@
 
         \subsubsection{Initialisation}
 
-        Pour $i = 0$, on a par définition : $x_0 = 1, a_0 = b_0 = 0$
+        Pour $i = 0$, on a par définition~: $x_0 = 1, a_0 = b_0 = 0$
 
         \begin{align*}
           \alpha^{a_0} \cdot \beta^{b_0} &= \alpha^{0} \cdot \beta^{0} \\
@@ -55,7 +55,7 @@
 
         \subsubsection{Hérédité}
 
-        On suppose que la relation est vérifiée pour un certain rang $k$ : $x_k = \alpha^{a_k} \cdot \beta^{b_k}$. Montrons que cela reste vrai au rang $k + 1$.
+        On suppose que la relation est vérifiée pour un certain rang $k$~: $x_k = \alpha^{a_k} \cdot \beta^{b_k}$. Montrons que cela reste vrai au rang $k + 1$.
 
         \begin{align*}
           x_{k+1} = \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}}
@@ -66,7 +66,7 @@
         \underline{$x \in S_1$}
         \begin{align*}
           a_{k+1} &= a_k \\
-          \text{ et } b_{k+1} &= b_k + 1 \text{ mod n}
+          \text{\ et } b_{k+1} &= b_k + 1 \text{\ mod n}
         \end{align*}
         d'où
         \begin{align*}
@@ -78,21 +78,21 @@
 
         \underline{$x \in S_2$}
         \begin{align*}
-          a_{k+1} &= 2a_k \text{ mod n}\\
-          \text{ et } b_{k+1} &= 2b_k \text{ mod n}
+          a_{k+1} &= 2a_k \text{\ mod n}\\
+          \text{\ et } b_{k+1} &= 2b_k \text{\ mod n}
         \end{align*}
         d'où
         \begin{align*}
           \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}} &= \alpha^{2a_k} \cdot \beta^{2b_k} \\
-                                                 &= (\alpha^{a_k} \cdot \beta^{a_k})^2 \\
-                                                 &= (x_k)^2 & \text{(par l'hypothèse de récurrence)} \\
+                                                 &= {(\alpha^{a_k} \cdot \beta^{a_k})}^2 \\
+                                                 &= {(x_k)}^2 & \text{(par l'hypothèse de récurrence)} \\
                                                  &= x_{k+1} & \text{(car $x_k \in S_2$)}
         \end{align*}
 
         \underline{$x \in S_3$}
         \begin{align*}
-          a_{k+1} &= a_k + 1 \text{ mod n} \\
-          \text{ et } b_{k+1} &= b_k
+          a_{k+1} &= a_k + 1 \text{\ mod n} \\
+          \text{\ et } b_{k+1} &= b_k
         \end{align*}
         d'où
         \begin{align*}
@@ -103,7 +103,7 @@
 
 
         \subsubsection{Conclusion}
-        On a montré que pour $i = 0$, l'égalité \ref{eq:1} est vérifiée.
+        On a montré que pour $i = 0$, l'égalité~\ref{eq:1} est vérifiée.
         De plus, si elle est vraie au rang $k$, alors elle est vraie au rang $k+1$.
 
         Finalement $\forall i \in \mathbb{N}, x_i = \alpha^{a_i} \beta^{b_i}$.
