@@ -14,6 +14,26 @@ pdflatex rapport/main.tex
 ```
 
 
+## Code
+
+#### en C
+
+On utilise la librairie GMP ([documentation](https://gmplib.org/manual/index.html)) pour manipuler de grands entiers.
+```bash
+# build the executable
+cd c; make
+
+# execute with numbers in `input.txt`
+./pollard input.txt
+```
+
+
+#### avec Sage
+
+```bash
+cd sage
+```
+
 ## Aide
 
 #### Git
