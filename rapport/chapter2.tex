@@ -3,7 +3,7 @@
     % TODO: rédiger une petite intro : présentation de Rho de Pollard dans les grandes lignes.
 
         \subsection{La fonction d'itération}
-        On définit la fonction d'itération comme la fonction permettant de calculer les différents éléments de notre séquence $x_0, x_1, x_2, \ldots$, $x_0 = 1$ de la façon suivante~:
+        On définit la fonction d'itération comme la fonction permettant de calculer les différents éléments de notre séquence $x_0, x_1, x_2, \ldots$ de la façon suivante~: $x_0 = 1$ et pour $i \geq 0$,
 
         \begin{align*}
           x_{i+1} =
@@ -14,7 +14,7 @@
           \end{cases}
         \end{align*}
 
-        Ainsi, en définissant les suites $(a_i)$ et $(b_i)$, avec $a_0 = 0$ et $b_0 = 0$ comme suit~:
+        Ainsi, en définissant les suites $(a_i)_{i \geq 0}$ et $(b_i)_{i \geq 0}$ comme suit~: $a_0 = 0$, $b_0 = 0$, et pour $i \geq 0$,
 
         \begin{align*}
           a_{i+1} =
@@ -34,12 +34,12 @@
           \end{cases}
         \end{align*}
 
-        On obtient l'égalité suivante~:
+        On obtient l'égalité suivante, valable pour tout $i \in \mathbb{N}$ :
         \begin{equation} \label{eq:1}
           x_i = \alpha^{a_i} \cdot \beta^{b_i}
         \end{equation}
 
-        Pour se convaincre de sa véracité, montrons par récurrence qu'elle reste satisfaite pour toute valeur de $i$.
+        Pour se convaincre de sa véracité, montrons par récurrence qu'elle reste satisfaite pour toute valeur de $i \in \mathbb{N}$.
 
         \subsubsection{Initialisation}
 
@@ -55,15 +55,15 @@
 
         \subsubsection{Hérédité}
 
-        On suppose que la relation est vérifiée pour un certain rang $k$~: $x_k = \alpha^{a_k} \cdot \beta^{b_k}$. Montrons que cela reste vrai au rang $k + 1$.
+        On suppose que la relation est vérifiée pour un certain rang $k \in \mathbb{N}$~: $x_k = \alpha^{a_k} \cdot \beta^{b_k}$. Montrons que cela reste vrai au rang $k + 1$, c'est-à-dire que l'on a :
 
         \begin{align*}
           x_{k+1} = \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}}
         \end{align*}
 
-        On distingue trois cas possibles.
+        On distingue trois cas possibles :
 
-        \underline{$x \in S_1$}
+        \underline{$x_{k} \in S_1$}
         \begin{align*}
           a_{k+1} &= a_k \\
           \text{\ et } b_{k+1} &= b_k + 1 \text{\ mod n}
@@ -76,7 +76,7 @@
         \end{align*}
 
 
-        \underline{$x \in S_2$}
+        \underline{$x_{k} \in S_2$}
         \begin{align*}
           a_{k+1} &= 2a_k \text{\ mod n}\\
           \text{\ et } b_{k+1} &= 2b_k \text{\ mod n}
@@ -89,7 +89,7 @@
                                                  &= x_{k+1} & \text{(car $x_k \in S_2$)}
         \end{align*}
 
-        \underline{$x \in S_3$}
+        \underline{$x_{k} \in S_3$}
         \begin{align*}
           a_{k+1} &= a_k + 1 \text{\ mod n} \\
           \text{\ et } b_{k+1} &= b_k
@@ -106,4 +106,4 @@
         On a montré que pour $i = 0$, l'égalité~\ref{eq:1} est vérifiée.
         De plus, si elle est vraie au rang $k$, alors elle est vraie au rang $k+1$.
 
-        Finalement $\forall i \in \mathbb{N}, x_i = \alpha^{a_i} \beta^{b_i}$.
+        Finalement, pour tout $i \in \mathbb{N}, x_i = \alpha^{a_i} \beta^{b_i}$.
