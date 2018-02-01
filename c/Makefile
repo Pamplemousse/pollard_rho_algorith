@@ -1,7 +1,7 @@
 EXE=pollard
 
 CFLAGS=-std=c11 -Wall -Wextra -Wno-unused-result -g
-CPPFLAGS=-DDEBUG
+CPPFLAGS=-Iinclude -DDEBUG
 LDFLAGS=-lgmp
 
 .PHONY: all clean help
