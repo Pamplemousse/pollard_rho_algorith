@@ -20,10 +20,10 @@ pdflatex rapport/main.tex
 
 On utilise la librairie GMP ([documentation](https://gmplib.org/manual/index.html)) pour manipuler de grands entiers.
 ```bash
-# build the executable
+# compiler l'éxécutable
 cd c; make
 
-# execute with numbers in `input.txt`
+# les nombres en entrée sont passés via `input.txt`
 ./pollard input.txt
 ```
 
