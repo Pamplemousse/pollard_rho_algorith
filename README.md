@@ -25,6 +25,10 @@ cd c; make
 
 # les nombres en entrée sont passés via `input.txt`
 ./pollard input.txt
+
+# tests automatisés du code
+cd c/test; make
+./test_*
 ```
 
 

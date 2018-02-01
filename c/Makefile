@@ -4,7 +4,7 @@ CFLAGS=-std=c11 -Wall -Wextra -Wno-unused-result -g
 CPPFLAGS=-Iinclude -DDEBUG
 LDFLAGS=-lgmp
 
-.PHONY: all clean help
+.PHONY: all clean test help
 
 
 all: clean build
@@ -12,14 +12,17 @@ all: clean build
 build:
 	$(MAKE) $(EXE)
 
-$(EXE): main.o
+$(EXE): main.o iteration_function.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-%.o: %.c main.h
+%.o: %.c %.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 clean:
 	@rm -f *.o $(EXE)
+
+test:
+	@cd test && $(MAKE)
 
 help:
 	@echo "Usage:"
