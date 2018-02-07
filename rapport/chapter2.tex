@@ -34,7 +34,7 @@
           \end{cases}
         \end{align*}
 
-        On obtient l'égalité suivante, valable pour tout $i \in \mathbb{N}$ :
+        On obtient l'égalité suivante, valable pour tout $i \in \mathbb{N}$~:
         \begin{equation} \label{eq:1}
           x_i = \alpha^{a_i} \cdot \beta^{b_i}
         \end{equation}
@@ -55,13 +55,13 @@
 
         \subsubsection{Hérédité}
 
-        On suppose que la relation est vérifiée pour un certain rang $k \in \mathbb{N}$~: $x_k = \alpha^{a_k} \cdot \beta^{b_k}$. Montrons que cela reste vrai au rang $k + 1$, c'est-à-dire que l'on a :
+        On suppose que la relation est vérifiée pour un certain rang $k \in \mathbb{N}$~: $x_k = \alpha^{a_k} \cdot \beta^{b_k}$. Montrons que cela reste vrai au rang $k + 1$, c'est-à-dire que l'on a~:
 
         \begin{align*}
           x_{k+1} = \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}}
         \end{align*}
 
-        On distingue trois cas possibles :
+        On distingue trois cas possibles~:
 
         \underline{$x_{k} \in S_1$}
         \begin{align*}
@@ -115,9 +115,9 @@
 				
 	$$ x_{k\lambda+\mu} = x_\mu $$
 				
-	On a alors : $ x_{k\lambda+i} = x_i, \forall i \ge \mu, \forall k \in \mathbb{N}$
+	On a alors~: $ x_{k\lambda+i} = x_i, \forall i \ge \mu, \forall k \in \mathbb{N}$
 				
-	On peut donc représenter les valeurs de la suite $x_i$ par une droite et un cycle partageant un noeud en commun (situé à une extrêmité de la droite). La longueur $T$ de la droite correspond à la pré-période $\mu$ de la séquence et le nombre $C$ d'éléments dans le cycle correspond à la période $\lambda$. Les éléments de la droite sont numérotés de $-T$ à $0$, $0$ étant le noeud commun à la droite et au cycle. De la même manière, on numérote les noeuds du cycle par les entiers compris entre $0$ et $C-1$. On peut alors utiliser l'analogie suivante : une tortue et un lièvre commencent en position $-T$ sur la droite. A chaque étape ils se déplacent respectivement de un et deux pas vers le noeud $0$. Une fois qu'ils ont atteint celui-ci, ils continuent de se déplacer à la même vitesse mais n'effectuent plus que des tours de cycle (dans le même sens et en allant du noeud $0$ au noeud $C-1$). Comme chaque noeud représente un nombre appartenant au groupe $G$, et qu'à une étape $i$ donnée la tortue est sur le noeud correspondant à la valeur $x_i$ et le lièvre sur le noeud correspondant à $x_{2i}$, il suffit que les deux animaux soient au même point au même moment pour qu'il y ait une collision. Nous allons à présent prouver que celle-ci survient alors que la tortue effectue son premier tour de cycle.
+	On peut donc représenter les valeurs de la suite $x_i$ par une droite et un cycle partageant un noeud en commun (situé à une extrêmité de la droite). La longueur $T$ de la droite correspond à la pré-période $\mu$ de la séquence et le nombre $C$ d'éléments dans le cycle correspond à la période $\lambda$. Les éléments de la droite sont numérotés de $-T$ à $0$, $0$ étant le noeud commun à la droite et au cycle. De la même manière, on numérote les noeuds du cycle par les entiers compris entre $0$ et $C-1$. On peut alors utiliser l'analogie suivante~: une tortue et un lièvre commencent en position $-T$ sur la droite. A chaque étape ils se déplacent respectivement de un et deux pas vers le noeud $0$. Une fois qu'ils ont atteint celui-ci, ils continuent de se déplacer à la même vitesse mais n'effectuent plus que des tours de cycle (dans le même sens et en allant du noeud $0$ au noeud $C-1$). Comme chaque noeud représente un nombre appartenant au groupe $G$, et qu'à une étape $i$ donnée la tortue est sur le noeud correspondant à la valeur $x_i$ et le lièvre sur le noeud correspondant à $x_{2i}$, il suffit que les deux animaux soient au même point au même moment pour qu'il y ait une collision. Nous allons à présent prouver que celle-ci survient alors que la tortue effectue son premier tour de cycle.
 				
 	\begin{figure}
 	\center
@@ -133,7 +133,7 @@
 				
 	Lorsque la tortue atteint pour la première fois le noeud $0$, le lièvre est alors en position $r$ dans le cycle. Si $r=0$, c'est terminé, car alors le lièvre et la tortue sont au même endroit. Supposons $r$ différent de $0$. On peut terminer en $C-r$ étapes supplémentaires.
 				
-	A l'issue de ces $C-r$ étapes, la tortue est en position $C-r$ dans le cycle. La position du lièvre est donnée par :
+	A l'issue de ces $C-r$ étapes, la tortue est en position $C-r$ dans le cycle. La position du lièvre est donnée par~:
 				
 	\begin{align*}
           r + 2 \cdot (C - r) \text{ mod } C &= 2 \cdot C -r \text{ mod } C \\
