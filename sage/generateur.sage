@@ -1,5 +1,3 @@
-import pdb
-
 def gen_group (size_modulus, size_order):
     (p, q, alpha) = gen_modulus (size_modulus, size_order)
     f = 2

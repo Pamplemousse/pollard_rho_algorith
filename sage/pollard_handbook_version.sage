@@ -1,6 +1,3 @@
-import pdb
-
-
 def rho_solve(alpha=2, beta=228, modulus=383, order=191):
     table = rho_table(alpha, beta, modulus, order)
     print_table(table)
