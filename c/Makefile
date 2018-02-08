@@ -20,6 +20,7 @@ $(EXE): main.o collision.o iteration_function.o debug.o
 
 clean:
 	@rm -f *.o $(EXE)
+	@cd test && $(MAKE) clean
 
 test:
 	$(MAKE)

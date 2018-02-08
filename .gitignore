@@ -1,6 +1,7 @@
 c/pollard
 *main.pdf
 *~
+*.o
 
 # Created by https://www.gitignore.io/api/latex
 
