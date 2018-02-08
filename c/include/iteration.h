@@ -1,5 +1,5 @@
-#ifndef ITERATION_FUNCTION_H
-#define ITERATION_FUNCTION_H
+#ifndef ITERATION_H
+#define ITERATION_H
 
 #include <gmp.h>
 
@@ -10,4 +10,4 @@ int f(mpz_t *xi, mpz_t *ai, mpz_t *bi,
       mpz_t alpha, mpz_t beta,
       mpz_t modulus, mpz_t order);
 
-#endif /* ITERATION_FUNCTION_H */
+#endif /* ITERATION_H */

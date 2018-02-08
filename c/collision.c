@@ -1,5 +1,5 @@
 #include "collision.h"
-#include "iteration_function.h"
+#include "iteration.h"
 
 #include <gmp.h>
 #include <stdio.h>

@@ -12,7 +12,7 @@ all: clean build
 build:
 	$(MAKE) $(EXE)
 
-$(EXE): main.o collision.o iteration_function.o debug.o
+$(EXE): main.o collision.o iteration.o debug.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c %.h
