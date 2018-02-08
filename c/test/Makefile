@@ -6,7 +6,7 @@ LDFLAGS=-lgmp
 
 .PHONY: all clean help
 
-all: test_printable test_iteration_function
+all: test_iteration_function
 
 test_iteration_function: test_iteration_function.o $(SRC_DIR)/iteration_function.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
