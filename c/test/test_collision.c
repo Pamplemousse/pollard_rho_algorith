@@ -29,7 +29,7 @@
 
 
 
-void test_Floyd(void) {
+void test_Floyd_with_handbook_values(void) {
   mpz_t order   ; mpz_init_set_d(order, 191);
   mpz_t modulus ; mpz_init_set_d(modulus, 383);
   mpz_t alpha   ; mpz_init_set_d(alpha, 2);
@@ -73,7 +73,7 @@ void test_Floyd(void) {
 
 
 int main (void) {
-  DO_TEST (test_Floyd);
+  DO_TEST (test_Floyd_with_handbook_values);
 
   return EXIT_SUCCESS;
 }
