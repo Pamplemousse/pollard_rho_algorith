@@ -11,7 +11,7 @@ all: test_iteration test_collision
 test_iteration: test_iteration.o $(SRC_DIR)/iteration.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-test_collision: test_collision.o $(SRC_DIR)/collision.o $(SRC_DIR)/iteration.o 
+test_collision: test_collision.o $(SRC_DIR)/collision.o $(SRC_DIR)/iteration.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 %.o: %.c
