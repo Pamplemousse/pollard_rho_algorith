@@ -2,6 +2,9 @@
 
 #include "main.h"
 
+#include "collision.h"
+#include "equation_solver.h"
+
 #include <gmp.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,7 +17,7 @@ char *big_number_as_string(mpz_t number) {
 }
 
 
-int main (int argc, char **argv) {
+void get_parameters(mpz_t **parameters, int argc, char **argv) {
   if (argc < 2) {
     perror("You should provide a file as argument\n");
     exit(EXIT_FAILURE);
@@ -30,29 +33,57 @@ int main (int argc, char **argv) {
 
   char *buffer = NULL;
   size_t buffer_size;
-  getline(&buffer, &buffer_size, fd);
 
-  /* Lire le nombre depuis une chaine vers un mpz_t en base 10 */
-  mpz_t number;
-  mpz_init_set_str(number, buffer, 10);
+  for (size_t i = 0; i < 4; i++) {
+    getline(&buffer, &buffer_size, fd);
+    mpz_init_set_str(*parameters[i], buffer, 10);
+  }
 
-  mpz_t one;
-  mpz_init_set_d(one, 1);
-
-  mpz_t result;
-  mpz_init(result);
-  mpz_add(result, number, one);
-
-  char *output = big_number_as_string(result);
-  printf("%s\n", output);
-
-  mpz_clear(number);
-  mpz_clear(one);
-  mpz_clear(result);
-
-  free(output);
   free(buffer);
   fclose(fd);
+}
+
+
+void print_result_nicely(mpz_t result, mpz_t alpha, mpz_t beta) {
+  char *alpha_as_str = big_number_as_string(alpha);
+  char *beta_as_str = big_number_as_string(beta);
+  char *result_str = big_number_as_string(result);
+
+  printf("Log of %s in base %s = %s\n",
+         beta_as_str, alpha_as_str, result_str);
+
+  free(alpha_as_str);
+  free(beta_as_str);
+  free(result_str);
+}
+
+
+int main (int argc, char **argv) {
+  mpz_t modulus, order, alpha, beta;
+  mpz_t *parameters[] = { &modulus, &order, &alpha, &beta };
+  get_parameters(parameters, argc, argv);
+
+  mpz_t exponents[4];
+  for (size_t i = 0; i < 4; i++) {
+    mpz_init(exponents[i]);
+  }
+  Floyd(exponents, alpha, beta, modulus, order);
+
+  mpz_t discrete_log_of_beta;
+  mpz_init(discrete_log_of_beta);
+  discrete_log_from_exponents(&discrete_log_of_beta,
+                              &exponents[0], &exponents[1],
+                              &exponents[2], &exponents[3],
+                              &order);
+
+  print_result_nicely(discrete_log_of_beta, alpha, beta);
+
+  for (size_t i = 0; i < 4; i++) {
+    mpz_clear(*parameters[i]);
+    mpz_clear(exponents[i]);
+  }
+
+  mpz_clear(discrete_log_of_beta);
 
   return EXIT_SUCCESS;
 }
