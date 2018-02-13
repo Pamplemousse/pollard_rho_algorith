@@ -7,6 +7,12 @@
 #include <stdlib.h>
 
 
+char *big_number_as_string(mpz_t number) {
+  char *output = malloc(sizeof(char) * mpz_sizeinbase(number, 10)+2);
+  mpz_get_str(output, 10, number);
+  return output;
+}
+
 
 int main (int argc, char **argv) {
   if (argc < 2) {
@@ -37,10 +43,7 @@ int main (int argc, char **argv) {
   mpz_init(result);
   mpz_add(result, number, one);
 
-  /* Écrire le nombre depuis un mpz_t en base 10 */
-  char *output = malloc(sizeof(char) * mpz_sizeinbase(number, 10)+2);
-  mpz_get_str(output, 10, result);
-
+  char *output = big_number_as_string(result);
   printf("%s\n", output);
 
   mpz_clear(number);
