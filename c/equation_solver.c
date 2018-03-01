@@ -21,7 +21,7 @@ int discrete_log_from_exponents(mpz_t *result,
   mpz_sub(bi_minus_Bi, *bi, *Bi);
 
   /* Bezout's identity:
-   *   order * u + (bi - Bi) * bi_minus_Bi_invert = gcd 
+   *   order * u + (bi - Bi) * bi_minus_Bi_invert = gcd
    * (we do not care about `u`) */
   mpz_t gcd, bi_minus_Bi_invert;
   mpz_init(gcd);
