@@ -1,6 +1,6 @@
 EXE=pollard
 
-CFLAGS=-std=c11 -Wall -Wextra -Wno-unused-result -g
+CFLAGS=-std=c11 -Wall -Wextra -Wno-unused-result -g -pg -no-pie
 CPPFLAGS=-Iinclude -DDEBUG
 LDFLAGS=-lgmp
 
@@ -20,6 +20,7 @@ $(EXE): main.o equation_solver.o collision.o iteration.o
 
 clean:
 	@rm -f *.o $(EXE)
+	@rm -f gmon.out
 	@cd test && $(MAKE) clean
 
 test:
