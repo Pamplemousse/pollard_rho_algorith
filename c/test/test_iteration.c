@@ -31,21 +31,49 @@
 
 void test_returns_an_error_code_if_given_xi_is_null(void) {
   mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(NULL, &ai, &bi, alpha, beta, modulus, order);
+  int code = f(NULL, &ai, &bi, &alpha, &beta, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_ai_is_null(void) {
   mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, NULL, &bi, alpha, beta, modulus, order);
+  int code = f(&xi, NULL, &bi, &alpha, &beta, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_bi_is_null(void) {
   mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, &ai, NULL, alpha, beta, modulus, order);
+  int code = f(&xi, &ai, NULL, &alpha, &beta, &modulus, &order);
+  ASSERT (code == -1);
+}
+
+
+void test_returns_an_error_code_if_given_alpha_is_null(void) {
+  mpz_t xi, ai, bi, alpha, beta, modulus, order;
+  int code = f(&xi, &ai, &bi, NULL, &beta, &modulus, &order);
+  ASSERT (code == -1);
+}
+
+
+void test_returns_an_error_code_if_given_beta_is_null(void) {
+  mpz_t xi, ai, bi, alpha, beta, modulus, order;
+  int code = f(&xi, &ai, &bi, &alpha, NULL, &modulus, &order);
+  ASSERT (code == -1);
+}
+
+
+void test_returns_an_error_code_if_given_modulus_is_null(void) {
+  mpz_t xi, ai, bi, alpha, beta, modulus, order;
+  int code = f(&xi, &ai, &bi, &alpha, &beta, NULL, &order);
+  ASSERT (code == -1);
+}
+
+
+void test_returns_an_error_code_if_given_order_is_null(void) {
+  mpz_t xi, ai, bi, alpha, beta, modulus, order;
+  int code = f(&xi, &ai, &bi, &alpha, &beta, &modulus, NULL);
   ASSERT (code == -1);
 }
 
@@ -81,7 +109,7 @@ void test_handbook_values(void) {
       mpz_set(ai, expected_values[j - 2]);
       mpz_set(bi, expected_values[j - 1]);
 
-      f(&xi, &ai, &bi, alpha, beta, modulus, order);
+      f(&xi, &ai, &bi, &alpha, &beta, &modulus, &order);
 
       ASSERT (mpz_cmp(&xi, expected_values[j]) == 0);
       ASSERT (mpz_cmp(&ai, expected_values[j + 1]) == 0);
@@ -111,6 +139,10 @@ int main (void) {
   DO_TEST (test_returns_an_error_code_if_given_xi_is_null);
   DO_TEST (test_returns_an_error_code_if_given_ai_is_null);
   DO_TEST (test_returns_an_error_code_if_given_bi_is_null);
+  DO_TEST (test_returns_an_error_code_if_given_alpha_is_null);
+  DO_TEST (test_returns_an_error_code_if_given_beta_is_null);
+  DO_TEST (test_returns_an_error_code_if_given_modulus_is_null);
+  DO_TEST (test_returns_an_error_code_if_given_order_is_null);
   DO_TEST (test_handbook_values);
 
   return EXIT_SUCCESS;

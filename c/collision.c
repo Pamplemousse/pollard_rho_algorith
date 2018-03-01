@@ -6,8 +6,8 @@
 
 
 void Floyd (mpz_t *result,
-            mpz_t alpha, mpz_t beta,
-            mpz_t modulus, mpz_t order) {
+            mpz_t *alpha, mpz_t *beta,
+            mpz_t *modulus, mpz_t *order) {
   mpz_t xi, ai, bi, Xi, Ai, Bi;
 
   mpz_init_set_d(xi, 1);

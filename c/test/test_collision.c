@@ -48,7 +48,7 @@ void test_Floyd_with_handbook_values(void) {
     mpz_init(result[i]);
   }
 
-  Floyd(&result, alpha, beta, modulus, order);
+  Floyd(&result, &alpha, &beta, &modulus, &order);
 
   ASSERT (mpz_cmp(&expected_ai, result[0]) == 0);
   ASSERT (mpz_cmp(&expected_bi, result[1]) == 0);

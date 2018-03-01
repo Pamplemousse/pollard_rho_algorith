@@ -26,7 +26,7 @@ void get_parameters(mpz_t **parameters, int argc, char **argv) {
   FILE *fd;
   fd = fopen(argv[1], "r");
 
-  if( fd == NULL ) {
+  if(fd == NULL) {
     perror("Error while opening the file.\n");
     exit(EXIT_FAILURE);
   }
@@ -67,7 +67,7 @@ int main (int argc, char **argv) {
   for (size_t i = 0; i < 4; i++) {
     mpz_init(exponents[i]);
   }
-  Floyd(exponents, alpha, beta, modulus, order);
+  Floyd(exponents, &alpha, &beta, &modulus, &order);
 
   mpz_t discrete_log_of_beta;
   mpz_init(discrete_log_of_beta);
