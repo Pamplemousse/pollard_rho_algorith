@@ -14,7 +14,7 @@
           \end{cases}
         \end{align*}
 
-        Ainsi, en définissant les suites $(a_i)_{i \geq 0}$ et $(b_i)_{i \geq 0}$ comme suit~: $a_0 = 0$, $b_0 = 0$, et pour $i \geq 0$,
+        Ainsi, en définissant les suites ${(a_i)}_{i \geq 0}$ et ${(b_i)}_{i \geq 0}$ comme suit~: $a_0 = 0$, $b_0 = 0$, et pour $i \geq 0$,
 
         \begin{align*}
           a_{i+1} =
@@ -109,44 +109,46 @@
         Finalement, pour tout $i \in \mathbb{N}, x_i = \alpha^{a_i} \beta^{b_i}$.
 
         \subsection{Collision et algorithme de Floyd}
-	Notre objectif est de détecter une collision, c'est-à-dire de trouver deux indices $i$ et $j$ avec $i \ne j$ tels que $x_i = x_j$. Une méthode naïve est de stocker tous les $x_i$ calculés et de les comparer les uns avec les autres, mais cette technique se révèle coûteuse, aussi bien en temps qu'en mémoire. Plusieurs algorithmes ont été développés afin de répondre à ces deux exigences. L'un d'eux est l'algorithme de détection de cycle de Floyd, aussi appelé algorithme du lièvre et de la tortue. Il est utilisé dans la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard, et présente le double avantage d'être rapide et de demander peu de stockage en mémoire. Pour l'appliquer, il suffit de commencer par calculer la paire $(x_1, x_2)$ avant d'utiliser la fonction d'itération décrite précédemment pour calculer les paires $(x_i, x_{2i})$ à partir de la paire précédente. On s'arrête lorsqu'on trouve un indice $j$ tel que $x_j = x_{2j}$.
-				
-	Un tel entier existe nécessairement car le groupe $G$ sur lequel on travaille est fini. En effet, cela garantit que la séquence des $x_i$ est ultimement périodique. Les plus petits entiers $\mu$ et $\lambda$ satisfaisant la propriété suivante sont appelés respectivement la pré-période et la période de la séquence.
-				
-	$$ x_{k\lambda+\mu} = x_\mu $$
-				
-	On a alors~: $ x_{k\lambda+i} = x_i, \forall i \ge \mu, \forall k \in \mathbb{N}$
-				
-	On peut donc représenter les valeurs de la suite $x_i$ par une droite et un cycle partageant un noeud en commun (situé à une extrêmité de la droite). La longueur $T$ de la droite correspond à la pré-période $\mu$ de la séquence et le nombre $C$ d'éléments dans le cycle correspond à la période $\lambda$. Les éléments de la droite sont numérotés de $-T$ à $0$, $0$ étant le noeud commun à la droite et au cycle. De la même manière, on numérote les noeuds du cycle par les entiers compris entre $0$ et $C-1$. On peut alors utiliser l'analogie suivante~: une tortue et un lièvre commencent en position $-T$ sur la droite. A chaque étape ils se déplacent respectivement de un et deux pas vers le noeud $0$. Une fois qu'ils ont atteint celui-ci, ils continuent de se déplacer à la même vitesse mais n'effectuent plus que des tours de cycle (dans le même sens et en allant du noeud $0$ au noeud $C-1$). Comme chaque noeud représente un nombre appartenant au groupe $G$, et qu'à une étape $i$ donnée la tortue est sur le noeud correspondant à la valeur $x_i$ et le lièvre sur le noeud correspondant à $x_{2i}$, il suffit que les deux animaux soient au même point au même moment pour qu'il y ait une collision. Nous allons à présent prouver que celle-ci survient alors que la tortue effectue son premier tour de cycle.
-				
-	\begin{figure}
-	\center
-	\includegraphics[scale=0.5]{Floyd.png}
-	\caption{Algorithme de Floyd avec $T=3$ et $C=6$}
-	\end{figure}
-				
-	La tortue commence en position $-T$, il lui faut précisément $T$ étapes pour qu'elle se trouve au début du cycle, soit en position $0$. A ce moment, le lièvre a avancé de $2 \cdot T$ pas, et il a déjà parcouru $T$ noeuds dans le cycle. Sa position dans celui-ci est donc donnée par le reste de la division euclidienne de $T$ par $C$.	
-				
-	$$ T = C \cdot k + r \text{ , avec } 0 \leq r < C $$
-				
-	$$\text{ D'où } T = r \text{ mod } C $$
-				
-	Lorsque la tortue atteint pour la première fois le noeud $0$, le lièvre est alors en position $r$ dans le cycle. Si $r=0$, c'est terminé, car alors le lièvre et la tortue sont au même endroit. Supposons $r$ différent de $0$. On peut terminer en $C-r$ étapes supplémentaires.
-				
-	A l'issue de ces $C-r$ étapes, la tortue est en position $C-r$ dans le cycle. La position du lièvre est donnée par~:
-				
-	\begin{align*}
-          r + 2 \cdot (C - r) \text{ mod } C &= 2 \cdot C -r \text{ mod } C \\
-                                             &= C - r \text{ mod } C
+        Notre objectif est de détecter une collision, c'est-à-dire de trouver deux indices $i$ et $j$ avec $i \ne j$ tels que $x_i = x_j$. Une méthode naïve est de stocker tous les $x_i$ calculés et de les comparer les uns avec les autres, mais cette technique se révèle coûteuse, aussi bien en temps qu'en mémoire. Plusieurs algorithmes ont été développés afin de répondre à ces deux exigences. L'un d'eux est l'algorithme de détection de cycle de Floyd, aussi appelé algorithme du lièvre et de la tortue. Il est utilisé dans la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard, et présente le double avantage d'être rapide et de demander peu de stockage en mémoire. Pour l'appliquer, il suffit de commencer par calculer la paire $(x_1, x_2)$ avant d'utiliser la fonction d'itération décrite précédemment pour calculer les paires $(x_i, x_{2i})$ à partir de la paire précédente. On s'arrête lorsqu'on trouve un indice $j$ tel que $x_j = x_{2j}$.
+
+        Un tel entier existe nécessairement car le groupe $G$ sur lequel on travaille est fini. En effet, cela garantit que la séquence des $x_i$ est ultimement périodique. Les plus petits entiers $\mu$ et $\lambda$ satisfaisant la propriété suivante sont appelés respectivement la pré-période et la période de la séquence.
+
+        \[ x_{k\lambda+\mu} = x_\mu \]
+
+        On a alors~: $ x_{k\lambda+i} = x_i, \forall i \ge \mu, \forall k \in \mathbb{N}$
+
+        On peut donc représenter les valeurs de la suite $x_i$ par une droite et un cycle partageant un noeud en commun (situé à une extrêmité de la droite). La longueur $T$ de la droite correspond à la pré-période $\mu$ de la séquence et le nombre $C$ d'éléments dans le cycle correspond à la période $\lambda$. Les éléments de la droite sont numérotés de $-T$ à $0$, $0$ étant le noeud commun à la droite et au cycle. De la même manière, on numérote les noeuds du cycle par les entiers compris entre $0$ et $C-1$. On peut alors utiliser l'analogie suivante~: une tortue et un lièvre commencent en position $-T$ sur la droite. A chaque étape ils se déplacent respectivement de un et deux pas vers le noeud $0$. Une fois qu'ils ont atteint celui-ci, ils continuent de se déplacer à la même vitesse mais n'effectuent plus que des tours de cycle (dans le même sens et en allant du noeud $0$ au noeud $C-1$). Comme chaque noeud représente un nombre appartenant au groupe $G$, et qu'à une étape $i$ donnée la tortue est sur le noeud correspondant à la valeur $x_i$ et le lièvre sur le noeud correspondant à $x_{2i}$, il suffit que les deux animaux soient au même point au même moment pour qu'il y ait une collision. Nous allons à présent prouver que celle-ci survient alors que la tortue effectue son premier tour de cycle.
+
+        \begin{figure}
+          \center{}
+          \includegraphics[scale=0.5]{Floyd.png}
+          \caption{Algorithme de Floyd avec $T=3$ et $C=6$}
+        \end{figure}
+
+        La tortue commence en position $-T$, il lui faut précisément $T$ étapes pour qu'elle se trouve au début du cycle, soit en position $0$. A ce moment, le lièvre a avancé de $2 \cdot T$ pas, et il a déjà parcouru $T$ nœuds dans le cycle. Sa position dans celui-ci est donc donnée par le reste de la division euclidienne de $T$ par $C$.
+
+        \begin{gather*}
+          T = C \cdot k + r \text{\, avec } 0 \leq r < C \\
+          %
+          \text{D'où } T = r \text{\ mod } C
+        \end{gather*}
+
+        Lorsque la tortue atteint pour la première fois le nœud $0$, le lièvre est alors en position $r$ dans le cycle. Si $r=0$, c'est terminé, car alors le lièvre et la tortue sont au même endroit. Supposons $r$ différent de $0$. On peut terminer en $C-r$ étapes supplémentaires.
+
+        A l'issue de ces $C-r$ étapes, la tortue est en position $C-r$ dans le cycle. La position du lièvre est donnée par~:
+
+        \begin{align*}
+          r + 2 \cdot (C - r) \text{\ mod } C &= 2 \cdot C -r \text{\ mod } C \\
+                                              &= C - r \text{\ mod } C
         \end{align*}
-				
-	Le lièvre et la tortue sont donc au même endroit et il y a collision, on peut trouver un indice $i$ tel que $x_i = x_{2i}$. De plus, on a pu terminer en $T + C - r$ étapes.
-				
-	\begin{align*}
+
+        Le lièvre et la tortue sont donc au même endroit et il y a collision, on peut trouver un indice $i$ tel que $x_i = x_{2i}$. De plus, on a pu terminer en $T + C - r$ étapes.
+
+        \begin{align*}
           \text{Or } T + C - r &= C \cdot k + r + C - r \\
                                &=(k + 1) \cdot C
         \end{align*}
-				
-	$$ \text{D'autre part } C \cdot k < T = C \cdot k + r < C \cdot (k + 1) $$
-				
-	Donc la première collision a lieu à l'étape $n$, où $n$ est le plus petit entier multiple de $C$ avec $T < n$.
+
+        \[ \text{D'autre part } C \cdot k < T = C \cdot k + r < C \cdot (k + 1) \]
+
+        Donc la première collision a lieu à l'étape $n$, où $n$ est le plus petit entier multiple de $C$ avec $T < n$.
