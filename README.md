@@ -32,6 +32,20 @@ cd c/test; make
 ```
 
 
+#### tester
+
+```bash
+# compiler les tests unitaires
+cd c/test; make
+
+# tester la fonction d'itération
+./test_iteration
+
+# tester plusieurs valeurs générées avec Sage
+./bash_unit test/test_pollard_program.sh
+```
+
+
 #### avec Sage
 
 ```bash
