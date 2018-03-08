@@ -26,3 +26,14 @@ def gen_order (size_order):
         )
         if q.is_prime():
             return q
+
+# Générer un ensemble de "p q g h x" tels que g^x = h mod p 
+def gen_data():
+    p = 46795003
+    q = 7799167
+    g = 64
+
+    for _ in range(20):
+        x = randrange(1,100)
+        h = pow(g, x, p)
+        print '{} {} {} {} {}'.format(p, q, g, h, x)
