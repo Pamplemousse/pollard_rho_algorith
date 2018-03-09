@@ -23,7 +23,7 @@ void Floyd (mpz_t *result,
     f(&Xi, &Ai, &Bi, alpha, beta, modulus, order);
     f(&Xi, &Ai, &Bi, alpha, beta, modulus, order);
 
-    if (mpz_cmp(xi, Xi) == 0) {
+    if ((mpz_cmp(xi, Xi) == 0) && (mpz_cmp(bi, Bi) != 0)){
       break;
     }
   }
