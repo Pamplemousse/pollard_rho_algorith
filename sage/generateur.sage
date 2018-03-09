@@ -27,13 +27,22 @@ def gen_order (size_order):
         if q.is_prime():
             return q
 
-# Générer un ensemble de "p q g h x" tels que g^x = h mod p 
-def gen_data():
-    p = 46795003
-    q = 7799167
-    g = 64
-
-    for _ in range(20):
-        x = randrange(1,100)
+# Générer un ensemble de "p q g h x" tels que g^x = h mod p
+def gen_data(p, q, g):
+    s = ""
+    for _ in range(100):
+        x = randrange(1, q)
         h = pow(g, x, p)
-        print '{} {} {} {} {}'.format(p, q, g, h, x)
+        s = s + '{} {} {} {} {}'.format(p, q, g, h, x)
+        s = s + "\n"
+    return s
+
+# Générer un fichier contenant un ensemble de test
+def gen_test_group():
+    f = open('inputs_final.txt','w')
+    for _ in range(100):
+        size_p = randint(5, 20)
+        size_q = randint(3, size_p - 2)
+        (p, q, g) = gen_group(size_p, size_q)
+        f.write(gen_data(p, q, g))
+    f.close()
