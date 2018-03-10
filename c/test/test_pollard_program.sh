@@ -1,11 +1,12 @@
 #!/bin/bash
+INPUTS="fixtures/inputs.txt"
 
 test_different_precomputed_values() {
-    number_of_values=$(wc -l fixtures/inputs.txt | cut -d' ' -f1)
+    number_of_values=$(wc -l $INPUTS | cut -d' ' -f1)
 
     i=1
     while [ "$i" -le "$number_of_values" ]; do
-        parameters=$(head -n $(($i + 1)) fixtures/inputs.txt | tail -n 1)
+        parameters=$(head -n $(($i + 1)) $INPUTS | tail -n 1)
 
         modulus=$(echo $parameters | cut -d' ' -f1)
         order=$(echo $parameters | cut -d' ' -f2)

@@ -4,20 +4,28 @@ from plotly.offline import download_plotlyjs, plot, iplot
 from plotly.graph_objs import Box, Figure, Layout, Scatter
 
 
-with open('c/test/fixtures/inputs.txt','r') as f:
+with open('data.txt','r') as f:
     file_content = f.read()
 
 lines = file_content.split('\n')
 lines = [ line for line in lines if len(line) > 5 ]
 
 
-# Extract values of q from the input file
-q_values = set()
+# Extract values of q and "number of calls to f" from the input file
+values = []
 for line in lines:
-    (p, q, g, h, x) = line.split(' ')
-    q_values.add(int(q))
-q_values = sorted(list(q_values), key=float)
+    (p, q, g, h, x, nb_of_f) = line.split(' ')
+    value = { 'q': int(q), 'f_count': int(nb_of_f) }
+    values.append(value)
+values = sorted(values, key=lambda x: x['q'])
 
+q_values = []
+f_counts = []
+for item in values:
+    q_values.append(item['q'])
+    f_counts.append(item['f_count'])
+
+# Use sqrt(q) as a reference
 sqrt_q_values = [ math.sqrt(q) for q in q_values ]
 
 
@@ -28,7 +36,15 @@ sqrt_trace = Scatter(
     name='sqrt(q)'
 )
 
-data = [ sqrt_trace ]
+f_calls_trace = Scatter(
+    x=q_values,
+    y=f_counts,
+    mode='markers',
+    name='calls to f'
+)
+
+
+data = [ sqrt_trace, f_calls_trace ]
 layout = Layout(showlegend=True)
 fig = Figure(data=data, layout=layout)
 

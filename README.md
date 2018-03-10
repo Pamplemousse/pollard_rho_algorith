@@ -46,11 +46,24 @@ cd c/test; make
 ```
 
 
+#### mesurer
+
+Nous souhaitons mesurer le nombre d'appels à la fonction d'itération pour la résolution d'un logarithme discret.
+Nous avons déjà des données calculatoires dans le fichier `c/test/fixtures/inputs.txt`. En lançant `pollard` sur ces données, on peut récupérer avec [`gprof`](https://sourceware.org/binutils/docs/gprof/) le nombre d'appels à `f`, puis représenter tout cela sur un graphique.
+
+```bash
+cd graph
+./generate_data.sh
+python graph.py
+```
+
+
 #### avec Sage
 
 ```bash
 cd sage
 ```
+
 
 ## Aide
 
