@@ -2,6 +2,7 @@ c/pollard
 *main.pdf
 *~
 *.o
+temp-plot.html
 
 # Created by https://www.gitignore.io/api/latex
 

@@ -21,6 +21,7 @@ $(EXE): main.o equation_solver.o collision.o iteration.o
 clean:
 	@rm -f *.o $(EXE)
 	@rm -f gmon.out
+	@rm -f temp-plot.html
 	@cd test && $(MAKE) clean
 
 test:
