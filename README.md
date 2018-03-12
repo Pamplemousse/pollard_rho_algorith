@@ -9,8 +9,12 @@ Le rapport se trouve dans le dossier `rapport` du répertoire.
 Essayons de le séparer en plusieurs fichiers `.tex` (un par chapitre semble raisonnable) pour faciliter la lisibilité et la rédaction.
 
 ```bash
-# générer le rapport
-pdflatex rapport/main.tex
+# générer le rapport, sa TOC, sa bibliographie
+cd rapport/
+pdflatex main.tex
+bibtex main
+pdflatex main.tex
+pdflatex main.tex
 ```
 
 

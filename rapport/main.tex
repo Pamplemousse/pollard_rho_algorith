@@ -1,8 +1,9 @@
 \documentclass{report}
 
 % IMPORT DE PACKAGES
+\usepackage[backend=bibtex,style=verbose-trad2]{biblatex}
 \usepackage[french]{babel}    % langue
-\usepackage[utf8x]{inputenc}  % accents
+\usepackage[utf8]{inputenc}   % accents
 \usepackage[T1]{fontenc}      % caractères français
 \usepackage[toc]{appendix}
 \usepackage{hyperref}
@@ -10,6 +11,7 @@
 \usepackage{amsfonts}
 \usepackage{graphicx}
 
+\bibliography{bibliography}
 
 \title{Algorithme $\rho$ de Pollard pour le problème du logarithme discret}
 \author{Laure Bachelet, Charlotte Rance, Xavier Maso}
@@ -24,5 +26,7 @@
 \tableofcontents
 \include{introduction}
 \include{chapter1} % Présentation du problème et algorithme p de Pollard classique
+
+\printbibliography
 
 \end{document}
