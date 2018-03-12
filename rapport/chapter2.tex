@@ -1,0 +1,21 @@
+\chapter{Implémentation de la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard}
+    Dans la partie précédente, nous avons discuté de la méthode de Pollard (telle que présentée dans le Handbook of Applied Cryptography \autocite[106]{handbook}) pour résoudre le problème du logarithme discret.
+
+    Un des objectifs de ce projet est de produire un programme capable de résoudre le problème, que l'on peut formaliser de la façon suivante.
+
+    En appelant le programme sur des entiers $p, q, g, h$ en entrée, respectant :
+    \begin{itemize}
+        \item[]$p$ et $q$ deux nombres premiers tels que $(\mathbb{Z}/p\mathbb{Z})^*$ soit d'ordre $q$
+        \item[]$g$ un générateur de ce groupe multiplicatif, \textit{i.e} $(\mathbb{Z}/p\mathbb{Z})^* = < g >$
+        \item[]$h \in (\mathbb{Z}/p\mathbb{Z})^* \implies \exists x \in \mathbb{Z}$ tel que $h = g^x$
+    \end{itemize}
+
+    Il retourne $x$, c'est-à-dire $log_g(h)$.
+
+    Pour des raisons de performances, ce programme est écrit C.
+    Cependant, afin de se familiariser avec la méthode, et nous assister dans la génération de grands nombres $p$, $q$ et d'un générateur $g$ leur correspondant, nous avons commencé par utiliser le logiciel SageMath\footnote{\url{https://www.sagemath.org/}}. De plus, nous avons aussi pu automatiser la génération de données de tests (des entiers $h$ et $x$ respectant $g^x = h$) pour valider le bon fonctionnement du programme, mais aussi mesurer les performances des algorithmes utilisés, afin de pouvoir mettre en perspective d'éventuelles optimisations dont il sera question plus tard.
+
+    Dans ce chapitre, nous allons donc présenter brièvement le premier prototype que nous avons obtenu à l'aide de Sage.
+    Bien que non optimisé, cela nous a permis de découvrir quelques questions et contraintes auxquelles nous avons aussi du répondre lors de l'implémentation en C.
+    Nous parlerons de ces problématiques, en particulier de la génération de grands entiers définissant les groupes dans lesquels nous avons travaillé (pour tester et mesurer l'efficacité de notre programme).
+    Enfin, nous présenterons le code C ayant permis de générer notre programme de résolution du problème, ainsi que les différents tests et mesures mis en place pour en valider le bon fonctionnement et l'efficacité.

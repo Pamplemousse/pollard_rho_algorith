@@ -110,6 +110,7 @@
         Finalement, pour tout $i \in \mathbb{N}, x_i = \alpha^{a_i} \beta^{b_i}$.
 
         \subsection{Collision et algorithme de Floyd}
+        \label{chapter1:Floyd}
         Notre objectif est de détecter une collision, c'est-à-dire de trouver deux indices $i$ et $j$ avec $i \ne j$ tels que $x_i = x_j$. Une méthode naïve est de stocker tous les $x_i$ calculés et de les comparer les uns avec les autres, mais cette technique se révèle coûteuse, aussi bien en temps qu'en mémoire. Plusieurs algorithmes ont été développés afin de répondre à ces deux exigences. L'un d'eux est l'algorithme de détection de cycle de Floyd, aussi appelé algorithme du lièvre et de la tortue. Il est utilisé dans la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard, et présente le double avantage d'être rapide et de demander peu de stockage en mémoire. Pour l'appliquer, il suffit de commencer par calculer la paire $(x_1, x_2)$ avant d'utiliser la fonction d'itération décrite précédemment pour calculer les paires $(x_i, x_{2i})$ à partir de la paire précédente. On s'arrête lorsqu'on trouve un indice $j$ tel que $x_j = x_{2j}$.
 
         Un tel entier existe nécessairement car le groupe $G$ sur lequel on travaille est fini. En effet, cela garantit que la séquence des $x_i$ est ultimement périodique. On appelle période et pré-période de la séquence les plus petits entiers $\mu$ et $\lambda$ satisfaisant la propriété suivante.
