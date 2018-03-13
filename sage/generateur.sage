@@ -33,16 +33,13 @@ def gen_data(p, q, g):
     for _ in range(100):
         x = randrange(1, q)
         h = pow(g, x, p)
-        s = s + '{} {} {} {} {}'.format(p, q, g, h, x)
-        s = s + "\n"
+        s = s + '{} {} {} {} {}\n'.format(p, q, g, h, x)
     return s
 
 # Générer un fichier contenant un ensemble de test
-def gen_test_group():
-    f = open('inputs_final.txt','w')
-    for _ in range(100):
-        size_p = randint(5, 20)
-        size_q = randint(3, size_p - 2)
-        (p, q, g) = gen_group(size_p, size_q)
+def gen_test_inputs():
+    f = open('inputs.txt','w')
+    for size_q in [10..50]:
+        (p, q, g) = gen_group(size_q+3, size_q)
         f.write(gen_data(p, q, g))
     f.close()

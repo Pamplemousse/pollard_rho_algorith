@@ -1,5 +1,5 @@
 #!/bin/bash
-INPUTS="../c/test/fixtures/inputs.txt"
+INPUTS="inputs_for_graphing.txt"
 
 number_of_values=$(wc -l $INPUTS | cut -d' ' -f1)
 
