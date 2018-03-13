@@ -130,8 +130,7 @@
         La tortue commence en position $-T$, il lui faut précisément $T$ étapes pour qu'elle se trouve au début du cycle, soit en position $0$. A ce moment, le lièvre a avancé de $2 \cdot T$ pas, et il a déjà parcouru $T$ nœuds dans le cycle. Sa position dans celui-ci est donc donnée par le reste de la division euclidienne de $T$ par $C$.
 
         \begin{align*}
-          \exists k \in \mathbb{N} \text{\ tel que } T &\equiv C \cdot k + r \text{\, avec } 0 \leq r < C \\
-                                        \text{d'où } T &\equiv r \text{\ mod } C
+          \exists k \in \mathbb{N} \text{\ tel que } T = C \cdot k + r \text{\, avec } 0 \leq r < C, \text{d'où } T &\equiv r \text{\ mod } C
         \end{align*}
 
         Lorsque la tortue atteint pour la première fois le nœud $0$, le lièvre est alors en position $r$ dans le cycle. Si $r=0$, c'est terminé, car alors le lièvre et la tortue sont au même endroit. Supposons $r$ différent de $0$. On peut terminer en $C-r$ étapes supplémentaires.
