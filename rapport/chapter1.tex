@@ -3,15 +3,15 @@
     % TODO: rédiger une petite intro : présentation de Rho de Pollard dans les grandes lignes.
     Présentation de la méthode $\rho$ de Pollard selon le Handbook of Applied Cryptography\autocite[106]{handbook}.
 
-        \subsection{La fonction d'itération}
+        \section{La fonction d'itération}
         On définit la fonction d'itération comme la fonction permettant de calculer les différents éléments de notre séquence $x_0, x_1, x_2, \ldots$ de la façon suivante~: $x_0 = 1$ et pour $i \geq 0$,
 
         \begin{align*}
           x_{i+1} =
           \begin{cases}
-            \beta \cdot x_i & \text{si } x_i \in S_1 \\
+            h \cdot x_i & \text{si } x_i \in S_1 \\
             x_i^2 & \text{si } x_i \in S_2 \\
-            \alpha \cdot x_i & \text{si } x_i \in S_3
+            g \cdot x_i & \text{si } x_i \in S_3
           \end{cases}
         \end{align*}
 
@@ -37,29 +37,29 @@
 
         On obtient l'égalité suivante, valable pour tout $i \in \mathbb{N}$~:
         \begin{equation} \label{eq:1}
-          x_i = \alpha^{a_i} \cdot \beta^{b_i}
+          x_i = g^{a_i} \cdot h^{b_i}
         \end{equation}
 
         Pour se convaincre de sa véracité, montrons par récurrence qu'elle reste satisfaite pour toute valeur de $i \in \mathbb{N}$.
 
-        \subsubsection{Initialisation}
+        \subsection{Initialisation}
 
         Pour $i = 0$, on a par définition~: $x_0 = 1, a_0 = b_0 = 0$
 
         \begin{align*}
-          \alpha^{a_0} \cdot \beta^{b_0} &= \alpha^{0} \cdot \beta^{0} \\
+          g^{a_0} \cdot h^{b_0} &= g^{0} \cdot h^{0} \\
                                          &= 1 \cdot 1 \\
                                          &= x_0
         \end{align*}
 
         Donc la relation est vérifiée au rang 0.
 
-        \subsubsection{Hérédité}
+        \subsection{Hérédité}
 
-        On suppose que la relation est vérifiée pour un certain rang $k \in \mathbb{N}$~: $x_k = \alpha^{a_k} \cdot \beta^{b_k}$. Montrons que cela reste vrai au rang $k + 1$, c'est-à-dire que l'on a~:
+        On suppose que la relation est vérifiée pour un certain rang $k \in \mathbb{N}$~: $x_k = g^{a_k} \cdot h^{b_k}$. Montrons que cela reste vrai au rang $k + 1$, c'est-à-dire que l'on a~:
 
         \begin{align*}
-          x_{k+1} = \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}}
+          x_{k+1} = g^{a_{k+1}} \cdot h^{b_{k+1}}
         \end{align*}
 
         On distingue trois cas possibles~:
@@ -71,8 +71,8 @@
         \end{align*}
         d'où
         \begin{align*}
-          \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}} &= \alpha^{a_k} \cdot \beta^{b_k} \cdot \beta \\
-                                                 &= x_k \cdot \beta & \text{(par l'hypothèse de récurrence)} \\
+          g^{a_{k+1}} \cdot h^{b_{k+1}} &= g^{a_k} \cdot h^{b_k} \cdot h \\
+                                                 &= x_k \cdot h & \text{(par l'hypothèse de récurrence)} \\
                                                  &= x_{k+1} & \text{(car $x_k \in S_1$)}
         \end{align*}
 
@@ -84,8 +84,8 @@
         \end{align*}
         d'où
         \begin{align*}
-          \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}} &= \alpha^{2a_k} \cdot \beta^{2b_k} \\
-                                                 &= {(\alpha^{a_k} \cdot \beta^{a_k})}^2 \\
+          g^{a_{k+1}} \cdot h^{b_{k+1}} &= g^{2a_k} \cdot h^{2b_k} \\
+                                                 &= {(g^{a_k} \cdot h^{a_k})}^2 \\
                                                  &= {(x_k)}^2 & \text{(par l'hypothèse de récurrence)} \\
                                                  &= x_{k+1} & \text{(car $x_k \in S_2$)}
         \end{align*}
@@ -97,19 +97,19 @@
         \end{align*}
         d'où
         \begin{align*}
-          \alpha^{a_{k+1}} \cdot \beta^{b_{k+1}} &= \alpha \cdot \alpha^{a_k} \cdot \beta^{b_k} \\
-                                                 &= \alpha \cdot x_k & \text{(par l'hypothèse de récurrence)} \\
+          g^{a_{k+1}} \cdot h^{b_{k+1}} &= g \cdot g^{a_k} \cdot h^{b_k} \\
+                                                 &= g \cdot x_k & \text{(par l'hypothèse de récurrence)} \\
                                                  &= x_{k+1} & \text{(car $x_k \in S_3$)}
         \end{align*}
 
 
-        \subsubsection{Conclusion}
+        \subsection{Conclusion}
         On a montré que pour $i = 0$, l'égalité~\ref{eq:1} est vérifiée.
         De plus, si elle est vraie au rang $k$, alors elle est vraie au rang $k+1$.
 
-        Finalement, pour tout $i \in \mathbb{N}, x_i = \alpha^{a_i} \beta^{b_i}$.
+        Finalement, pour tout $i \in \mathbb{N}, x_i = g^{a_i} h^{b_i}$.
 
-        \subsection{Collision et algorithme de Floyd}
+        \section{Collision et algorithme de Floyd}
         \label{chapter1:Floyd}
         Notre objectif est de détecter une collision, c'est-à-dire de trouver deux indices $i$ et $j$ avec $i \ne j$ tels que $x_i = x_j$. Une méthode naïve est de stocker tous les $x_i$ calculés et de les comparer les uns avec les autres, mais cette technique se révèle coûteuse, aussi bien en temps qu'en mémoire. Plusieurs algorithmes ont été développés afin de répondre à ces deux exigences. L'un d'eux est l'algorithme de détection de cycle de Floyd, aussi appelé algorithme du lièvre et de la tortue. Il est utilisé dans la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard, et présente le double avantage d'être rapide et de demander peu de stockage en mémoire. Pour l'appliquer, il suffit de commencer par calculer la paire $(x_1, x_2)$ avant d'utiliser la fonction d'itération décrite précédemment pour calculer les paires $(x_i, x_{2i})$ à partir de la paire précédente. On s'arrête lorsqu'on trouve un indice $j$ tel que $x_j = x_{2j}$.
 
