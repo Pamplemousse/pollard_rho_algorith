@@ -1,17 +1,17 @@
 \chapter{L'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard «\texorpdfstring{\,}{\ }classique\texorpdfstring{\,}{\ }»}
     	\section{Présentation}
     	Soit $G$ un groupe fini, cyclique, généré par $g$ et d'ordre $q$. Le problème du logarithme discret consiste, pour un élément $h$ appartenant à $G$, à trouver le logarithme discret de $g$ en base $h$, noté $log_g(h)$, c'est-à-dire le plus petit entier positif $x$ tel que $g^x = h$.
-    	
+
     	L'algorithme $\rho$ de Pollard est une méthode capable de répondre à un tel problème. Durant toute la suite du rapport, on travaillera sur le groupe $(\mathbb{Z}/p\mathbb{Z})^*$ d'ordre $q$, avec $p$ et $q$ deux nombres premiers. L'algorithme consiste à construire une séquence $(x_i)_{i \ge 0}$ d'éléments de $G$ tels que $x_{i+1} = f(x_i)$ avec $f$ une fonction allant de $G$ dans $G$. Cette fonction est choisie de telle sorte à rendre possible le traçage des exposants par rapport à $g$ et $h$. Cela signifie que les appels à la fonction $f$ permettent de définir très simplement deux suites d'entiers $(a_i)_{i \ge 0}$ et $(b_i)_{i \ge 0}$ tels que $x_i = g^{a_i} \cdot h^{b_i}$. On calcule les $x_i$ jusqu'à détecter une collision, c'est-à-dire deux indices $i$ et $j$ tels que $i \ne j$ et $x_i = x_j$. Il est alors facile de trouver $x$. En effet, on a~:
-    	
+
     	\begin{align*}
           x_i = x_j &\implies g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j} \\
                     &\implies h^{b_i - b_j} = g^{a_j - a_i} \\
                     &\implies (b_i - b_j) \cdot log_g(h) \equiv a_j - a_i \text{\ mod } p
         \end{align*}
-        
-        Si $b_i$ non congru à $b_j$ modulo $p$, alors $b_i - b_j$ est inversible dans $G$ (comme $p$ est premier) et il suffit de calculer son inverse dans ce groupe pour trouver $log_g(h)$.   	
-    	
+
+        Si $b_i$ non congru à $b_j$ modulo $p$, alors $b_i - b_j$ est inversible dans $G$ (comme $p$ est premier) et il suffit de calculer son inverse dans ce groupe pour trouver $log_g(h)$.
+
     	Toutes les variantes de l'algorithme reposent sur ce principe, mais chacune possède sa propre fonction d'itération et sa méthode pour détecter une collision. Intéressons-nous tout d'abord à la méthode classique, telle que décrite dans le \textit{Handbook of Applied Cryptography} \autocite[106]{handbook}.
 
         \section{La fonction d'itération}
@@ -26,7 +26,7 @@
           \end{cases}
         \end{align*}
         Ici, $S_1$, $S_2$ et $S_3$ sont obtenus en partitionnant le groupe $G$ en trois sous-ensembles selon une propriété facilement testable. Remarquons qu'on doit nécessairement avoir $1 \notin S_2$. En effet, comme $x_0 = 1$, choisir $1 \in S_2$ nous donnerait $x_i = 1$ pour tout $i$.
-		
+
         On définit les suites ${(a_i)}_{i \geq 0}$ et ${(b_i)}_{i \geq 0}$ comme suit~: $a_0 = 0$, $b_0 = 0$, et pour $i \geq 0$,
 
         \begin{align*}
@@ -53,7 +53,7 @@
         \end{equation}
 
 		Dans quelques rares cas, cette fonction d'itération ne permet pas de détecter une collision. Il suffit alors d'exécuter de nouveau l'algorithme en choisissant les entiers $a_0$ et $b_0$ aléatoirement dans l'intervalle $\mathopen{[}1,n-1\mathclose{]}$ et en posant $x_0 = g^{a_0} \cdot h^{b_0}$.
-		
+
 		A présent, montrons par récurrence que \eqref{eq:1} reste satisfaite pour toute valeur de $i \in \mathbb{N}$.
 
         \subsection*{Initialisation}
@@ -62,12 +62,12 @@
 
         \begin{align*}
           g^{a_0} \cdot h^{b_0} &= g^{0} \cdot h^{0} \\
-                                         &= 1 \cdot 1 \\
-                                         &= x_0
+                                &= 1 \cdot 1 \\
+                                &= x_0
         \end{align*}
 
         Dans les quelques cas où $a_0$ et $b_0$ sont choisis aléatoirement dans $\mathopen{[}1,n-1\mathclose{]}$, $x_0 = g^{a_0} \cdot h^{b_0}$ par définition.
-        
+
         La relation est donc toujours vérifiée au rang $0$.
 
         \subsection*{Hérédité}
@@ -88,8 +88,8 @@
         d'où
         \begin{align*}
           g^{a_{k+1}} \cdot h^{b_{k+1}} &= g^{a_k} \cdot h^{b_k} \cdot h \\
-                                                 &= x_k \cdot h & \text{(par l'hypothèse de récurrence)} \\
-                                                 &= x_{k+1} & \text{(car $x_k \in S_1$)}
+                                        &= x_k \cdot h & \text{(par l'hypothèse de récurrence)} \\
+                                        &= x_{k+1} & \text{(car $x_k \in S_1$)}
         \end{align*}
 
 
@@ -101,9 +101,9 @@
         d'où
         \begin{align*}
           g^{a_{k+1}} \cdot h^{b_{k+1}} &= g^{2a_k} \cdot h^{2b_k} \\
-                                                 &= {(g^{a_k} \cdot h^{a_k})}^2 \\
-                                                 &= {(x_k)}^2 & \text{(par l'hypothèse de récurrence)} \\
-                                                 &= x_{k+1} & \text{(car $x_k \in S_2$)}
+                                        &= {(g^{a_k} \cdot h^{a_k})}^2 \\
+                                        &= {(x_k)}^2 & \text{(par l'hypothèse de récurrence)} \\
+                                        &= x_{k+1} & \text{(car $x_k \in S_2$)}
         \end{align*}
 
         \underline{$x_{k} \in S_3$}
@@ -114,8 +114,8 @@
         d'où
         \begin{align*}
           g^{a_{k+1}} \cdot h^{b_{k+1}} &= g \cdot g^{a_k} \cdot h^{b_k} \\
-                                                 &= g \cdot x_k & \text{(par l'hypothèse de récurrence)} \\
-                                                 &= x_{k+1} & \text{(car $x_k \in S_3$)}
+                                        &= g \cdot x_k & \text{(par l'hypothèse de récurrence)} \\
+                                        &= x_{k+1} & \text{(car $x_k \in S_3$)}
         \end{align*}
 
 
