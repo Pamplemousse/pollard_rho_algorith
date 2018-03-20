@@ -9,22 +9,22 @@ while [ "$i" -le "$number_of_values" ]; do
 
   modulus=$(echo $parameters | cut -d' ' -f1)
   order=$(echo $parameters | cut -d' ' -f2)
-  alpha=$(echo $parameters | cut -d' ' -f3)
-  beta=$(echo $parameters | cut -d' ' -f4)
+  g=$(echo $parameters | cut -d' ' -f3)
+  h=$(echo $parameters | cut -d' ' -f4)
   result=$(echo $parameters | cut -d' ' -f5)
 
   input=$(mktemp)
   cat - << __EOF__ > $input
 $modulus
 $order
-$alpha
-$beta
+$g
+$h
 __EOF__
 
   ../c/pollard $input 2>&1 >/dev/null
   number_of_calls=$(gprof ../c/pollard -b --exec-counts=f | cut -d' ' -f3)
   rm gmon.out
-  echo "$modulus $order $alpha $beta $result $number_of_calls" >> Outputs/data_1.txt
+  echo "$modulus $order $g $h $result $number_of_calls" >> Outputs/data_1.txt
 
   i=$(($i + 1))
 done

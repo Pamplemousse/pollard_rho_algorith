@@ -1,12 +1,12 @@
 # Retourne un triplet (module, ordre, générateur)
 def gen_group (size_modulus, size_order):
     (p, q, u) = gen_modulus (size_modulus, size_order)
-    pre_alpha = 2
+    pre_g = 2
     while true:
-        alpha = pow(pre_alpha, u, p)
-        if alpha != 1:
-            return (p, q, alpha)
-        pre_alpha += 1
+        g = pow(pre_g, u, p)
+        if g != 1:
+            return (p, q, g)
+        pre_g += 1
 
 # Construction de p tel que q | (p - 1)
 #                       <=> p = uq + 1

@@ -1,5 +1,5 @@
-def rho_solve(alpha=2, beta=228, modulus=383, order=191):
-    table = rho_table(alpha, beta, modulus, order)
+def rho_solve(g=2, h=228, modulus=383, order=191):
+    table = rho_table(g, h, modulus, order)
     print_table(table)
 
     a = table[1][-1]
@@ -8,23 +8,23 @@ def rho_solve(alpha=2, beta=228, modulus=383, order=191):
     B = table[5][-1]
 
     solution = solve(a, b, A, B, order)
-    print "\nlog_" + str(alpha) + "(" + str(beta) + ") = " \
+    print "\nlog_" + str(g) + "(" + str(h) + ") = " \
       + str(solution) + " mod " + str(order)
 
 
-def rho_table(alpha, beta, modulus, order):
+def rho_table(g, h, modulus, order):
     x = [1]; X = [1]
     a = [0]; A = [0]
     b = [0]; B = [0]
 
     for i in range(order):
         (next_x, next_a, next_b) = f(x[i], a[i], b[i],
-                                     alpha, beta, modulus, order)
+                                     g, h, modulus, order)
 
         (next_X, next_A, next_B) = f(X[i], A[i], B[i],
-                                     alpha, beta, modulus, order)
+                                     g, h, modulus, order)
         (next_X, next_A, next_B) = f(next_X, next_A, next_B,
-                                     alpha, beta, modulus, order)
+                                     g, h, modulus, order)
 
         x.append(next_x)
         a.append(next_a)
@@ -40,9 +40,9 @@ def rho_table(alpha, beta, modulus, order):
 
 
 
-def f(xi, ai, bi, alpha, beta, modulus, order):
+def f(xi, ai, bi, g, h, modulus, order):
     if xi % 3 == 1:
-        next_x = (beta * xi) % modulus
+        next_x = (h * xi) % modulus
         next_a = ai
         next_b = (bi + 1) % order
     elif xi % 3 == 0:
@@ -50,7 +50,7 @@ def f(xi, ai, bi, alpha, beta, modulus, order):
         next_a = (2 * ai) % order
         next_b = (2 * bi) % order
     else:
-        next_x = (alpha * xi) % modulus
+        next_x = (g * xi) % modulus
         next_a = (ai + 1) % order
         next_b = bi
 

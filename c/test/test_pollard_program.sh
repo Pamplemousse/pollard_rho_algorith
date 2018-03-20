@@ -10,19 +10,19 @@ test_different_precomputed_values() {
 
         modulus=$(echo $parameters | cut -d' ' -f1)
         order=$(echo $parameters | cut -d' ' -f2)
-        alpha=$(echo $parameters | cut -d' ' -f3)
-        beta=$(echo $parameters | cut -d' ' -f4)
+        g=$(echo $parameters | cut -d' ' -f3)
+        h=$(echo $parameters | cut -d' ' -f4)
         result=$(echo $parameters | cut -d' ' -f5)
 
         input=$(mktemp)
         cat - << __EOF__ > $input
 $modulus
 $order
-$alpha
-$beta
+$g
+$h
 __EOF__
 
-        expected_message="Log of $beta in base $alpha = $result"
+        expected_message="Log of $h in base $g = $result"
         message=$(../pollard $input)
 
         assert_equals "$expected_message" "$message"

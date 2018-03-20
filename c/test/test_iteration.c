@@ -30,50 +30,50 @@
 
 
 void test_returns_an_error_code_if_given_xi_is_null(void) {
-  mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(NULL, &ai, &bi, &alpha, &beta, &modulus, &order);
+  mpz_t xi, ai, bi, g, h, modulus, order;
+  int code = f(NULL, &ai, &bi, &g, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_ai_is_null(void) {
-  mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, NULL, &bi, &alpha, &beta, &modulus, &order);
+  mpz_t xi, ai, bi, g, h, modulus, order;
+  int code = f(&xi, NULL, &bi, &g, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_bi_is_null(void) {
-  mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, &ai, NULL, &alpha, &beta, &modulus, &order);
+  mpz_t xi, ai, bi, g, h, modulus, order;
+  int code = f(&xi, &ai, NULL, &g, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
-void test_returns_an_error_code_if_given_alpha_is_null(void) {
-  mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, &ai, &bi, NULL, &beta, &modulus, &order);
+void test_returns_an_error_code_if_given_g_is_null(void) {
+  mpz_t xi, ai, bi, g, h, modulus, order;
+  int code = f(&xi, &ai, &bi, NULL, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
-void test_returns_an_error_code_if_given_beta_is_null(void) {
-  mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, &ai, &bi, &alpha, NULL, &modulus, &order);
+void test_returns_an_error_code_if_given_h_is_null(void) {
+  mpz_t xi, ai, bi, g, h, modulus, order;
+  int code = f(&xi, &ai, &bi, &g, NULL, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_modulus_is_null(void) {
-  mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, &ai, &bi, &alpha, &beta, NULL, &order);
+  mpz_t xi, ai, bi, g, h, modulus, order;
+  int code = f(&xi, &ai, &bi, &g, &h, NULL, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_order_is_null(void) {
-  mpz_t xi, ai, bi, alpha, beta, modulus, order;
-  int code = f(&xi, &ai, &bi, &alpha, &beta, &modulus, NULL);
+  mpz_t xi, ai, bi, g, h, modulus, order;
+  int code = f(&xi, &ai, &bi, &g, &h, &modulus, NULL);
   ASSERT (code == -1);
 }
 
@@ -81,8 +81,8 @@ void test_returns_an_error_code_if_given_order_is_null(void) {
 void test_handbook_values(void) {
   mpz_t order   ; mpz_init_set_d(order, 191);
   mpz_t modulus ; mpz_init_set_d(modulus, 383);
-  mpz_t alpha   ; mpz_init_set_d(alpha, 2);
-  mpz_t beta    ; mpz_init_set_d(beta, 228);
+  mpz_t g       ; mpz_init_set_d(g, 2);
+  mpz_t h       ; mpz_init_set_d(h, 228);
 
   int expected_x[] = { 228, 279, 92, 184, 205, 14, 28, 256, 152, 304, 372, 121,
                        12, 144 };
@@ -109,7 +109,7 @@ void test_handbook_values(void) {
       mpz_set(ai, expected_values[j - 2]);
       mpz_set(bi, expected_values[j - 1]);
 
-      f(&xi, &ai, &bi, &alpha, &beta, &modulus, &order);
+      f(&xi, &ai, &bi, &g, &h, &modulus, &order);
 
       ASSERT (mpz_cmp(&xi, expected_values[j]) == 0);
       ASSERT (mpz_cmp(&ai, expected_values[j + 1]) == 0);
@@ -129,8 +129,8 @@ void test_handbook_values(void) {
 
   mpz_clear(order);
   mpz_clear(modulus);
-  mpz_clear(alpha);
-  mpz_clear(beta);
+  mpz_clear(g);
+  mpz_clear(h);
 }
 
 
@@ -139,8 +139,8 @@ int main (void) {
   DO_TEST (test_returns_an_error_code_if_given_xi_is_null);
   DO_TEST (test_returns_an_error_code_if_given_ai_is_null);
   DO_TEST (test_returns_an_error_code_if_given_bi_is_null);
-  DO_TEST (test_returns_an_error_code_if_given_alpha_is_null);
-  DO_TEST (test_returns_an_error_code_if_given_beta_is_null);
+  DO_TEST (test_returns_an_error_code_if_given_g_is_null);
+  DO_TEST (test_returns_an_error_code_if_given_h_is_null);
   DO_TEST (test_returns_an_error_code_if_given_modulus_is_null);
   DO_TEST (test_returns_an_error_code_if_given_order_is_null);
   DO_TEST (test_handbook_values);

@@ -44,46 +44,46 @@ void get_parameters(mpz_t **parameters, int argc, char **argv) {
 }
 
 
-void print_result_nicely(mpz_t result, mpz_t alpha, mpz_t beta) {
-  char *alpha_as_str = big_number_as_string(alpha);
-  char *beta_as_str = big_number_as_string(beta);
+void print_result_nicely(mpz_t result, mpz_t g, mpz_t h) {
+  char *g_as_str = big_number_as_string(g);
+  char *h_as_str = big_number_as_string(h);
   char *result_str = big_number_as_string(result);
 
   printf("Log of %s in base %s = %s\n",
-         beta_as_str, alpha_as_str, result_str);
+         h_as_str, g_as_str, result_str);
 
-  free(alpha_as_str);
-  free(beta_as_str);
+  free(g_as_str);
+  free(h_as_str);
   free(result_str);
 }
 
 
 int main (int argc, char **argv) {
-  mpz_t modulus, order, alpha, beta;
-  mpz_t *parameters[] = { &modulus, &order, &alpha, &beta };
+  mpz_t modulus, order, g, h;
+  mpz_t *parameters[] = { &modulus, &order, &g, &h };
   get_parameters(parameters, argc, argv);
 
   mpz_t exponents[4];
   for (size_t i = 0; i < 4; i++) {
     mpz_init(exponents[i]);
   }
-  Floyd(exponents, &alpha, &beta, &modulus, &order);
+  Floyd(exponents, &g, &h, &modulus, &order);
 
-  mpz_t discrete_log_of_beta;
-  mpz_init(discrete_log_of_beta);
-  discrete_log_from_exponents(&discrete_log_of_beta,
+  mpz_t discrete_log_of_h;
+  mpz_init(discrete_log_of_h);
+  discrete_log_from_exponents(&discrete_log_of_h,
                               &exponents[0], &exponents[1],
                               &exponents[2], &exponents[3],
                               &order);
 
-  print_result_nicely(discrete_log_of_beta, alpha, beta);
+  print_result_nicely(discrete_log_of_h, g, h);
 
   for (size_t i = 0; i < 4; i++) {
     mpz_clear(*parameters[i]);
     mpz_clear(exponents[i]);
   }
 
-  mpz_clear(discrete_log_of_beta);
+  mpz_clear(discrete_log_of_h);
 
   return EXIT_SUCCESS;
 }

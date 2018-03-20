@@ -7,7 +7,7 @@
 // Then, set the corresponding values into the *result array given as parameter
 // Allocation and deallocation is responsability of the caller
 void Floyd (mpz_t *result,
-            mpz_t *alpha, mpz_t *beta,
+            mpz_t *g, mpz_t *h,
             mpz_t *modulus, mpz_t *order);
 
 #endif /* COLLISION_H */

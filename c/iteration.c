@@ -2,17 +2,17 @@
 
 
 int f(mpz_t *xi, mpz_t *ai, mpz_t *bi,
-      mpz_t *alpha, mpz_t *beta,
+      mpz_t *g, mpz_t *h,
       mpz_t *modulus, mpz_t *order) {
 
-  if (!xi || !ai || !bi || !alpha || !beta || !modulus || !order) { return -1; }
+  if (!xi || !ai || !bi || !g || !h || !modulus || !order) { return -1; }
 
   mpz_t remainder;
   mpz_init(remainder);
   mpz_mod_ui(remainder, *xi, 3);
 
   if (mpz_cmp_ui(remainder, 1) == 0) {
-    mpz_mul(*xi, *beta, *xi);
+    mpz_mul(*xi, *h, *xi);
     mpz_mod(*xi, *xi, *modulus);
 
     /* ai stays the same */
@@ -31,7 +31,7 @@ int f(mpz_t *xi, mpz_t *ai, mpz_t *bi,
     mpz_mod(*bi, *bi, *order);
 
   } else {
-    mpz_mul(*xi, *alpha, *xi);
+    mpz_mul(*xi, *g, *xi);
     mpz_mod(*xi, *xi, *modulus);
 
     mpz_add_ui(*ai, *ai, 1);

@@ -32,8 +32,8 @@
 void test_Floyd_with_handbook_values(void) {
   mpz_t order   ; mpz_init_set_d(order, 191);
   mpz_t modulus ; mpz_init_set_d(modulus, 383);
-  mpz_t alpha   ; mpz_init_set_d(alpha, 2);
-  mpz_t beta    ; mpz_init_set_d(beta, 228);
+  mpz_t g       ; mpz_init_set_d(g, 2);
+  mpz_t h       ; mpz_init_set_d(h, 228);
 
   mpz_t expected_ai, expected_bi, expected_Ai, expected_Bi;
 
@@ -48,7 +48,7 @@ void test_Floyd_with_handbook_values(void) {
     mpz_init(result[i]);
   }
 
-  Floyd(&result, &alpha, &beta, &modulus, &order);
+  Floyd(&result, &g, &h, &modulus, &order);
 
   ASSERT (mpz_cmp(&expected_ai, result[0]) == 0);
   ASSERT (mpz_cmp(&expected_bi, result[1]) == 0);
@@ -66,8 +66,8 @@ void test_Floyd_with_handbook_values(void) {
 
   mpz_clear(order);
   mpz_clear(modulus);
-  mpz_clear(alpha);
-  mpz_clear(beta);
+  mpz_clear(g);
+  mpz_clear(h);
 }
 
 
