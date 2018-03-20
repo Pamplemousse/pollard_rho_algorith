@@ -40,17 +40,22 @@ void Floyd (mpz_t *result,
     {
       gmp_randstate_t state;
       gmp_randinit_mt(state);
+
       mpz_urandomm(ai, state, *order);
       mpz_urandomm(bi, state, *order);
+
       mpz_t inter_1, inter_2;
       mpz_init_set_d(inter_1, 1);
       mpz_init_set_d(inter_2, 1);
       mpz_powm(inter_1, *alpha, ai, *modulus);
       mpz_powm(inter_2, *beta, bi, *modulus);
+
       mpz_mul(xi, inter_1, inter_2);
+
       mpz_set(Xi, xi);
       mpz_set(Ai, ai);
       mpz_set(Bi, bi);
+
       gmp_randclear(state); mpz_clear(inter_1); mpz_clear(inter_2);
 
       while (1) {
