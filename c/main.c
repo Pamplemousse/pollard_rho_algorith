@@ -36,7 +36,7 @@ void get_parameters(mpz_t **parameters, int argc, char **argv) {
 
   for (size_t i = 0; i < 4; i++) {
     getline(&buffer, &buffer_size, fd);
-    mpz_init_set_str(*parameters[i], buffer, 10);
+    mpz_init_set_str(*parameters[i], buffer, 2);
   }
 
   free(buffer);

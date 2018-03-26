@@ -6,7 +6,7 @@ test_different_precomputed_values() {
 
     i=1
     while [ "$i" -le "$number_of_values" ]; do
-        parameters=$(head -n $(($i + 1)) $INPUTS | tail -n 1)
+        parameters=$(head -n $i $INPUTS | tail -n 1)
 
         modulus=$(echo $parameters | cut -d' ' -f1)
         order=$(echo $parameters | cut -d' ' -f2)
@@ -22,7 +22,11 @@ $g
 $h
 __EOF__
 
-        expected_message="Log of $h in base $g = $result"
+        h_in_decimal=$(echo "$((2#${h}))")
+        g_in_decimal=$(echo "$((2#${g}))")
+        result_in_decimal=$(echo "$((2#${result}))")
+
+        expected_message="Log of $h_in_decimal in base $g_in_decimal = $result_in_decimal"
         message=$(../pollard $input)
 
         assert_equals "$expected_message" "$message"
