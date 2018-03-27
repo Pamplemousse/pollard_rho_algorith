@@ -7,10 +7,10 @@
     	\begin{align*}
           x_i = x_j &\implies g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j} \\
                     &\implies h^{b_i - b_j} = g^{a_j - a_i} \\
-                    &\implies (b_i - b_j) \cdot log_g(h) \equiv a_j - a_i \text{\ mod } p
+                    &\implies (b_i - b_j) \cdot log_g(h) \equiv a_j - a_i \text{\ mod } q
         \end{align*}
 
-        Si $b_i$ non congru à $b_j$ modulo $p$, alors $b_i - b_j$ est inversible dans $G$ (comme $p$ est premier) et il suffit de calculer son inverse dans ce groupe pour trouver $log_g(h)$.
+        Si $b_i$ non congru à $b_j$ modulo $q$, alors $b_i - b_j$ est inversible dans $G$ et il suffit de calculer son inverse dans ce groupe pour trouver $log_g(h)$.
 
     	Toutes les variantes de l'algorithme reposent sur ce principe, mais chacune possède sa propre fonction d'itération et sa méthode pour détecter une collision. Intéressons-nous tout d'abord à la méthode classique, telle que décrite dans le \textit{Handbook of Applied Cryptography} \autocite[106]{handbook}.
 
@@ -33,16 +33,16 @@
           a_{i+1} =
           \begin{cases}
             a_i                   & \text{si } x_i \in S_1 \\
-            2a_i \text{\ mod n}    & \text{si } x_i \in S_2 \\
-            a_i + 1 \text{\ mod n} & \text{si } x_i \in S_3
+            2a_i \text{\ mod q}    & \text{si } x_i \in S_2 \\
+            a_i + 1 \text{\ mod q} & \text{si } x_i \in S_3
           \end{cases}
         \end{align*}
 
         \begin{align*}
           b_{i+1} =
           \begin{cases}
-            b_i + 1 \text{\ mod n} & \text{si } x_i \in S_1 \\
-            2b_i \text{\ mod n}    & \text{si } x_i \in S_2 \\
+            b_i + 1 \text{\ mod q} & \text{si } x_i \in S_1 \\
+            2b_i \text{\ mod q}    & \text{si } x_i \in S_2 \\
             b_i                   & \text{si } x_i \in S_3
           \end{cases}
         \end{align*}
@@ -83,7 +83,7 @@
         \underline{$x_{k} \in S_1$}
         \begin{align*}
           a_{k+1} &= a_k \\
-          \text{\ et } b_{k+1} &= b_k + 1 \text{\ mod n}
+          \text{\ et } b_{k+1} &= b_k + 1 \text{\ mod q}
         \end{align*}
         d'où
         \begin{align*}
@@ -95,8 +95,8 @@
 
         \underline{$x_{k} \in S_2$}
         \begin{align*}
-          a_{k+1} &= 2a_k \text{\ mod n}\\
-          \text{\ et } b_{k+1} &= 2b_k \text{\ mod n}
+          a_{k+1} &= 2a_k \text{\ mod q}\\
+          \text{\ et } b_{k+1} &= 2b_k \text{\ mod q}
         \end{align*}
         d'où
         \begin{align*}
@@ -108,7 +108,7 @@
 
         \underline{$x_{k} \in S_3$}
         \begin{align*}
-          a_{k+1} &= a_k + 1 \text{\ mod n} \\
+          a_{k+1} &= a_k + 1 \text{\ mod q} \\
           \text{\ et } b_{k+1} &= b_k
         \end{align*}
         d'où
@@ -129,13 +129,13 @@
         \label{chapter1:Floyd}
         Notre objectif est de détecter une collision, c'est-à-dire de trouver deux indices $i$ et $j$ avec $i \ne j$ tels que $x_i = x_j$. Une méthode naïve est de stocker tous les $x_i$ calculés et de les comparer les uns avec les autres, mais cette technique se révèle coûteuse, aussi bien en temps qu'en mémoire. Plusieurs algorithmes ont été développés afin de répondre à ces deux exigences. L'un d'eux est l'algorithme de détection de cycle de Floyd, aussi appelé algorithme du lièvre et de la tortue. Il est utilisé dans la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard, et présente le double avantage d'être rapide et de demander peu de stockage en mémoire. Pour l'appliquer, il suffit de commencer par calculer la paire $(x_1, x_2)$ avant d'utiliser la fonction d'itération décrite précédemment pour calculer les paires $(x_i, x_{2i})$ à partir de la paire précédente. On s'arrête lorsqu'on trouve un indice $j$ tel que $x_j = x_{2j}$.
 
-        Un tel entier existe nécessairement car le groupe $G$ sur lequel on travaille est fini. En effet, cela garantit que la séquence des $x_i$ est ultimement périodique. On appelle période et pré-période de la séquence les plus petits entiers $\mu$ et $\lambda$ satisfaisant la propriété suivante.
+        Un tel entier existe nécessairement car le groupe $G$ sur lequel on travaille est fini. En effet, cela garantit que la séquence des $x_i$ est ultimement périodique. On appelle pré-période et période de la séquence les plus petits entiers $T$ et $C$ satisfaisant la propriété suivante.
 
-        \[ x_{k\lambda+\mu} = x_\mu \]
+        \[ x_{kC+T} = x_T \]
 
-        On a alors~: $ x_{k\lambda+i} = x_i, \forall i \ge \mu, \forall k \in \mathbb{N}$
+        On a alors~: $ x_{kC+i} = x_i, \forall i \ge T, \forall k \in \mathbb{N}$
 
-        On peut donc représenter les valeurs de la suite $x_i$ par une droite et un cycle partageant un noeud en commun (situé à une extrêmité de la droite). La longueur $T$ de la droite correspond à la pré-période $\mu$ de la séquence et le nombre $C$ d'éléments dans le cycle correspond à la période $\lambda$. Les éléments de la droite sont numérotés de $-T$ à $0$, $0$ étant le noeud commun à la droite et au cycle. De la même manière, on numérote les noeuds du cycle par les entiers compris entre $0$ et $C-1$. On peut alors utiliser l'analogie suivante~: une tortue et un lièvre commencent en position $-T$ sur la droite. A chaque étape ils se déplacent respectivement de un et deux pas vers le noeud $0$. Une fois qu'ils ont atteint celui-ci, ils continuent de se déplacer à la même vitesse mais n'effectuent plus que des tours de cycle (dans le même sens et en allant du noeud $0$ au noeud $C-1$). Comme chaque noeud représente un nombre appartenant au groupe $G$, et qu'à une étape $i$ donnée la tortue est sur le noeud correspondant à la valeur $x_i$ et le lièvre sur le noeud correspondant à $x_{2i}$, il suffit que les deux animaux soient au même point au même moment pour qu'il y ait une collision. Nous allons à présent prouver que celle-ci survient alors que la tortue effectue son premier tour de cycle.
+        On peut donc représenter les valeurs de la suite $x_i$ par une droite et un cycle partageant un noeud en commun (situé à une extrêmité de la droite). La longueur de la droite correspond à la pré-période $T$ de la séquence et le nombre d'éléments dans le cycle correspond à la période $C$. Les éléments de la droite sont numérotés de $-T$ à $0$, $0$ étant le noeud commun à la droite et au cycle. De la même manière, on numérote les noeuds du cycle par les entiers compris entre $0$ et $C-1$. On peut alors utiliser l'analogie suivante~: une tortue et un lièvre commencent en position $-T$ sur la droite. A chaque étape ils se déplacent respectivement de un et deux pas vers le noeud $0$. Une fois qu'ils ont atteint celui-ci, ils continuent de se déplacer à la même vitesse mais n'effectuent plus que des tours de cycle (dans le même sens et en allant du noeud $0$ au noeud $C-1$). Comme chaque noeud représente un nombre appartenant au groupe $G$, et qu'à une étape $i$ donnée la tortue est sur le noeud correspondant à la valeur $x_i$ et le lièvre sur le noeud correspondant à $x_{2i}$, il suffit que les deux animaux soient au même point au même moment pour qu'il y ait une collision. Nous allons à présent prouver que celle-ci survient alors que la tortue effectue son premier tour de cycle.
 
         \begin{figure}
           \center{}
