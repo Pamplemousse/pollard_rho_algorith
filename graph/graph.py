@@ -25,13 +25,15 @@ for item in values:
     q_values.append(item['q'])
     f_counts.append(item['f_count'])
 
+uniq_q_values = sorted(list(set(q_values)))
+
 # Use sqrt(q) as a reference
-sqrt_q_values = [ math.sqrt(q) for q in q_values ]
+sqrt_q_values = [ math.sqrt(q) for q in uniq_q_values ]
 
 
 # Define traces to show on the chart
 sqrt_trace = Scatter(
-    x=q_values,
+    x=uniq_q_values,
     y=sqrt_q_values,
     name='sqrt(q)'
 )
