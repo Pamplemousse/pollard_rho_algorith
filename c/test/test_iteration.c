@@ -30,49 +30,49 @@
 
 
 void test_returns_an_error_code_if_given_xi_is_null(void) {
-  mpz_t xi, ai, bi, g, h, modulus, order;
+  mpz_t ai, bi, g, h, modulus, order;
   int code = f(NULL, &ai, &bi, &g, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_ai_is_null(void) {
-  mpz_t xi, ai, bi, g, h, modulus, order;
+  mpz_t xi, bi, g, h, modulus, order;
   int code = f(&xi, NULL, &bi, &g, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_bi_is_null(void) {
-  mpz_t xi, ai, bi, g, h, modulus, order;
+  mpz_t xi, ai, g, h, modulus, order;
   int code = f(&xi, &ai, NULL, &g, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_g_is_null(void) {
-  mpz_t xi, ai, bi, g, h, modulus, order;
+  mpz_t xi, ai, bi, h, modulus, order;
   int code = f(&xi, &ai, &bi, NULL, &h, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_h_is_null(void) {
-  mpz_t xi, ai, bi, g, h, modulus, order;
+  mpz_t xi, ai, bi, g, modulus, order;
   int code = f(&xi, &ai, &bi, &g, NULL, &modulus, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_modulus_is_null(void) {
-  mpz_t xi, ai, bi, g, h, modulus, order;
+  mpz_t xi, ai, bi, g, h, order;
   int code = f(&xi, &ai, &bi, &g, &h, NULL, &order);
   ASSERT (code == -1);
 }
 
 
 void test_returns_an_error_code_if_given_order_is_null(void) {
-  mpz_t xi, ai, bi, g, h, modulus, order;
+  mpz_t xi, ai, bi, g, h, modulus;
   int code = f(&xi, &ai, &bi, &g, &h, &modulus, NULL);
   ASSERT (code == -1);
 }
