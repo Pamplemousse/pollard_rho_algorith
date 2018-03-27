@@ -27,6 +27,24 @@ for item in values:
 
 uniq_q_values = sorted(list(set(q_values)))
 
+# Calculate average number of calls to f per value of q
+def filter_f_counts(values, q):
+    return list(map(
+        lambda x: x['f_count'],
+        filter(
+            lambda x: x['q'] == q,
+            values
+        ))
+    )
+
+def avg(l):
+    return sum(l) / len(l)
+
+avg_f_counts = list(map(
+    lambda x: avg(filter_f_counts(values, x)),
+    uniq_q_values
+))
+
 # Use sqrt(q) as a reference
 sqrt_q_values = [ math.sqrt(q) for q in uniq_q_values ]
 
@@ -45,8 +63,15 @@ f_calls_trace = Scatter(
     name='calls to f'
 )
 
+avg_f_calls_trace = Scatter(
+    x=uniq_q_values,
+    y=avg_f_counts,
+    mode='markers',
+    name='average calls to f'
+)
 
-data = [ sqrt_trace, f_calls_trace ]
+
+data = [ sqrt_trace, f_calls_trace, avg_f_calls_trace ]
 layout = Layout(showlegend=True)
 fig = Figure(data=data, layout=layout)
 
