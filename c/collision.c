@@ -20,11 +20,13 @@ void Floyd (mpz_t *result,
   mpz_t i;
   mpz_init_set_d(i, 0);
 
-  while (1) {
-    f(&xi, &ai, &bi, g, h, modulus, order);
+  Mmn_t *Mmn = gen_Mmn(g, h, modulus, order);
 
-    f(&Xi, &Ai, &Bi, g, h, modulus, order);
-    f(&Xi, &Ai, &Bi, g, h, modulus, order);
+  while (1) {
+    f(&xi, &ai, &bi, g, h, modulus, order, Mmn);
+
+    f(&Xi, &Ai, &Bi, g, h, modulus, order, Mmn);
+    f(&Xi, &Ai, &Bi, g, h, modulus, order, Mmn);
 
     mpz_add_ui(i, i, 1);
     if (mpz_cmp(i, *order) == 0)
@@ -60,10 +62,10 @@ void Floyd (mpz_t *result,
       gmp_randclear(state); mpz_clear(inter_1); mpz_clear(inter_2);
 
       while (1) {
-        f(&xi, &ai, &bi, g, h, modulus, order);
+        f(&xi, &ai, &bi, g, h, modulus, order, Mmn);
 
-        f(&Xi, &Ai, &Bi, g, h, modulus, order);
-        f(&Xi, &Ai, &Bi, g, h, modulus, order);
+        f(&Xi, &Ai, &Bi, g, h, modulus, order, Mmn);
+        f(&Xi, &Ai, &Bi, g, h, modulus, order, Mmn);
 
         if ((mpz_cmp(xi, Xi) == 0) && (mpz_cmp(bi, Bi) != 0)) {
           break;
@@ -78,4 +80,7 @@ void Floyd (mpz_t *result,
 
   mpz_clear(xi); mpz_clear(ai); mpz_clear(bi);
   mpz_clear(Xi); mpz_clear(Ai); mpz_clear(Bi);
+
+  Mmn_clear(Mmn);
+  Mmn_free(Mmn);
 }

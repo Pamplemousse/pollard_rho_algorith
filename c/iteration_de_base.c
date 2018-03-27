@@ -1,9 +1,16 @@
 #include "iteration.h"
 
 
+Mmn_t *gen_Mmn(mpz_t *g, mpz_t *h,
+               mpz_t *modulus, mpz_t *order) { return NULL; }
+
+void Mmn_clear(Mmn_t *Mmn) {}
+
+void Mmn_free(Mmn_t *Mmn) {}
+
 int f(mpz_t *xi, mpz_t *ai, mpz_t *bi,
       mpz_t *g, mpz_t *h,
-      mpz_t *modulus, mpz_t *order) {
+      mpz_t *modulus, mpz_t *order, Mmn_t *Mmn) {
 
   if (!xi || !ai || !bi || !g || !h || !modulus || !order) { return -1; }
 

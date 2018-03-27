@@ -12,10 +12,22 @@ all: clean build
 build:
 	$(MAKE) $(EXE)
 
-$(EXE): main.o equation_solver.o collision.o iteration.o
+$(EXE): main.o equation_solver.o collision.o iteration_r_adding_walks.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-%.o: %.c %.h
+main.o: main.c include/main.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+equation_solver.o: equation_solver.c include/equation_solver.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+collision.o: collision.c include/collision.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+iteration_de_base.o: iteration_de_base.c include/iteration.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+iteration_r_adding_walks.o: iteration_r_adding_walks.c include/iteration.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 clean:
