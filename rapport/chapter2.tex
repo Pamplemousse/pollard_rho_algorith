@@ -4,11 +4,13 @@
     Un des objectifs de ce projet est de produire un programme capable de résoudre le problème, que l'on peut formaliser de la façon suivante.
 
     En appelant le programme sur des entiers $p, q, g, h$ respectant~:
-    \begin{itemize}
-        \item[]$p$ et $q$ deux nombres premiers tels que ${(\mathbb{Z}/p\mathbb{Z})}^*$ soit d'ordre $q$
-        \item[]$g$ un générateur de ce groupe multiplicatif, \textit{i.e} ${(\mathbb{Z}/p\mathbb{Z})}^* = <g>$
-        \item[]$h \in {(\mathbb{Z}/p\mathbb{Z})}^*$
-    \end{itemize}
+    \begin{equation} \label{eq:2}
+      \begin{split}
+        p \text{\ et } q \text{\ deux nombres premiers tels que } {(\mathbb{Z}/p\mathbb{Z})}^* \text{\ soit d'ordre } q \\
+        g \text{\ un générateur de ce groupe multiplicatif, \textit{i.e} } {(\mathbb{Z}/p\mathbb{Z})}^* =\ < g > \\
+        h \in {(\mathbb{Z}/p\mathbb{Z})}^*
+      \end{split}
+    \end{equation}
 
 	  Cette dernière condition assure qu'il existe $x \in \mathbb{Z}$ tel que $h = g^x$; ce $x$ correspond à $\log_g(h)$, et c'est ce que l'algorithme retourne.
 
@@ -19,3 +21,27 @@
     Bien que non optimisé, cela nous a permis de découvrir quelques questions et contraintes auxquelles nous avons aussi dû répondre lors de l'implémentation en C.
     Nous parlerons de ces problématiques, en particulier de la génération de grands entiers définissant les groupes dans lesquels nous avons travaillé (pour tester et mesurer l'efficacité de notre programme).
     Enfin, nous présenterons le code C ayant permis de générer notre programme de résolution du problème, ainsi que les différents tests et mesures mis en place pour en valider le bon fonctionnement et l'efficacité.
+
+
+    \section{SageMath}
+        \subsection{Prototype de la méthode \texorpdfstring{$\rho$}{Rho}}
+        Pour nous aider à prendre en main la méthode, il nous a été proposé de l'implémenter dans un premier temps à l'aide de Sage.
+
+        Nous nous sommes donc appuyés sur les valeurs données dans le Handbook pour tester notre solution.
+        Dans les exemples qui vont suivre, nous nous placerons donc dans ${(\mathbb{Z}/383\mathbb{Z})}^*$, d'ordre $191$ et dont $2$ est un générateur.
+
+        Dans les grandes lignes, notre programme Sage s'articule autour de trois fonctions~:
+        \begin{itemize}
+            \item La fonction \lstinline{f} d'itération.
+            \item La fonction \lstinline{rho_table}~: appelle la fonction d'itération jusqu'à détecter une collision (en suivant l'algorithme de Floyd\footnote{Présenté en section~\ref{chapter1:Floyd}.}). Notons que cette fonction stocke l'ensemble des valeurs intermédiaires calculées dans un tableau, pour valider visuellement la correspondance entre la table donnée dans le handbook\autocite[107]{handbook} et les valeurs que l'on obtient.
+            \item La fonction de calcul du logarithme discret recherché (sobrement nommée \lstinline{solve}) en fonction des exposants obtenus lors de la collision.
+        \end{itemize}
+
+        Notons que ce code est critiquable sur plusieurs points.
+
+        Premièrement, nous n'avons pas cherché à optimiser notre programme, avons mal architecturé les différentes briques logiques, et n'avons porté aucune attention à la gestion mémoire.
+        On note donc, parmi les points problématiques de cette implémentation~: mélange des fonctions de calcul et d'affichage et stockage non nécessaire des valeurs intermédiaires (impliquant probablement, dès lors que l'on utilisera de grands nombres, une consommation mémoire démesurée, et des temps de calculs interminables).
+
+        C'est pour contrôler aux mieux ces aspects que nous nous sommes tournés vers le langage C pour implémenter une version efficiente de l'algorithme de Pollard.
+
+        Finalement, obtenir rapidement un prototype de notre solution à l'aide de SageMath nous a permis de soulever ces questions d'organisation du code et d'esquisser l'architecture dont nous aurons besoin lors de l'implémentation en C.
