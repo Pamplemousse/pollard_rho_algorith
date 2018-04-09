@@ -1,10 +1,12 @@
+#!/usr/bin/python
+
 import math
 
 from plotly.offline import download_plotlyjs, plot, iplot
 from plotly.graph_objs import Box, Figure, Layout, Scatter
 
 
-with open('data.txt','r') as f:
+with open('data_iteration_r_adding_walks.txt','r') as f:
     file_content = f.read()
 
 lines = file_content.split('\n')
@@ -53,6 +55,7 @@ sqrt_q_values = [ math.sqrt(q) for q in uniq_q_values ]
 sqrt_trace = Scatter(
     x=uniq_q_values,
     y=sqrt_q_values,
+    marker=dict(color='#81e506'),
     name='sqrt(q)'
 )
 
@@ -60,6 +63,7 @@ f_calls_trace = Scatter(
     x=q_values,
     y=f_counts,
     mode='markers',
+    marker=dict(size=4, opacity=0.4, symbol='x', color='#af0736'),
     name='calls to f'
 )
 
@@ -67,6 +71,7 @@ avg_f_calls_trace = Scatter(
     x=uniq_q_values,
     y=avg_f_counts,
     mode='markers',
+    marker=dict(size=7, color='#000000'),
     name='average calls to f'
 )
 
