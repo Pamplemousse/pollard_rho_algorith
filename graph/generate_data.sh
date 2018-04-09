@@ -24,7 +24,7 @@ __EOF__
   ../c/pollard $input 2>&1 >/dev/null
   number_of_calls=$(gprof ../c/pollard -b --exec-counts=f | cut -d' ' -f3)
   rm gmon.out
-  echo "$modulus $border $g $h $result $number_of_calls" >> data.txt
+  echo "$modulus $order $g $h $result $number_of_calls" >> data.txt
 
   i=$(($i + 1))
 done
