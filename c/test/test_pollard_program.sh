@@ -34,15 +34,3 @@ __EOF__
         i=$(($i + 1))
     done
 }
-
-# TODO: more generic
-#   this test relies only on the handbook values passed via the `input.txt` file
-test_number_of_calls_to_the_iteration_function() {
-    ../pollard ../input.txt 2>&1 >/dev/null
-    number_of_calls=$(gprof ../pollard -b --exec-counts=f | cut -d' ' -f3)
-
-    # f function is called 3 times per cycle
-    relative_number_of_calls=$((number_of_calls / 3))
-
-    assert_equals "14" "$relative_number_of_calls"
-}
