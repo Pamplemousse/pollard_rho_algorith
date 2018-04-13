@@ -6,15 +6,15 @@ LDFLAGS=-lgmp
 
 .PHONY: all clean help
 
-all: test_iteration_de_base test_iteration_r_adding_walks test_collision test_equation_solver
+all: test_iteration_basic test_iteration_r_adding_walks test_collision test_equation_solver
 
-test_iteration_de_base: test_iteration_de_base.o $(SRC_DIR)/iteration_de_base.o
+test_iteration_basic: test_iteration_basic.o $(SRC_DIR)/iteration_basic.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 test_iteration_r_adding_walks: test_iteration_r_adding_walks.o $(SRC_DIR)/iteration_r_adding_walks.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
-test_collision: test_collision.o $(SRC_DIR)/collision.o $(SRC_DIR)/iteration_de_base.o
+test_collision: test_collision.o $(SRC_DIR)/collision.o $(SRC_DIR)/iteration_basic.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 test_equation_solver: test_equation_solver.o $(SRC_DIR)/equation_solver.o
@@ -24,7 +24,7 @@ test_equation_solver: test_equation_solver.o $(SRC_DIR)/equation_solver.o
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 clean:
-	@rm -f *~ test_iteration_de_base test_iteration_r_adding_walks test_collision test_equation_solver *.o
+	@rm -f *~ test_iteration_basic test_iteration_r_adding_walks test_collision test_equation_solver
 
 help:
 	@ echo "Usage:"

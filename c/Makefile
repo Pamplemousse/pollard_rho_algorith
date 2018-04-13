@@ -24,7 +24,7 @@ equation_solver.o: equation_solver.c include/equation_solver.h
 collision.o: collision.c include/collision.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
-iteration_de_base.o: iteration_de_base.c include/iteration.h
+iteration_basic.o: iteration_basic.c include/iteration.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 iteration_r_adding_walks.o: iteration_r_adding_walks.c include/iteration.h
