@@ -3,7 +3,7 @@ def gen_group (size_modulus, size_order):
     (p, q, u) = gen_modulus (size_modulus, size_order)
     pre_g = 2
     while true:
-        g = pow(pre_g, u, p)
+        g = int(pow(pre_g, u, p))
         if g != 1:
             return (p, q, g)
         pre_g += 1
@@ -14,15 +14,15 @@ def gen_modulus (size_modulus, size_order):
     n = size_modulus - size_order
     q = gen_order(size_order)
     while true:
-        u = sage.rings.integer.Integer(randint(10^(n-1), 10^n - 1))
+        u = sage.rings.integer.Integer(randint(2^(n-1), 2^n - 1))
         if (u * q + 1).is_prime():
             return (u * q + 1, q, u)
 
-# Générer q premier de longueur "size"
+# Générer q premier de "size_order" bits
 def gen_order (size_order):
     while true:
         q = sage.rings.integer.Integer(
-            randint(10^(size_order - 1), 10^size_order - 1)
+            randint(2^(size_order - 1), 2^size_order - 1)
         )
         if q.is_prime():
             return q
@@ -32,14 +32,14 @@ def gen_data(p, q, g):
     s = ""
     for _ in range(100):
         x = randrange(1, q)
-        h = pow(g, x, p)
-        s = s + '{} {} {} {} {}\n'.format(p, q, g, h, x)
+        h = int(pow(g, x, p))
+        s = s + '{:b} {:b} {:b} {:b} {:b}\n'.format(p, q, g, h, x)
     return s
 
 # Générer un fichier contenant un ensemble de test
 def gen_test_inputs():
     f = open('inputs.txt','w')
-    for size_q in [10..50]:
-        (p, q, g) = gen_group(size_q+3, size_q)
+    for size_q in [5..55]:
+        (p, q, g) = gen_group(size_q+10, size_q)
         f.write(gen_data(p, q, g))
     f.close()
