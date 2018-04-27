@@ -5,9 +5,12 @@
 #include <stdlib.h>
 
 
-void Floyd (mpz_t *result,
-            mpz_t *g, mpz_t *h,
-            mpz_t *modulus, mpz_t *order) {
+/* Compute values of a_i, a_2i, b_i and b_2i until x_i and x_2i are equal */
+/* Then, set the corresponding values into the *result array given as parameter */
+/* Allocation and deallocation is responsability of the caller */
+void collision (mpz_t *result,
+                mpz_t *g, mpz_t *h,
+                mpz_t *modulus, mpz_t *order) {
   mpz_t xi, ai, bi, Xi, Ai, Bi;
 
   mpz_init_set_d(xi, 1);
@@ -29,17 +32,12 @@ void Floyd (mpz_t *result,
     f(&Xi, &Ai, &Bi, g, h, modulus, order, Mmn);
 
     mpz_add_ui(i, i, 1);
-    if (mpz_cmp(i, *order) == 0)
-      break;
-
-    if ((mpz_cmp(xi, Xi) == 0) && (mpz_cmp(bi, Bi) != 0)){
-      break;
-    }
+    if (mpz_cmp(i, *order) == 0) { break; }
+    if ((mpz_cmp(xi, Xi) == 0) && (mpz_cmp(bi, Bi) != 0)) { break; }
   }
 
   mpz_clear(i);
-  if (mpz_cmp(xi, Xi) != 0)
-    {
+  if (mpz_cmp(xi, Xi) != 0) {
       gmp_randstate_t state;
       gmp_randinit_mt(state);
 
@@ -59,7 +57,8 @@ void Floyd (mpz_t *result,
       mpz_set(Ai, ai);
       mpz_set(Bi, bi);
 
-      gmp_randclear(state); mpz_clear(inter_1); mpz_clear(inter_2);
+      gmp_randclear(state);
+      mpz_clear(inter_1); mpz_clear(inter_2);
 
       while (1) {
         f(&xi, &ai, &bi, g, h, modulus, order, Mmn);
@@ -67,9 +66,8 @@ void Floyd (mpz_t *result,
         f(&Xi, &Ai, &Bi, g, h, modulus, order, Mmn);
         f(&Xi, &Ai, &Bi, g, h, modulus, order, Mmn);
 
-        if ((mpz_cmp(xi, Xi) == 0) && (mpz_cmp(bi, Bi) != 0)) {
-          break;
-        }
+        if (mpz_cmp(i, *order) == 0) { break; }
+        if ((mpz_cmp(xi, Xi) == 0) && (mpz_cmp(bi, Bi) != 0)) { break; }
       }
     }
 

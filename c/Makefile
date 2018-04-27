@@ -12,7 +12,7 @@ all: clean build
 build:
 	$(MAKE) $(EXE)
 
-$(EXE): main.o equation_solver.o collision.o iteration_r_adding_walks.o
+$(EXE): main.o equation_solver.o collision_floyd.o iteration_r_adding_walks.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 main.o: main.c include/main.h
@@ -21,7 +21,7 @@ main.o: main.c include/main.h
 equation_solver.o: equation_solver.c include/equation_solver.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
-collision.o: collision.c include/collision.h
+collision_floyd.o: collision_floyd.c include/collision.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 iteration_basic.o: iteration_basic.c include/iteration.h

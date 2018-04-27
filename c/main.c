@@ -67,7 +67,7 @@ int main (int argc, char **argv) {
   for (size_t i = 0; i < 4; i++) {
     mpz_init(exponents[i]);
   }
-  Floyd(exponents, &g, &h, &modulus, &order);
+  collision(exponents, &g, &h, &modulus, &order);
 
   mpz_t discrete_log_of_h;
   mpz_init(discrete_log_of_h);
