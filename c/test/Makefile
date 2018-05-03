@@ -2,11 +2,11 @@ SRC_DIR = ../
 
 CFLAGS=-std=c11 -Wall -Wextra -g
 CPPFLAGS=-I../include -DDEBUG
-LDFLAGS=-lgmp
+LDFLAGS=-lgmp -lm
 
 .PHONY: all clean help
 
-all: test_iteration_basic test_iteration_r_adding_walks test_collision_floyd \
+all: test_iteration_basic test_iteration_r_adding_walks test_collision_floyd test_collision_distinguished_points \
 	test_distinguished_points test_equation_solver
 
 test_iteration_basic: test_iteration_basic.o $(SRC_DIR)/iteration_basic.o
@@ -16,6 +16,10 @@ test_iteration_r_adding_walks: test_iteration_r_adding_walks.o $(SRC_DIR)/iterat
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 test_collision_floyd: test_collision_floyd.o $(SRC_DIR)/collision_floyd.o $(SRC_DIR)/iteration_basic.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_collision_distinguished_points: test_collision_distinguished_points.o $(SRC_DIR)/collision_distinguished_points.o \
+	$(SRC_DIR)/distinguished_points.o $(SRC_DIR)/iteration_basic.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 test_equation_solver: test_equation_solver.o $(SRC_DIR)/equation_solver.o
@@ -28,8 +32,8 @@ test_distinguished_points: test_distinguished_points.o $(SRC_DIR)/distinguished_
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 clean:
-	@rm -f *.o
-	@rm -f *~ test_iteration_basic test_iteration_r_adding_walks test_collision_floyd test_equation_solver
+	@rm -f *~ test_iteration_basic test_iteration_r_adding_walks test_collision_floyd \
+		test_collision_distinguished_points test_equation_solver test_distinguished_point *.o
 
 help:
 	@ echo "Usage:"

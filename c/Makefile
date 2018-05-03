@@ -2,7 +2,7 @@ EXE=pollard
 
 CFLAGS=-std=c11 -Wall -Wextra -Wno-unused-result -g -pg -no-pie
 CPPFLAGS=-Iinclude -DDEBUG
-LDFLAGS=-lgmp
+LDFLAGS=-lgmp -lm
 
 .PHONY: all clean test help
 
@@ -12,7 +12,7 @@ all: clean build
 build:
 	$(MAKE) $(EXE)
 
-$(EXE): main.o equation_solver.o collision_floyd.o iteration_r_adding_walks.o
+$(EXE): main.o distinguished_points.o equation_solver.o collision_distinguished_points.o iteration_r_adding_walks.o
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 main.o: main.c include/main.h
@@ -25,6 +25,9 @@ equation_solver.o: equation_solver.c include/equation_solver.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 collision_floyd.o: collision_floyd.c include/collision.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
+collision_distinguished_points.o: collision_distinguished_points.c include/distinguished_points.h include/collision.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
 iteration_basic.o: iteration_basic.c include/iteration.h
