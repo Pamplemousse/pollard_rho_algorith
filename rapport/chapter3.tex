@@ -1,77 +1,77 @@
 \chapter{Optimisations}
 	Cette partie est consacrée à l'étude et à l'implémentation de quelques améliorations possibles pour l'algorithme $\rho$ de Pollard.
-		
+
 		\section{r-adding walks}
 		A titre de rappel, l'algorithme $\rho$ de Pollard utilise une fonction d'itération $f$ afin de définir une séquence $(x_i)_{i \ge 0}$ par $x_{i+1} = f(x_i)$. Or, pour obtenir un résultat optimal, il faut que cette séquence ressemble le plus possible à une marche aléatoire. Cela signifie essentiellement deux choses~: la première, c'est que la valeur initiale de la séquence devrait être dans l'idéal un élément choisi aléatoirement dans le groupe $G$ ; la deuxième, c'est que la fonction $f$ devrait être aléatoire - c'est-à-dire qu'elle devrait résulter d'un choix équiprobable entre toutes les fonctions de $G$ dans $G$. Dans ces circonstances, la méthode $\rho$ de Pollard utilise approximativement $O(\sqrt{n})$ opérations de groupe pour trouver $\log_g(h)$, avec $n$ l'ordre de $G$.
-		
+
 		Un problème majeur est donc la simulation d'une marche aléatoire. L'algorithme $\rho$ de Pollard original ne permet pas d'atteindre les performances d'une telle marche. D'autres méthodes ont donc été développées afin d'obtenir des performances plus proches de celles d'une marche aléatoire. Parmi elles, la variante des r-adding walks, que nous allons étudier à présent.
-		
+
 		Comme pour la méthode originale, il faut commencer par partitionner le groupe $G$ en sous-ensembles d'environ la même taille. On choisit donc un entier naturel $3 \leq r \leq 100$ et on trouve $r$ sous-ensembles $(T_i)_{i \in \{0,\cdots,r-1\}}$ de tailles à peu près équivalentes. On obtient ainsi $G = \bigcup\limits_{i=0}^{r-1} T_i$. On définit la fonction d'indexation $s$ comme suit~:
-		
+
 		\begin{center}
-		
+
 		$\begin{array}{lrcl}
 		s : & G & \longrightarrow & \{0,1,\cdots,r-1\} \\
 		    & x & \longmapsto & s \text{ si } x \in T_s
 		\end{array}$
-		
+
 		\end{center}
-		
+
 		Pour chacun des nombres $s \in \{0,\cdots,r-1\}$, on choisit aléatoirement deux entiers $m_s$ et $n_s$ dans $\mathbb{Z}/q\mathbb{Z}$ et on pose $M_s = g^{m_s} \cdot h^{n_s}$. Enfin, on définit la fonction d'itération $f$ comme $f(x) = x \cdot M_{s(x)}$ et la suite $(x_i)_{i \ge 0}$ par $x_0 = 1$ et $x_{i+1} = f(x_i)$. A présent, montrons que $f$ permet le traçage des exposants par rapport à $g$ et $h$.
-		
+
 		Il faut trouver deux suites $(a_i)_{i \ge 0}$ et $(b_i)_{i \ge 0}$ telles que $x_i = g^{a_i} \cdot h^{b_i}$ pour tout $i$. Posons :
-		
+
 		\begin{align*}
-          \begin{cases}
-            a_0 = 0 \\
-            a_{i+1} = a_i + m_{s(x_i)}
-          \end{cases}
-        \end{align*}
-        
-        \begin{align*}
-          \begin{cases}
-            b_0 = 0 \\
-            b_{i+1} = b_i + n_{s(x_i)}
-          \end{cases}
-        \end{align*}
-		
+      \begin{cases}
+        a_0 = 0 \\
+        a_{i+1} = a_i + m_{s(x_i)}
+      \end{cases}
+    \end{align*}
+
+    \begin{align*}
+      \begin{cases}
+        b_0 = 0 \\
+        b_{i+1} = b_i + n_{s(x_i)}
+      \end{cases}
+    \end{align*}
+
 		Comme pour la méthode originale de l'algorithme $\rho$ de Pollard, dans quelques rares cas cette fonction d'itération ne permet pas de détecter une collision. Il suffit alors de prendre les entiers $a_0$ et $b_0$ aléatoirement dans l'intervalle $\mathopen{[}1,n-1\mathclose{]}$ et de poser $x_0 = g^{a_0} \cdot h^{b_0}$. On exécute ensuite l'algorithme normalement.
-		
+
 		Montrons par récurrence que ces deux suites conviennent.
-		
+
 		\subsection*{Initialisation}
-		
+
 		Dans le cas général, par définition, $x_0 = 1$, $a_0 = 0$ et $b_0 = 0$. On a donc~:
-		
+
 		\begin{align*}
           g^{a_0} \cdot h^{b_0} &= g^{0} \cdot h^{0} \\
                                 &= 1 \cdot 1 \\
                                 &= x_0
         \end{align*}
-        
+
         Dans les quelques rares cas où $a_0$ et $b_0$ sont choisis aléatoirement dans $\mathopen{[}1,n-1\mathclose{]}$, on a $x_0 = g^{a_0} \cdot h^{b_0}$ par définition.
-        
+
         La relation est donc vraie au rang $0$.
-        
+
         \subsection*{Hérédité}
         On suppose que la relation est vérifiée pour un $k \in \mathbb{N}$, c'est-à-dire $x_k = g^{a_k} \cdot h^{b_k}$. Montrons que l'on a $x_{k+1} = g^{a_{k+1}} \cdot h^{b_{k+1}}$.
-        
+
         Par définition $x_{k+1} = f(x_k) = x_k \cdot M_{s(x_k)}$. Par hypothèse de récurrence, on a donc~:
-       
+
        \begin{align*}
           x_{k+1} &= g^{a_k} \cdot h^{b_k} \cdot g^{m_{s(x_k)}} \cdot h^{n_{s(x_k)}} \\
                   &= g^{a_k + m_{s(x_k)}} \cdot h^{b_k + n_{s(x_k)}} \\
                   &=g^{a_{k+1}} \cdot h^{b_{k+1}}
         \end{align*}
-        
+
         \subsection*{Conclusion}
         On a montré que la relation est vraie pour $i = 0$, et que si elle est vérifiée au rang $k$, elle l'est aussi au rang $k + 1$. Donc pour tout $i \in \mathbb{N}$, $x_i = g^{a_i} \cdot h^{b_i}$.
-        
+
         \section{Méthode des points distingués}
         Trouver un moyen de détecter une collision le plus rapidement possible après que celle-ci ait eu lieu est un autre problème important. L'objectif est de limiter au maximum le nombre d'appels à la fonction d'itération après une collision, tout en utilisant peu de mémoire. Plusieurs méthodes ont été développées ; parmi elles, celle des points distingués de Quisquater et Delescaille est considérée comme la plus efficace.
-        
+
         On commence par choisir une propriété sur les éléments de $G$ qui soit facilement vérifiable - par exemple, avoir une écriture binaire se terminant par un certain nombre de $0$. Les éléments de $G$ satisfaisant cette propriété sont appelés les points distingués.
-        
+
         On choisit un élément de $G$ de manière aléatoire et on lance la fonction d'itération dessus. Les appels à cette fonction s'arrêtent lorsqu'on a obtenu un point distingué. Celui-ci est alors stocké dans une table, et on choisit un autre élément de $G$ de manière aléatoire avant de réitérer le procédé. L'algorithme s'arrête lorsqu'on a trouvé deux points distingués égaux. Il y a fort à parier qu'on est parti de deux éléments différents de $G$ pour trouver ce point distingué, et la fonction d'itération permet le traçage des exposants par rapport à $g$ et $h$. On obtient donc deux écritures différentes pour un même point distingué et on a trouvé une collision.
-        
+
         Pour que cette méthode fonctionne correctement, il faut choisir la propriété de telle sorte à ce que la table soit de taille manipulable. Cependant, si la propriété fixe quelques bits, alors ces bits n'ont pas besoin d'être stockés dans la table, ce qui permet des économies de mémoire (par exemple, si tous les points distingués se terminent par un même chiffre, inutile de le stocker dans la table). Si on note $\theta$ la fraction des éléments de $G$ satisfaisant la propriété des points distingués, alors l'algorithme doit terminer avec collision après environ $\sqrt{q\pi/2} + 1/\theta$ appels à la fonction d'itération. L'intérêt majeur de la méthode est qu'elle permet le traitement parallèle par plusieurs processeurs, ce qui permet des résultats encore meilleurs.
