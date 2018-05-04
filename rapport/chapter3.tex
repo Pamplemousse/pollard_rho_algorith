@@ -35,7 +35,7 @@
       \end{cases}
     \end{align*}
 
-		Comme pour la méthode originale de l'algorithme $\rho$ de Pollard, dans quelques rares cas cette fonction d'itération ne permet pas de détecter une collision. Il suffit alors de prendre les entiers $a_0$ et $b_0$ aléatoirement dans l'intervalle $\mathopen{[}1,n-1\mathclose{]}$ et de poser $x_0 = g^{a_0} \cdot h^{b_0}$. On exécute ensuite l'algorithme normalement.
+		Comme pour la méthode originale de l'algorithme $\rho$ de Pollard, dans quelques rares cas cette fonction d'itération ne permet pas de détecter une collision. Il suffit alors de prendre les entiers $a_0$ et $b_0$ aléatoirement dans l'intervalle $\mathopen{[}1,q-1\mathclose{]}$ et de poser $x_0 = g^{a_0} \cdot h^{b_0}$. On exécute ensuite l'algorithme normalement.
 
 		Montrons par récurrence que ces deux suites conviennent.
 
@@ -49,7 +49,7 @@
                                 &= x_0
         \end{align*}
 
-        Dans les quelques rares cas où $a_0$ et $b_0$ sont choisis aléatoirement dans $\mathopen{[}1,n-1\mathclose{]}$, on a $x_0 = g^{a_0} \cdot h^{b_0}$ par définition.
+        Dans les quelques rares cas où $a_0$ et $b_0$ sont choisis aléatoirement dans $\mathopen{[}1,q-1\mathclose{]}$, on a $x_0 = g^{a_0} \cdot h^{b_0}$ par définition.
 
         La relation est donc vraie au rang $0$.
 
@@ -72,6 +72,6 @@
 
         On commence par choisir une propriété sur les éléments de $G$ qui soit facilement vérifiable - par exemple, avoir une écriture binaire se terminant par un certain nombre de $0$. Les éléments de $G$ satisfaisant cette propriété sont appelés les points distingués.
 
-        On choisit un élément de $G$ de manière aléatoire et on lance la fonction d'itération dessus. Les appels à cette fonction s'arrêtent lorsqu'on a obtenu un point distingué. Celui-ci est alors stocké dans une table, et on choisit un autre élément de $G$ de manière aléatoire avant de réitérer le procédé. L'algorithme s'arrête lorsqu'on a trouvé deux points distingués égaux. Il y a fort à parier qu'on est parti de deux éléments différents de $G$ pour trouver ce point distingué, et la fonction d'itération permet le traçage des exposants par rapport à $g$ et $h$. On obtient donc deux écritures différentes pour un même point distingué et on a trouvé une collision.
+        On choisit un élément de $G$ de manière aléatoire et on lance la fonction d'itération dessus. Les appels à cette fonction s'arrêtent lorsqu'on a obtenu un point distingué. Celui-ci est alors stocké dans une table (on stocke également $a_i$ et $b_i$ tels que cet élément de $G$ s'écrit $g^{a_i} \cdot h^{b_i}$), et on choisit un autre élément de $G$ de manière aléatoire avant de réitérer le procédé. L'algorithme s'arrête lorsqu'on a trouvé deux points distingués égaux. Il y a fort à parier qu'on est parti de deux éléments différents de $G$ pour trouver ce point distingué, et que par conséquent on ait trouvé deux écritures différentes du point distingué en fonction de $g$ et $h$. On obtient donc des éléments $a_i$, $b_i$, $a_j$ et $b_j$ tels que $g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j}$ avec $(a_i,b_i) \neq (a_j,b_j)$ et on peut résoudre le problème du logarithme discret.
 
         Pour que cette méthode fonctionne correctement, il faut choisir la propriété de telle sorte à ce que la table soit de taille manipulable. Cependant, si la propriété fixe quelques bits, alors ces bits n'ont pas besoin d'être stockés dans la table, ce qui permet des économies de mémoire (par exemple, si tous les points distingués se terminent par un même chiffre, inutile de le stocker dans la table). Si on note $\theta$ la fraction des éléments de $G$ satisfaisant la propriété des points distingués, alors l'algorithme doit terminer avec collision après environ $\sqrt{q\pi/2} + 1/\theta$ appels à la fonction d'itération. L'intérêt majeur de la méthode est qu'elle permet le traitement parallèle par plusieurs processeurs, ce qui permet des résultats encore meilleurs.
