@@ -6,7 +6,7 @@
     En appelant le programme sur des entiers $p, q, g, h$ respectant~:
     \begin{equation} \label{eq:2}
       \begin{split}
-        p \text{\ et } q \text{\ deux nombres premiers tels que } {(\mathbb{Z}/p\mathbb{Z})}^* \text{\ soit d'ordre } q \\
+        p \text{\ et } q \text{\ deux nombres premiers tels qu'il existe un unique sous-groupe de } {(\mathbb{Z}/p\mathbb{Z})}^* \text{\ d'ordre } q \\
         g \text{\ un générateur de ce groupe multiplicatif, \textit{i.e} } {(\mathbb{Z}/p\mathbb{Z})}^* =\ < g > \\
         h \in {(\mathbb{Z}/p\mathbb{Z})}^*
       \end{split}
@@ -28,7 +28,7 @@
         Pour nous aider à prendre en main la méthode, il nous a été proposé de l'implémenter dans un premier temps à l'aide de Sage.
 
         Nous nous sommes donc appuyés sur les valeurs données dans le Handbook pour tester notre solution.
-        Dans les exemples qui vont suivre, nous nous placerons donc dans ${(\mathbb{Z}/383\mathbb{Z})}^*$, d'ordre $191$ et dont $2$ est un générateur.
+        Dans les exemples qui vont suivre, nous nous placerons donc dans le sous-groupe de ${(\mathbb{Z}/383\mathbb{Z})}^*$ d'ordre $191$ et dont $2$ est un générateur.
 
         Dans les grandes lignes, notre programme Sage s'articule autour de trois fonctions~:
         \begin{itemize}
@@ -50,15 +50,15 @@
         \subsection{Génération de données}
         Pour pouvoir tester et comparer nos futures implémentations en C, nous devons générer un ensemble de données.
 
-        Dans un premier temps, nous allons générer des entiers $p, q, g$ représentant le groupe $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$ et engendré par $g$, où $p$ et $q$ sont premiers.
+        Dans un premier temps, nous allons générer des entiers $p, q, g$ représentant le sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$ et engendré par $g$, où $p$ et $q$ sont premiers.
 
         Nous avons choisi de créer un tel groupe grâce à une fonction prenant en paramètres la longueur binaire de $p$ et de $q$.
 
 		    Pour ce faire, on choisit tout d'abord $q$ aléatoirement de $k_q$ bits jusqu'à obtenir un entier $q$ qui soit premier (fonction gen\_order).
 
-		    Ensuite, on construit $p$ tel que $q$ divise $p - 1$, ce qui assurera le fait que $\mathbb{Z}/p\mathbb{Z}$ soit d'ordre $q$. Or on a cela si et seulement s'il existe $u \in\mathbb{Z}$ tel que $p = uq + 1$. Si on veut $p$ de $k_p$ bits, on tire $u$ (toujours aléatoirement) de $k_p - k_q$ bits jusqu'à trouver $p = uq + 1$ premier (fonction gen\_modulus).
+		    Ensuite, on construit $p$ tel que $q$ divise $p - 1$, ce qui assurera le fait qu'il existe un unique sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$. Or on a cela si et seulement s'il existe $u \in\mathbb{Z}$ tel que $p = uq + 1$. Si on veut $p$ de $k_p$ bits, on tire $u$ (toujours aléatoirement) de $k_p - k_q$ bits jusqu'à trouver $p = uq + 1$ premier (fonction gen\_modulus).
 
-		    On obtient ainsi un groupe $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.
+		    On obtient ainsi un sous-groupe $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.
 
 		    Pour finir, il nous reste à trouver un générateur de ce groupe ainsi formé. On sélectionne un élément $v \in \mathbb{Z}/p\mathbb{Z}$ (concrètement on commence à $v = 2$). On pose alors $g = v^u \text{ mod } p$. Si $g = 1$, on prend un autre élément $v$ (ou on incrémente $v$), sinon $g$ est un générateur du groupe (fonction gen\_group).\\
 		    En effet, dans ce dernier cas on aura~:
@@ -67,7 +67,7 @@
             & = v^{p-1} & \text{ puisque } p = uq + 1 \\
             & = 1 \text{ mod } p & \text{ d'après le petit théorème de Fermat}
 		    \end{align*}
-		    Et cela garantit que $g$ est un générateur de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.\\
+		    Et cela garantit que $g$ est un générateur du sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.\\
 
 		    Maintenant que nous avons créé un groupe comme nous le souhaitions, nous allons construire, pour un groupe donné, plusieurs entiers (100 dans notre cas) $h$ et $x$ tels que $g^x = h$ mod $p$. Dans la mesure où nous aurons ce $x$, nous pourrons alors vérifier que nos algorithmes de résolution du problème du logarithme discret rendent bien le résultat attendu.
 
