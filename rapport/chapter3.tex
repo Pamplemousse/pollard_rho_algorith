@@ -75,3 +75,52 @@
         On choisit un élément de $G$ de manière aléatoire et on lance la fonction d'itération dessus. Les appels à cette fonction s'arrêtent lorsqu'on a obtenu un point distingué. Celui-ci est alors stocké dans une table (on stocke également $a_i$ et $b_i$ tels que cet élément de $G$ s'écrit $g^{a_i} \cdot h^{b_i}$), et on choisit un autre élément de $G$ de manière aléatoire avant de réitérer le procédé. L'algorithme s'arrête lorsqu'on a trouvé deux points distingués égaux. Il y a fort à parier qu'on est parti de deux éléments différents de $G$ pour trouver ce point distingué, et que par conséquent on ait trouvé deux écritures différentes du point distingué en fonction de $g$ et $h$. On obtient donc des éléments $a_i$, $b_i$, $a_j$ et $b_j$ tels que $g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j}$ avec $(a_i,b_i) \neq (a_j,b_j)$ et on peut résoudre le problème du logarithme discret.
 
         Pour que cette méthode fonctionne correctement, il faut choisir la propriété de telle sorte à ce que la table soit de taille manipulable. Cependant, si la propriété fixe quelques bits, alors ces bits n'ont pas besoin d'être stockés dans la table, ce qui permet des économies de mémoire (par exemple, si tous les points distingués se terminent par un même chiffre, inutile de le stocker dans la table). Si on note $\theta$ la fraction des éléments de $G$ satisfaisant la propriété des points distingués, alors l'algorithme doit terminer avec collision après environ $\sqrt{q\pi/2} + 1/\theta$ appels à la fonction d'itération. L'intérêt majeur de la méthode est qu'elle permet le traitement parallèle par plusieurs processeurs, ce qui permet des résultats encore meilleurs.
+        
+        \section{Tag Tracing}
+        \subsection{Présentation}
+        Quand on applique la fonction d'itération des r-adding walks à un élément $x_i$ appartenant à $G$, on obtient un élément $x_{i+1}$ défini par $x_{i+1} = x_i M_{s(x_i)}$. Avec la méthode des points distingués, ce résultat est parfois stocké dans une table, ce qui nous amène à nous poser la question suivante~: étant donné qu'on ne stocke pas tous les éléments de la suite des $(x_i)_{i \ge 0}$, est-il vraiment nécessaire de les calculer à chaque fois ? Dans cette partie, nous décrirons une optimisation reposant sur cette idée.
+    	
+    	On commence par choisir deux petits entiers positifs $r$ et $l$. On fixe $S=\{0,\cdots,r-1\}$ et on construit $M=\{M_s = g^{m_s} h^{n_s}\}_{s \in S}$ comme pour la méthode des r-adding walks. On pose $M_l = (M\cup\{1\})^l$. C'est un tableau contenant l'ensemble des produits d'au plus $l$ éléments de $M$ listés avec les $a_i$ et $b_i$ de leur écriture $g^{a_i} h^{b_i}$.
+    	
+    	On fixe ensuite un ensemble $T$ avec trois fonctions~:
+    	
+		$\begin{array}{lrcl}
+		\tau : & G & \longrightarrow & T
+		\end{array}$
+		
+		$\begin{array}{lrcl}
+		\overline{\tau} : G \times M_l \longrightarrow & T \cup \{fail\}
+		\end{array}$
+		
+		$\begin{array}{lrcl}
+		\sigma : T \longrightarrow & S
+		\end{array}$
+		
+		On définit également la fonction d'indexation $s$ et une autre fonction $\overline{s}$ de la façon suivante~:
+		
+		$\begin{array}{lrcl}
+		s : & G & \longrightarrow & S \\
+		    & x & \longmapsto & \sigma \circ \tau (x)
+		\end{array}$
+		
+		$\begin{array}{lrcl}
+		\overline{s} : & G \times M_l & \longrightarrow & S \cup \{fail\} \\
+		               & x & \longmapsto & \sigma \circ \overline{\tau} (x)
+		\end{array}$
+		
+		On doit choisir $T$ et les fonctions $\tau$, $\overline{\tau}$ et $\sigma$ de sorte à ce que $s$ et $\overline{s}$ respectent quelques propriétés. Ainsi $s$ doit être surjective. De plus, si on regroupe les éléments de $G$ selon leur image par $s$, cette fonction doit diviser $G$ en une partition de $r$ sous-ensembles ayant environ la même taille. Si $\overline{s}(g,M) \in S$, alors on doit avoir $\overline{s}(g,M) = s(g M)$. On s'attend à ce que pour tout $M \in M_l$ et pour tout $g \in G$, calculer $\overline{s}(g,M)$ prenne moins de temps que de calculer $s(g,M)$, et on note le temps attendu par un calcul de $\overline{s}(g,M)$ par $|\overline{s}|$ quand $M \in M_l$.
+		
+		La fonction d'itération suit le même principe que celle des r-adding walks, mais dans notre cas la fonction d'indexation est $s = \sigma \circ \tau$. On choisit aléatoirement un élément $x_0 \in G$. Notre premier index est $s_0 = s(g_0)$. Comme pour la méthode des r-adding walks, on pose $x_1 = x_0 M_{s(x_0)}$. Cependant, on ne calcule pas $x_1$ mais $\overline{s}(x_0,M_{s(x_0)})$. Par définition, si le résultat appartient à $S$ alors il est égal à $s(x_0 M_{s(x_0)})$, c'est-à-dire $s(x_1) = s_1$. 
+		
+		De même, $x_2 = x_1 M_{s_1} = x_0 M_{s_0} M_{s_1}$. Cependant, on ne calcule pas $x_2$ mais $\overline{s}(x_0,M_{s_0} M_{s_1})$ ($M_{s_0} M_{s_1}$ appartient à $M_l$, donc on peut le faire en temps $|\overline{s}|$). Si ce nombre appartient à $S$, alors il est égal à $s(x_0 M_{s_0} M_{s_1})$, c'est-à-dire $s_2$.
+		
+		On réitère le procédé jusqu'à calculer un $\overline{s}(x_0,M_{s_0} \cdots M_{s_k})$ qui n'appartient pas à $S$, ou jusqu'à arriver à $l$ itérations du procédé ci-dessus (au vu de la définition de $M_l$, cela signifie que lors de l'étape suivante le produit des $M_i$ n'appartiendrait pas à $M_l$). Quand un tel cas se produit, on calcule $x_{k+1} = x_0 M_{s_0} \cdots M_{s_k}$. Comme $M_{s_0} \cdots M_{s_k} \in M_l$, cela requiert une unique multiplication. On réitère alors le procédé en donnant à $x_{k+1}$ le rôle qu'avait $x_0$ jusqu'alors.
+		
+		On détecte une collision en utilisant la méthode des points distingués. Ici, un élément de $G$ doit satisfaire deux propriétés pour être un point distingué~:
+		
+		\begin{itemize}
+		\item son écriture binaire se termine par un certain nombre de bits égaux à $0$.
+		\item c'est un point $x_k$ tel que $\overline{s}(x_0,M_{s_0} \cdots M_{s_{k-1}})$ n'appartient pas à $S$.
+		\end{itemize}
+		
+		La deuxième propriété assure que tous les potentiels points distingués sont calculés en suivant la méthode décrite plus haut (ce sont même les seuls éléments de la suite $(x_i)_{i \ge 0}$ que l'on calcule). On peut donc juste se permettre de vérifier la première propriété parmi ces éléments, et utiliser $\overline{s}$ et la méthode décrite ci-dessus pour ne pas avoir à calculer tous les autres éléments (qui ne vérifient de toute façon pas la deuxième propriété et ne sont donc pas des points distingués).
