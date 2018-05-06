@@ -6,7 +6,8 @@ LDFLAGS=-lgmp
 
 .PHONY: all clean help
 
-all: test_iteration_basic test_iteration_r_adding_walks test_collision_floyd test_equation_solver
+all: test_iteration_basic test_iteration_r_adding_walks test_collision_floyd \
+	test_distinguished_points test_equation_solver
 
 test_iteration_basic: test_iteration_basic.o $(SRC_DIR)/iteration_basic.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -18,6 +19,9 @@ test_collision_floyd: test_collision_floyd.o $(SRC_DIR)/collision_floyd.o $(SRC_
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 test_equation_solver: test_equation_solver.o $(SRC_DIR)/equation_solver.o
+	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+test_distinguished_points: test_distinguished_points.o $(SRC_DIR)/distinguished_points.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 %.o: %.c

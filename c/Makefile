@@ -18,6 +18,9 @@ $(EXE): main.o equation_solver.o collision_floyd.o iteration_r_adding_walks.o
 main.o: main.c include/main.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
+distinguished_points.o: distinguished_points.c include/distinguished_points.h
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
+
 equation_solver.o: equation_solver.c include/equation_solver.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $<
 
