@@ -33,9 +33,9 @@ void test_is_distinguished_point_if_it_ends_with_the_right_number_of_zeroes(void
   mpz_init_set_d(number2, 0b10000);
   mpz_init_set_d(number3, 0b100000);
 
-  ASSERT(is_distinguished_point(number1, 3));
-  ASSERT(is_distinguished_point(number2, 4));
-  ASSERT(is_distinguished_point(number3, 5));
+  ASSERT(is_distinguished_point(&number1, 3));
+  ASSERT(is_distinguished_point(&number2, 4));
+  ASSERT(is_distinguished_point(&number3, 5));
 
   mpz_clear(number1);
   mpz_clear(number2);
@@ -49,9 +49,9 @@ void test_is_not_distinguished_point_if_it_ends_with_the_wrong_number_of_zeroes(
   mpz_init_set_d(number2, 0b11000);
   mpz_init_set_d(number3, 0b110000);
 
-  ASSERT(!is_distinguished_point(number1, 3));
-  ASSERT(!is_distinguished_point(number2, 4));
-  ASSERT(!is_distinguished_point(number3, 5));
+  ASSERT(!is_distinguished_point(&number1, 3));
+  ASSERT(!is_distinguished_point(&number2, 4));
+  ASSERT(!is_distinguished_point(&number3, 5));
 
   mpz_clear(number1);
   mpz_clear(number2);
@@ -98,18 +98,19 @@ void test_initialize_array_of_found_distinguished_points_with_zeroes(void) {
 
 void test_is_in_list_returns_index_if_number_is_in_list_of_DP(void) {
   init_distinguished_points();
-  mpz_t number1, number2, number3;
+  mpz_t number1, number2, number3, bi;
   mpz_init_set_d(number1, 1);
   mpz_init_set_d(number2, 42);
   mpz_init_set_d(number3, 100);
+  mpz_init_set_d(bi, 1);
 
   mpz_set(distinguished_points[0][0], number1);
   mpz_set(distinguished_points[4][0], number2);
   mpz_set(distinguished_points[8][0], number3);
 
-  ASSERT (is_in_list_of_distinguished_points(number1) == 0);
-  ASSERT (is_in_list_of_distinguished_points(number2) == 4);
-  ASSERT (is_in_list_of_distinguished_points(number3) == 8);
+  ASSERT (is_in_list_of_distinguished_points(&number1, &bi) == 0);
+  ASSERT (is_in_list_of_distinguished_points(&number2, &bi) == 4);
+  ASSERT (is_in_list_of_distinguished_points(&number3, &bi) == 8);
 
   mpz_clear(number1);
   mpz_clear(number2);
@@ -118,16 +119,37 @@ void test_is_in_list_returns_index_if_number_is_in_list_of_DP(void) {
 }
 
 
+void test_is_in_list_returns_minus_1_if_number_is_in_list_of_DP_but_exponents_are_the_same(void) {
+  init_distinguished_points();
+  mpz_t x, a, b;
+  mpz_init_set_d(x, 1);
+  mpz_init_set_d(a, 42);
+  mpz_init_set_d(b, 100);
+
+  mpz_set(distinguished_points[0][0], x);
+  mpz_set(distinguished_points[0][1], a);
+  mpz_set(distinguished_points[0][2], b);
+
+  ASSERT (is_in_list_of_distinguished_points(&x, &b) == -1);
+
+  mpz_clear(x);
+  mpz_clear(a);
+  mpz_clear(b);
+  clear_distinguished_points();
+}
+
+
 void test_is_in_list_returns_minus_1_if_number_is_NOT_in_list_of_DP(void) {
   init_distinguished_points();
-  mpz_t number1, number2, number3;
+  mpz_t number1, number2, number3, bi;
   mpz_init_set_d(number1, 1);
   mpz_init_set_d(number2, 42);
   mpz_init_set_d(number3, 100);
+  mpz_init_set_d(bi, 1);
 
-  ASSERT (is_in_list_of_distinguished_points(number1) == -1);
-  ASSERT (is_in_list_of_distinguished_points(number2) == -1);
-  ASSERT (is_in_list_of_distinguished_points(number3) == -1);
+  ASSERT (is_in_list_of_distinguished_points(&number1, &bi) == -1);
+  ASSERT (is_in_list_of_distinguished_points(&number2, &bi) == -1);
+  ASSERT (is_in_list_of_distinguished_points(&number3, &bi) == -1);
 
   mpz_clear(number1);
   mpz_clear(number2);
@@ -142,6 +164,7 @@ int main (void) {
   DO_TEST (test_number_of_zeroes);
   DO_TEST (test_initialize_array_of_found_distinguished_points_with_zeroes);
   DO_TEST (test_is_in_list_returns_index_if_number_is_in_list_of_DP);
+  DO_TEST (test_is_in_list_returns_minus_1_if_number_is_in_list_of_DP_but_exponents_are_the_same);
   DO_TEST (test_is_in_list_returns_minus_1_if_number_is_NOT_in_list_of_DP);
 
   return EXIT_SUCCESS;

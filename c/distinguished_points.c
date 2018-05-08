@@ -54,9 +54,10 @@ void clear_distinguished_points(void) {
 }
 
 
-int is_in_list_of_distinguished_points(mpz_t *number) {
+int is_in_list_of_distinguished_points(mpz_t *number, mpz_t *bi) {
   for (size_t i = 0; i < NB_OF_POINTS; i++) {
-    if (mpz_cmp(number, distinguished_points[i][0]) == 0) {
+    if (mpz_cmp(number, distinguished_points[i][0]) == 0
+     && mpz_cmp(bi, distinguished_points[i][2]) != 0) {
       return i;
     }
   }

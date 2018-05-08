@@ -18,7 +18,7 @@ void clear_distinguished_points (void);
 /* Check wether `number` is in the `list` of distinguished_points
  *   returns the index of the first found
  *   returns -1 if the element is not present in the list */
-int is_in_list_of_distinguished_points(mpz_t *number);
+int is_in_list_of_distinguished_points (mpz_t *number, mpz_t *bi);
 
 // Returns 0 if the number is a distinguished point
 //         1 otherwise
