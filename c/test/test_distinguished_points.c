@@ -78,17 +78,6 @@ void test_number_of_zeroes(void) {
   }
 }
 
-/* TODO: this is to help debug */
-#include <stdio.h>
-static void print_mpz(mpz_t *number, int base) {
-  size_t size = mpz_sizeinbase(*number, base) + 2;
-  char *str = malloc(sizeof(char) * size);
-  mpz_get_str(str, base, *number);
-
-  printf("value of number is: %s\n", str);
-  free(str);
-}
-
 
 void test_initialize_array_of_found_distinguished_points_with_zeroes(void) {
   init_distinguished_points();
