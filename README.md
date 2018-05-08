@@ -67,33 +67,3 @@ python graph.py
 ```bash
 cd sage
 ```
-
-
-## Aide
-
-#### Git
-
-```bash
-# récupérer les commits du dépôt distant et mettre à jour la branche locale
-git pull --rebase
-
-# afficher le statut du dépôt local
-git status
-
-# ajouter ses changements à l'index
-git add <nom de fichier>
-# ou
-git add -p
-
-# sauvegarder les changements de l'index en local
-git commit
-
-# envoyer ses commits sur le dépôt distant
-git push
-
-# lire "l'historique" du projet (joliment)
-git log --oneline --decorate --graph
-
-# lire le contenu d'un commit
-git show <numéro de commit>
-```
