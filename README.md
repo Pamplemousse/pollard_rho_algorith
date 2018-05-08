@@ -18,6 +18,18 @@ pdflatex main.tex
 ```
 
 
+## Soutenance
+
+Le support pour la soutenance se trouve dans le dossier `soutenance` du dépôt.
+
+```bash
+# générer le rapport, sa TOC
+cd soutenance/
+pdflatex main.tex
+pdflatex main.tex
+```
+
+
 ## Code
 
 #### en C

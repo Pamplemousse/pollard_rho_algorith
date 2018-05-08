@@ -1,0 +1,67 @@
+\documentclass{beamer}
+
+\usepackage[french]{babel}    % langue
+\usepackage[utf8]{inputenc}   % accents
+\usepackage[T1]{fontenc}      % caractères français
+
+\usetheme{metropolis}
+
+\definecolor{TeaRose}{RGB}{255, 228, 225}
+
+\title{L'algorithme $\rho$ de Pollard}
+\date{\today}
+\author{Laure Bachelet, Charlotte Rance et Xavier Maso}
+\institute{Master CSI, Université de Bordeaux}
+
+\begin{document}
+  \maketitle
+
+  \begin{frame}{Plan}
+    \setbeamertemplate{section in toc}[sections numbered]
+	  \tableofcontents[hideallsubsections]
+  \end{frame}
+
+
+  \section{Présentation de la méthode $\rho$}
+
+  \begin{frame}{Problème du Logarithme Discret}
+  \end{frame}
+
+  \begin{frame}{Méthode de Pollard}
+	  \begin{itemize}
+      \item itération (de base, méthode r-adding walks)
+      \item collision (lièvre et la tortue, points distingués)
+		\end{itemize}
+  \end{frame}
+
+
+  \section{Détection de collisions}
+
+  \begin{frame}{Le lièvre et la tortue}
+  \end{frame}
+
+  \begin{frame}{Méthode des points distingués}
+  \end{frame}
+
+
+  \section{Implémentations}
+
+  \begin{frame}{Généralités}
+    en C utilisant GMP
+  \end{frame}
+
+  \begin{frame}{Tests et mesures}
+  \end{frame}
+
+	\begin{frame}{Résultats !}
+	\end{frame}
+
+	\section{Conclusion}
+
+	{\setbeamercolor{palette primary}{fg=black, bg=TeaRose}
+	\begin{frame}[standout]
+	  Questions?
+	\end{frame}
+	}
+
+\end{document}
