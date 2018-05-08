@@ -3,9 +3,16 @@
 \usepackage[french]{babel}    % langue
 \usepackage[utf8]{inputenc}   % accents
 \usepackage[T1]{fontenc}      % caractères français
+\usepackage{mdframed}
 
 \usetheme{metropolis}
 
+\surroundwithmdframed[
+    hidealllines=true,
+    backgroundcolor=orange!30,
+    skipbelow=\baselineskip,
+    skipabove=\baselineskip
+]{align*}
 
 \title{L'algorithme $\rho$ de Pollard}
 \date{\today}
