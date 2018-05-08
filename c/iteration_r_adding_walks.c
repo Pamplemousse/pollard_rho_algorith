@@ -80,7 +80,9 @@ int f(mpz_t *xi, mpz_t *ai, mpz_t *bi, mpz_t *g,
   mpz_mod(*xi, *xi, *modulus);
 
   mpz_add(*ai, *ai, Mmn->m[remainder]);
+  mpz_mod(*ai, *ai, *order);
   mpz_add(*bi, *bi, Mmn->n[remainder]);
+  mpz_mod(*bi, *bi, *order);
 
   mpz_clear(rop);
 
