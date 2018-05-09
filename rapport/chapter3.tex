@@ -121,10 +121,10 @@
 		\item c'est un point $x_k$ tel que $\overline{s}(x_0,M_{s_0} \cdots M_{s_{k-1}})$ n'appartient pas à $S$.
 		\end{itemize}
 		
-		La deuxième propriété assure que tous les potentiels points distingués sont calculés en suivant la méthode décrite plus haut (ce sont même les seuls éléments de la suite $(x_i)_{i \ge 0}$ que l'on calcule). On peut donc juste se permettre de vérifier la première propriété parmi ces éléments, et utiliser $\overline{s}$ et la méthode décrite ci-dessus pour ne pas avoir à calculer tous les autres éléments (qui ne vérifient de toute façon pas la deuxième propriété et ne sont donc pas des points distingués).
+		La deuxième propriété assure que tous les potentiels points distingués sont calculés en suivant la méthode décrite plus haut (ce sont même les seuls éléments de la suite $(x_i)_{i \ge 0}$ que l'on calcule). On peut donc se permettre de ne vérifier la première propriété que parmi ces éléments, et utiliser $\overline{s}$ et la méthode décrite ci-dessus pour ne pas avoir à calculer tous les autres éléments (qui ne vérifient de toute façon pas la deuxième propriété et ne sont donc pas des points distingués).
 		
 		\subsection{Application}
-		Soit $p$ un nombre premier et $G$ un sous-groupe cyclique d'ordre $q$ de $(\mathbb{Z}/p\mathbb{Z})^*$. Commençons par donner des contraintes pour le choix des entiers $l$ et $r$ (pour rappels, $S = \{0,1,\cdots,r-1\}$, $M=\{M_s = g^{m_s} h^{n_s}\}_{s \in S}$, et on pose $M_l = (M\cup\{1\})^l$).
+		Soient $p$ un nombre premier et $G$ le sous-groupe cyclique d'ordre $q$ premier de $(\mathbb{Z}/p\mathbb{Z})^*$. Commençons par donner des contraintes pour le choix des entiers $l$ et $r$ (pour rappels, $S = \{0,1,\cdots,r-1\}$, $M=\{M_s = g^{m_s} h^{n_s}\}_{s \in S}$, et on pose $M_l = (M\cup\{1\})^l$).
 		
 		$M_l$ a une taille d'au plus $\binom{l+r}{r}$. En effet, chaque élément de $M_l$ est obtenu en choisissant $l$ éléments de $M\cup\{1\}$ (on peut prendre plusieurs fois le même élément) et en les multipliant entre eux (si un élément de $M_l$ est le produit de moins de $l$ éléments de $M = \{M_s = g^{m_s} h^{n_s}\}_{s \in S}$, alors comme $1$ appartient à $M\cup\{1\}$, on peut toujours l'écrire comme produit de $l$ éléments de $M\cup\{1\}$). Par conséquent, le nombre d'éléments de $M_l$ correspond au nombre de combinaisons avec répétitions de $l$ éléments parmi $r + 1$ éléments ($M_l = (M\cup\{1\})^l$ et $M$ est de taille $r$).
 		
@@ -151,7 +151,7 @@
 		
 		Donc on a besoin de $\binom{l+r}{r} - r - 1$ multiplications dans $G$ pour construire $M_l$.
 		
-		Il faut choisir donc choisir les entiers $l$ et $r$ de manière à ce que la table des $M_l$ ait une taille manipulable et que le calcul des éléments de $M_l$ se fasse en un nombre de multiplications négligeable par rapport aux appels de la fonction d'itération.
+		Il faut donc choisir les entiers $l$ et $r$ de manière à ce que la table des $M_l$ ait une taille manipulable et que le calcul des éléments de $M_l$ se fasse en un nombre de multiplications négligeable par rapport aux appels de la fonction d'itération.
 		
 		On construit l'ensemble $T$ ainsi~: on choisit un entier positif $b$ et on pose $t = rb$. On pose ensuite $T = \{0,1,\cdots,t-1\}$. On choisit un petit entier $\epsilon$ et on pose $d = \lceil\log_\epsilon(p)\rceil$. On choisit ensuite un entier $\omega'$ tel que $\omega' \ge d(\epsilon - 1) + 1$ et on pose $\omega = t\omega'$. On doit avoir $\omega < p^{1/3}$. On prouvera plus tard que ces contraintes permettent d'assurer que Tag Tracing fonctionne avec les fonctions que nous nous apprêtons à définir. Cependant, les choix optimaux pour ces paramètres sont variables. Ils dépendent en effet de facteurs tels que la taille de $p$, les ressources disponibles et la vitesse à laquelle la machine utilisée est capable de multiplier de grands entiers.
 		
@@ -169,7 +169,7 @@
 		\sigma : T \longrightarrow & S
 		\end{array}$
 		
-		On pose $\sigma(x) = \lfloor x/b \rfloor$. On doit avoir $\sigma : T \longrightarrow S$. Soit $x \in T = \{0,1,\cdots,t-1\}$ On a $t = rb$, donc $0 \leq x < rb$, ce qui implique $0 \leq x/b < r$ et donc $0 \leq \lfloor x/b \rfloor < r$ et comme c'est un entier on a bien $\sigma(x) \in S=\{0,\cdots,r-1\}$. De plus, chaque élément de $S$ a un antécédent par $\sigma$, donc la fonction est surjective.
+		On pose $\sigma(x) = \lfloor x/b \rfloor$. On doit avoir $\sigma : T \longrightarrow S$. Soit $x \in T = \{0,1,\cdots,t-1\}$ On a $t = rb$, donc $0 \leq x < rb$, ce qui implique $0 \leq x/b < r$ et donc $0 \leq \lfloor x/b \rfloor < r$ et comme c'est un entier on a bien $\sigma(x) \in S=\{0,\cdots,r-1\}$. De plus, chaque élément de $S$ a au moins un antécédent par $\sigma$, donc la fonction est surjective.
 		
 		On choisit un entier $B$ satisfaisant les propriétés suivantes~:  $B > p^{2/3}$ et $0 \leq \omega B - p < B^{1/2}$. Il suffit par exemple de poser $B = \lceil p/\omega \rceil$. En effet, comme $w < p^{1/3}$, on a $p/\omega > p/p^{1/3} = p^{2/3}$. On pose ensuite $\tau(x) = \lfloor \frac{x\mod p}{\omega' B} \rfloor$.
 		
@@ -187,7 +187,7 @@
 		
 		$$\overline{\overline{\tau}}(x,y) = \lfloor \frac{\sum_{i=0}^{d-1} x_i \hat{y_i}\mod \omega}{\omega'} \rfloor$$
 		
-		Montrons que pour $x$ et $y$ de $(\mathbb{Z}/p\mathbb{Z})^*$, on a $\tau(xy) = \overline{\overline{\tau}}x,y)$ ou $\tau(xy) = \overline{\overline{\tau}}(x,y) + 1$, sauf si $\overline{\overline{\tau}}(x,y) = t - 1$.
+		Montrons que pour tout $x$ et $y$ de $(\mathbb{Z}/p\mathbb{Z})^*$, on a $\tau(xy) = \overline{\overline{\tau}}(x,y)$ ou $\tau(xy) = \overline{\overline{\tau}}(x,y) + 1$ si $\overline{\overline{\tau}}(x,y) \neq t - 1$.
 		
 		On trouve $a_0$, $a_1$ et $a_2$ tels que~:
 		
@@ -203,13 +203,13 @@
 		                                &= \lfloor \frac{a_1\omega' + a_0\mod \omega}{\omega'} \rfloor
 		\end{align*}
 		
-		Or, $a_1\omega' + a_0$ est le reste dans la division euclidienne de $a_2\omega + a_1\omega' + a_0$ par $\omega$, donc par définition $0 \leq a_1\omega' + a_0 <  \omega$, par conséquent $\lfloor \frac{a_1\omega' + a_0\mod \omega}{\omega'} \rfloor = \lfloor \frac{a_1\omega' + a_0}{\omega'} \rfloor$. Donc on a $\overline{\overline{\tau}}(x,y) = \lfloor a_1 + a_0/\omega' \rfloor$. Or $a_0$ est le reste dans la division euclidienne de $a_1\omega' + a_0$ par $\omega'$, donc $0 \leq a_0 < \omega'$, donc $0 \leq a_0/\omega' < 1$, et comme $a_1$ entier on a $\lfloor a_1 + a_0/\omega' \rfloor = a_1$.
+		Or $a_1\omega' + a_0$ est le reste dans la division euclidienne de $a_2\omega + a_1\omega' + a_0$ par $\omega$, donc par définition $0 \leq a_1\omega' + a_0 <  \omega$, par conséquent $\lfloor \frac{a_1\omega' + a_0\mod \omega}{\omega'} \rfloor = \lfloor \frac{a_1\omega' + a_0}{\omega'} \rfloor$. Donc on a $\overline{\overline{\tau}}(x,y) = \lfloor a_1 + a_0/\omega' \rfloor$. Or $a_0$ est le reste dans la division euclidienne de $a_1\omega' + a_0$ par $\omega'$, donc $0 \leq a_0 < \omega'$, donc $0 \leq a_0/\omega' < 1$, et comme $a_1$ entier on a $\lfloor a_1 + a_0/\omega' \rfloor = a_1$.
 		
 		$\sum_{i=0}^{d-1} x_i \hat{y_i} \leq d \text{\ max }\{x_i\} \hat{y_i} \leq d(\epsilon - 1)(\omega - 1)$. Donc $a_2 \leq \frac{d(\epsilon - 1)(\omega - 1)}{\omega}$. On a ainsi~:
 		
 		$$a_2 \leq \frac{d(\epsilon - 1)(\omega - 1)}{\omega} < d(\epsilon - 1) < \omega' < \omega < B^{1/2} $$
 		
-		On a par ailleurs $xy = \sum_{i=0}^{d-1} x_i \epsilon^i y$. Comme $\epsilon^i y\mod p = \hat{y_i} B + \tilde{y_i}$, on a~:
+		Par ailleurs, $xy = \sum_{i=0}^{d-1} x_i \epsilon^i y$. Comme $\epsilon^i y\mod p = \hat{y_i} B + \tilde{y_i}$, on a~:
 		
 		\begin{align*}
         xy &\equiv B(\sum_{i=0}^{d-1} x_i \hat{y_i}) + \sum_{i=0}^{d-1} x_i \tilde{y_i} \text{\ mod} p \\
