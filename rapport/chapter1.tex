@@ -12,9 +12,9 @@
 
       Si $b_i$ non congru à $b_j$ modulo $q$, alors $b_i - b_j$ est inversible dans $G$ et il suffit de calculer son inverse dans ce groupe pour trouver $\log_g(h)$.
       
-      Pour obtenir un résultat optimal, il faut que la suite $(x_i)_{i \ge 0}$ ressemble le plus possible à une marche aléatoire. Cela signifie essentiellement deux choses~: la première, c'est que la valeur initiale de la suite devrait idéalement être un élément choisi aléatoirement dans le groupe $G$ ; la deuxième, c'est que la fonction $f$ devrait être (ou tout du moins se comporter comme) une fonction aléatoire - c'est-à-dire qu'elle devrait résulter d'un choix équiprobable entre toutes les fonctions de $G$ dans $G$. Dans ces circonstances, la méthode $\rho$ de Pollard utilise approximativement $O(\sqrt{n})$ opérations de groupe pour trouver $\log_g(h)$, avec $n$ l'ordre de $G$. Ce résultat repose sur le principe du paradoxe des anniversaires~: lors d'un tirage aléatoire avec remise dans une urne contenant $n$ boules, il y a environ une chance sur deux d'avoir obtenu deux fois la même boule au bout de $\sqrt{n}$ tirages.
+      Pour obtenir un résultat optimal, il faut que la suite $(x_i)_{i \ge 0}$ ressemble le plus possible à une marche aléatoire. Cela signifie essentiellement deux choses~: la première, c'est que la valeur initiale de la suite devrait idéalement être un élément choisi aléatoirement dans le groupe $G$ ; la deuxième, c'est que la fonction $f$ devrait être (ou tout du moins se comporter comme) une fonction aléatoire - c'est-à-dire qu'elle devrait résulter d'un choix équiprobable entre toutes les fonctions de $G$ dans $G$. Dans ces circonstances, la méthode $\rho$ de Pollard utilise approximativement $O(\sqrt{q})$ opérations de groupe pour trouver $\log_g(h)$. Ce résultat repose sur le principe du paradoxe des anniversaires~: lors d'un tirage aléatoire avec remise dans une urne contenant $n$ boules, il y a environ une chance sur deux d'avoir obtenu deux fois la même boule au bout de $\sqrt{n}$ tirages.
     	
-    	Chaque variante de l'algorithme de Pollard possède sa propre fonction d'itération et sa méthode pour détecter une collision. Intéressons-nous tout d'abord à la méthode classique, telle que décrite dans le \textit{Handbook of Applied Cryptography} \autocite[106]{handbook}.
+    	Chaque variante de l'algorithme $\rho$ de Pollard possède sa propre fonction d'itération et sa méthode pour détecter une collision. Intéressons-nous tout d'abord à la méthode classique, telle que décrite dans le \textit{Handbook of Applied Cryptography} \autocite[106]{handbook}.
 
         \section{La fonction d'itération}
         Dans le cas général, on définit la fonction d'itération comme la fonction permettant de calculer les différents éléments de notre suite $(x_i)_{i \ge 0}$ de la façon suivante~: $x_0 = 1$ et pour $i \geq 0$,
@@ -145,7 +145,7 @@
           \caption{Algorithme de Floyd avec $T=3$ et $C=6$}
         \end{figure}
 
-        La tortue commence en position $-T$, il lui faut précisément $T$ étapes pour qu'elle se trouve au début du cycle, soit en position $0$. A ce moment, le lièvre a avancé de $2 \cdot T$ pas, et il a déjà parcouru $T$ nœuds dans le cycle. Sa position dans celui-ci est donc donnée par le reste de la division euclidienne de $T$ par $C$.
+        La tortue commence en position $-T$, il lui faut précisément $T$ étapes pour qu'elle se trouve au début du cycle, soit en position $0$. A ce moment, le lièvre a avancé de $2 T$ pas, et il a déjà parcouru $T$ nœuds dans le cycle. Sa position dans celui-ci est donc donnée par le reste de la division euclidienne de $T$ par $C$.
 
         \begin{align*}
           \exists k \in \mathbb{N} \text{\ tel que } T = C \cdot k + r \text{\, avec } 0 \leq r < C, \text{d'où } T &\equiv r \text{\ mod } C
