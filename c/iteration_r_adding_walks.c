@@ -4,8 +4,8 @@
 
 #define R 20
 
-/* R partitions, m correspond aux puissances de g,
-   n à celles de h, M = g^m * h^n */
+/* R partitions, m and n are the exponents of respectively g and h
+   M = g^m * h^n */
 
 static Mmn_t *Mmn_alloc() {
   Mmn_t *Mmn = malloc(sizeof(Mmn_t));
