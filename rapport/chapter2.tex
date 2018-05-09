@@ -12,7 +12,7 @@
       \end{split}
     \end{equation}
 
-	  Cette dernière condition assure qu'il existe $x \in \mathbb{Z}$ tel que $h = g^x$; ce $x$ correspond à $\log_g(h)$, et c'est ce que l'algorithme retourne.
+    Cette dernière condition assure qu'il existe $x \in \mathbb{Z}$ tel que $h = g^x$; ce $x$ correspond à $\log_g(h)$, et c'est ce que l'algorithme retourne.
 
     Pour des raisons de performances, ce programme est écrit en C.
     Cependant, afin de se familiariser avec la méthode, et nous assister dans la génération de grands nombres $p$, $q$ et d'un générateur $g$ leur correspondant, nous avons commencé par utiliser le logiciel SageMath\footnote{\url{https://www.sagemath.org/}}. De plus, nous avons aussi pu automatiser la génération de données de tests (des entiers $h$ et $x$ respectant $g^x = h$) pour valider le bon fonctionnement du programme, mais aussi mesurer les performances des algorithmes utilisés, afin de pouvoir mettre en perspective d'éventuelles optimisations dont il sera question plus tard.
@@ -55,24 +55,24 @@
 
         Nous avons choisi de créer un tel groupe grâce à une fonction prenant en paramètres la longueur binaire de $p$ et de $q$.
 
-		    Pour ce faire, on choisit tout d'abord $q$ aléatoirement de $k_q$ bits jusqu'à obtenir un entier $q$ qui soit premier (fonction gen\_order).
+        Pour ce faire, on choisit tout d'abord $q$ aléatoirement de $k_q$ bits jusqu'à obtenir un entier $q$ qui soit premier (fonction gen\_order).
 
-		    Ensuite, on construit $p$ tel que $q$ divise $p - 1$, ce qui assurera le fait qu'il existe un unique sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$. Or on a cela si et seulement s'il existe $u \in\mathbb{Z}$ tel que $p = uq + 1$. Si on veut $p$ de $k_p$ bits, on tire $u$ (toujours aléatoirement) de $k_p - k_q$ bits jusqu'à trouver $p = uq + 1$ premier (fonction gen\_modulus).
+        Ensuite, on construit $p$ tel que $q$ divise $p - 1$, ce qui assurera le fait qu'il existe un unique sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$. Or on a cela si et seulement s'il existe $u \in\mathbb{Z}$ tel que $p = uq + 1$. Si on veut $p$ de $k_p$ bits, on tire $u$ (toujours aléatoirement) de $k_p - k_q$ bits jusqu'à trouver $p = uq + 1$ premier (fonction gen\_modulus).
 
-		    On obtient ainsi un sous-groupe $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.
+        On obtient ainsi un sous-groupe $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.
 
-		    Pour finir, il nous reste à trouver un générateur de ce groupe ainsi formé. On sélectionne un élément $v \in \mathbb{Z}/p\mathbb{Z}$ (concrètement on commence à $v = 2$). On pose alors $g = v^u \text{ mod } p$. Si $g = 1$, on prend un autre élément $v$ (ou on incrémente $v$), sinon $g$ est un générateur du groupe (fonction gen\_group).\\
-		    En effet, dans ce dernier cas on aura~:
-		    \begin{align*}
-		    g^q & = v^{uq} \\
+        Pour finir, il nous reste à trouver un générateur de ce groupe ainsi formé. On sélectionne un élément $v \in \mathbb{Z}/p\mathbb{Z}$ (concrètement on commence à $v = 2$). On pose alors $g = v^u \text{ mod } p$. Si $g = 1$, on prend un autre élément $v$ (ou on incrémente $v$), sinon $g$ est un générateur du groupe (fonction gen\_group).\\
+        En effet, dans ce dernier cas on aura~:
+        \begin{align*}
+        g^q & = v^{uq} \\
             & = v^{p-1} & \text{ puisque } p = uq + 1 \\
             & = 1 \text{ mod } p & \text{ d'après le petit théorème de Fermat}
-		    \end{align*}
-		    Et cela garantit que $g$ est un générateur du sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.\\
+        \end{align*}
+        Et cela garantit que $g$ est un générateur du sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.\\
 
-		    Maintenant que nous avons créé un groupe comme nous le souhaitions, nous allons construire, pour un groupe donné, plusieurs entiers (100 dans notre cas) $h$ et $x$ tels que $g^x = h$ mod $p$. Dans la mesure où nous aurons ce $x$, nous pourrons alors vérifier que nos algorithmes de résolution du problème du logarithme discret rendent bien le résultat attendu.
+        Maintenant que nous avons créé un groupe comme nous le souhaitions, nous allons construire, pour un groupe donné, plusieurs entiers (100 dans notre cas) $h$ et $x$ tels que $g^x = h$ mod $p$. Dans la mesure où nous aurons ce $x$, nous pourrons alors vérifier que nos algorithmes de résolution du problème du logarithme discret rendent bien le résultat attendu.
 
-		    Pour cela nous choisissons simplement $x$ aléatoirement, pour ensuite poser $h = g^x$ mod $p$. Notre fonction gen\_data répète ce procédé 100 fois pour ensuite nous retourner ces données.\\
+        Pour cela nous choisissons simplement $x$ aléatoirement, pour ensuite poser $h = g^x$ mod $p$. Notre fonction gen\_data répète ce procédé 100 fois pour ensuite nous retourner ces données.\\
 
         À présent, grâce à cette dernière fonction, nous pouvons générer un fichier contenant un ensemble de $p, q, g, h, x$ (un par ligne). C'est ce pour quoi nous avons créé la fonction gen\_test\_inputs. Cette fonction construit des groupes d'ordres $q$ de 5 à 55 bits. Pour un $q$ donné de $k_q$ bits, nous prenons un $p$ de $k_q + 10$ bits et avons donc pour chaque couple $(p,q)$ 100 valeurs de $h$ en appliquant la fonction gen\_data.
 
