@@ -11,8 +11,10 @@
       \end{align*}
 
       Si $b_i$ non congru à $b_j$ modulo $q$, alors $b_i - b_j$ est inversible dans $G$ et il suffit de calculer son inverse dans ce groupe pour trouver $\log_g(h)$.
-
-    	Toutes les variantes de l'algorithme reposent sur ce principe, mais chacune possède sa propre fonction d'itération et sa méthode pour détecter une collision. Intéressons-nous tout d'abord à la méthode classique, telle que décrite dans le \textit{Handbook of Applied Cryptography} \autocite[106]{handbook}.
+      
+      Pour obtenir un résultat optimal, il faut que la suite $(x_i)_{i \ge 0}$ ressemble le plus possible à une marche aléatoire. Cela signifie essentiellement deux choses~: la première, c'est que la valeur initiale de la suite devrait idéalement être un élément choisi aléatoirement dans le groupe $G$ ; la deuxième, c'est que la fonction $f$ devrait être (ou tout du moins se comporter comme) une fonction aléatoire - c'est-à-dire qu'elle devrait résulter d'un choix équiprobable entre toutes les fonctions de $G$ dans $G$. Dans ces circonstances, la méthode $\rho$ de Pollard utilise approximativement $O(\sqrt{n})$ opérations de groupe pour trouver $\log_g(h)$, avec $n$ l'ordre de $G$. Ce résultat repose sur le principe du paradoxe des anniversaires~: lors d'un tirage aléatoire avec remise dans une urne contenant $n$ boules, il y a environ une chance sur deux d'avoir obtenu deux fois la même boule au bout de $\sqrt{n}$ tirages.
+    	
+    	Chaque variante de l'algorithme de Pollard possède sa propre fonction d'itération et sa méthode pour détecter une collision. Intéressons-nous tout d'abord à la méthode classique, telle que décrite dans le \textit{Handbook of Applied Cryptography} \autocite[106]{handbook}.
 
         \section{La fonction d'itération}
         Dans le cas général, on définit la fonction d'itération comme la fonction permettant de calculer les différents éléments de notre suite $(x_i)_{i \ge 0}$ de la façon suivante~: $x_0 = 1$ et pour $i \geq 0$,
