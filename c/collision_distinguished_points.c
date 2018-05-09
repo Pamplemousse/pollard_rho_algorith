@@ -39,18 +39,26 @@ void collision (mpz_t *result,
   init_distinguished_points();
 
   Mmn_t *Mmn = gen_Mmn(g, h, modulus, order);
-  mpz_t xi, ai, bi;
+  mpz_t xi, ai, bi, i;
+  mpz_init(xi);
+  mpz_init(ai);
+  mpz_init(bi);
+
+  mpz_init_set_d(i, 0);
 
   size_t index = -1;
   while (index == -1) {
-    mpz_init(xi);
-    mpz_init(ai);
-    mpz_init(bi);
-
     generate_starting_point(&state, &xi, &ai, &bi, g, h, modulus, order);
 
-    while(!is_distinguished_point(&xi, nb_of_0)) {
+    while (!is_distinguished_point(&xi, nb_of_0)) {
       f(&xi, &ai, &bi, g, h, modulus, order, Mmn);
+
+      mpz_add_ui(i, i, 1);
+
+      if (mpz_cmp(i, *order) == 0) {
+        generate_starting_point(&state, &xi, &ai, &bi, g, h, modulus, order);
+        mpz_set_d(i, 0);
+      }
     }
 
     index = is_in_list_of_distinguished_points(&xi, &bi);
@@ -59,8 +67,14 @@ void collision (mpz_t *result,
       mpz_set(next_dp[0], xi);
       mpz_set(next_dp[1], ai);
       mpz_set(next_dp[2], bi);
+
       distinguished_points_index++;
-      /* TODO: deal with  distinguished_points_index == NB_OF_POINTS (start again) */
+
+      if (distinguished_points_index < NB_OF_POINTS) {
+        distinguished_points_index++;
+      } else {
+        distinguished_points_index = 0;
+      }
     }
   }
 
@@ -74,6 +88,10 @@ void collision (mpz_t *result,
   mpz_clear(ai);
   mpz_clear(bi);
   mpz_clear(xi);
+  mpz_clear(i);
   gmp_randclear(state);
   clear_distinguished_points();
+
+  Mmn_clear(Mmn);
+  Mmn_free(Mmn);
 }

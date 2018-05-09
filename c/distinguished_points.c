@@ -18,7 +18,7 @@ size_t number_of_zeroes(mpz_t *order) {
   size_t number_of_zeroes;
   int tmp = ceil(log2(sqrt_order_d / NB_OF_POINTS));
 
-  if (tmp < 1) {
+  if (tmp <= 1) {
     /* Set a default: 1 over 2^2 = 4 numbers would be a distinguished point. */
     number_of_zeroes = 2;
   } else {
@@ -32,7 +32,7 @@ size_t number_of_zeroes(mpz_t *order) {
 
 /* A number is a distinguished point if it ends with n zeroes */
 bool is_distinguished_point (mpz_t *number, unsigned long int number_of_zeroes) {
-  return mpz_scan1(number, 0) == number_of_zeroes;
+  return mpz_scan1(*number, 0) == number_of_zeroes;
 }
 
 
@@ -56,8 +56,8 @@ void clear_distinguished_points(void) {
 
 int is_in_list_of_distinguished_points(mpz_t *number, mpz_t *bi) {
   for (size_t i = 0; i < NB_OF_POINTS; i++) {
-    if (mpz_cmp(number, distinguished_points[i][0]) == 0
-     && mpz_cmp(bi, distinguished_points[i][2]) != 0) {
+    if (mpz_cmp(*number, distinguished_points[i][0]) == 0
+     && mpz_cmp(*bi, distinguished_points[i][2]) != 0) {
       return i;
     }
   }
