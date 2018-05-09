@@ -24,7 +24,7 @@ def extract_values(lines):
     values = []
     for line in lines:
         (p, q, g, h, x, nb_of_f) = line.split(' ')
-        value = { 'q': int(q, 2), 'f_count': int(nb_of_f) // 3 }
+        value = { 'q': int(q, 2), 'f_count': int(nb_of_f) }
         values.append(value)
     values = sorted(values, key=lambda x: x['q'])
 
