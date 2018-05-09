@@ -92,7 +92,7 @@ for a in tab_const:
 sqrt_trace = Scatter(
     x=uniq_q_values,
     y=sqrt_q_values,
-    marker=dict(color='#81e506'),
+    marker=dict(color='#bce505'),
     name='sqrt(q)'
 )
 

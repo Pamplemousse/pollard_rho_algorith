@@ -55,7 +55,7 @@ sqrt_q_values = [ math.sqrt(q) for q in uniq_q_values ]
 sqrt_trace = Scatter(
     x=uniq_q_values,
     y=sqrt_q_values,
-    marker=dict(color='#81e506'),
+    marker=dict(color='#bce505'),
     name='sqrt(q)'
 )
 
