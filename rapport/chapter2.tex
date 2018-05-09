@@ -48,6 +48,7 @@
         Mais avant d'entrer dans ces subtils détails, présentons maintenant un autre sujet pour lequel SageMath a été pertinent~: la génération des nombres $p, q, g, h$ respectant les relations définies en \eqref{eq:2}.
 
         \subsection{Génération de données}
+        \label{chapter2:sagemath:data}
         Pour pouvoir tester et comparer nos futures implémentations en C, nous devons générer un ensemble de données.
 
         Dans un premier temps, nous allons générer des entiers $p, q, g$ représentant le sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$ et engendré par $g$, où $p$ et $q$ sont premiers.
@@ -75,4 +76,58 @@
 
         À présent, grâce à cette dernière fonction, nous pouvons générer un fichier contenant un ensemble de $p, q, g, h, x$ (un par ligne). C'est ce pour quoi nous avons créé la fonction gen\_test\_inputs. Cette fonction construit des groupes d'ordres $q$ de 5 à 55 bits. Pour un $q$ donné de $k_q$ bits, nous prenons un $p$ de $k_q + 10$ bits et avons donc pour chaque couple $(p,q)$ 100 valeurs de $h$ en appliquant la fonction gen\_data.
 
-        Avec ceci, nous pourrons mesurer les performances moyennes de notre programme sur en fonction de la taille de $q$. Dans la dernière section de ce chapitre, nous parlerons finalement de notre implémentation en C de la résolution du Logarithme Discret, et en présenterons les performances sur le jeu de données que nous venons de générer.
+        Avec ceci, nous pourrons mesurer les performances moyennes de notre programme sur en fonction de la taille de $q$. Dans la prochaine section de ce chapitre, nous parlerons finalement de notre implémentation en C de la résolution du Logarithme Discret, et en présenterons les performances sur le jeu de données que nous venons de générer.
+
+
+    \section{Tests et mesures}
+      Une bonne pratique de développement logiciel consiste à écrire des tests automatisés visant à valider le bon comportement de tout ou partie d'un programme sous certaines conditions et entrées.
+
+      Afin valider le bon fonctionnement de ce que nous avons produit, nous avons donc mis en place une suite de tests
+      \begin{enumerate*}
+        \item unitaires \footnote{Visant à valider le fonctionnement des différents modules du logiciel, en vérifiant par exemple le résultat de fonctions sur des entrées spécifiques.}
+        \item d'intégration\footnote{Validant le fonctionnement de l'ensemble du programme ; en vérifiant en particulier des résolutions de logarithme discret sur des entiers produits par exponentiation (dont nous connaissons donc le résultat).}
+      \end{enumerate*}
+      que nous avons écrit.
+
+      Lorsque l'on écrit des tests, il est intéressant d'avoir à l'esprit qu'ils devraient respecter certaines propriétés, connues sous l'acronyme FIRST :
+      \begin{itemize}
+        \item Fast : les tests s'exécutent rapidement (et il est donc agréable de les lancer régulièrement).
+        \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bords affectant les autres. Nécessaire pour tester de petite unités de notre programme de façon isolée.
+        \item Repeatable : les tests produisent toujours le même résultat étant donnée une même entrée. Cela permet de favoriser l'automatisation des tests et avoir confiance en ce qui a été testé auparavant.
+        \item Self-validating : les tests détectent quand ils passent ou ratent ; il n'est pas nécessaire de forcer un pauvre programmeur à lire des tonnes de logs pour en connaitre le résultat.
+        \item Timely : les tests sont écrit au même moment que le code qu'ils valident (avant en TDD !).
+      \end{itemize}
+
+      Nous avons donc, au cours du projet, écrit nos propres tests en C (se compilant et s'exécutant comme des programmes à part entière), intégré les tests qui ont jalonné nos avancées, et finalement automatisé des tests plus exotiques \footnote{Écrits en Bash, nous permettant de manipuler facilement les entrées et sorties standard lors de l'appel à l'exécutable produit}, que nous placerons sous le label "Tests d'intégration" faute de mieux.
+
+      Ces "Tests d'intégration" nous permettent d'assurer la non régression de notre logiciel lorsque nous en changeons le code. En effet, si les tests passent, c'est que le logiciel calcule correctement le logarithme discret sur les entrées pré calculées. Si on modifie notre code (pour introduire une optimisation ou utiliser un autre algorithme), il nous suffit de lancer les tests pour garantir que notre nouveau programme fonctionne (au moins) aussi bien que le précédent.
+
+      Enfin, comme nous souhaitions mesurer et comparer l'efficacité des algorithmes que nous avons implémenté, nous discuterons du "protocole" que nous avons mis en place pour recueillir et traiter les données relatives aux performances de notre programme.
+
+
+      \subsection{Tests unitaires}
+      Comme nous venons brièvement de le présenter, une grande partie de nos tests a consisté en l'écriture de tests "unitaires", validant le fonctionnement de fonctions uniques, sous certaines conditions et paramètres d'entrée spécifiques.
+      Sous forme de programme C, chaque jeu de test est contenu dans un fichier et charge le module qu'il est sensé valider. Ensuite, grâce à quelques macros, nous validons le comportement des fonctions dudit module sous différents paramètres.
+      Ainsi, et grâce au découpage modulaire de notre programme, nous pouvons attester du bon fonctionnement individuel des différentes fonctions nécessaires à la résolution du logarithme discret.
+
+      Par exemple, ce test permet de valider que la fonction \lstinline{f} retourne un code d'erreur (-1) si le premier paramètre est un pointeur nul :
+
+      \lstinputlisting[language=C,firstline=32,lastline=36]{code/test_iteration_basic.c}
+
+
+      \subsection{Tests d'intégration}
+      Malheureusement, valider individuellement le comportement de nos fonctions sur certaines entrées ne garantit pas que lorsqu'elles seront utilisées ensemble, le programme se comportera comme nous le souhaiterions.
+      Pour se protéger des bugs qui peuvent alors subvenir, nous avons choisi d'écrire des tests de plus "haut niveau", qui valident les sorties du programme sur des entrées contrôlées.
+
+      Clairement, l'idée est la même que pour les tests unitaires : il s'agit de vérifier le comportement du logiciel (au lieu d'un module) sur des entrées prédéfinies. Comme nous interagissons avec notre programme à travers l'interface en ligne de commande (comme vu en section \ref{}), nous avons choisi d'utiliser un outil nous permettant d'écrire des tests en Bash : bash\_unit \footnote{\url{https://github.com/pgrange/bash_unit}}.
+
+      Le code de ces tests est disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/test/test_pollard_program.sh} .
+
+      Ce test s'appuie sur les données générées par la fonction \lstinline{gen\_data}, présentée dans la section~\ref{chapter2:sagemath:data}. Pour rappel, ces données consistent en un ensemble de lignes, chacune formatée comme suit : "$p$ $q$ $g$ $h$ $x$", et respectant $h = g^x$ mod $p$ .
+
+      Pour chacune de ces lignes, on formate une entrée que notre programme peut reconnaitre, puis on l'exécute sur cette entrée, et enfin, on vérifie que le résultat rendu est conforme à ce que l'on sait être la solution du problème sur notre entrée.
+      Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiant de la santé de notre programme lorsque ces tests passent : il est capable de calculer correctement des logarithmes discrets.
+
+
+      \subsection{Mesure de l'efficacité des algorithmes}
+      % TODO
