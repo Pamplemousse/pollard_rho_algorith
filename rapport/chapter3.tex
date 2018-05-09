@@ -124,3 +124,139 @@
 		\end{itemize}
 		
 		La deuxième propriété assure que tous les potentiels points distingués sont calculés en suivant la méthode décrite plus haut (ce sont même les seuls éléments de la suite $(x_i)_{i \ge 0}$ que l'on calcule). On peut donc juste se permettre de vérifier la première propriété parmi ces éléments, et utiliser $\overline{s}$ et la méthode décrite ci-dessus pour ne pas avoir à calculer tous les autres éléments (qui ne vérifient de toute façon pas la deuxième propriété et ne sont donc pas des points distingués).
+		
+		\subsection{Application}
+		Soit $p$ un nombre premier et $G$ un sous-groupe cyclique d'ordre $q$ de $(\mathbb{Z}/p\mathbb{Z})^*$. Commençons par donner des contraintes pour le choix des entiers $l$ et $r$ (pour rappels, $S = \{0,1,\cdots,r-1\}$, $M=\{M_s = g^{m_s} h^{n_s}\}_{s \in S}$, et on pose $M_l = (M\cup\{1\})^l$).
+		
+		$M_l$ a une taille d'au plus $\binom{l+r}{r}$. En effet, chaque élément de $M_l$ est obtenu en choisissant $l$ éléments de $M\cup\{1\}$ (on peut prendre plusieurs fois le même élément) et en les multipliant entre eux (si un élément de $M_l$ est le produit de moins de $l$ éléments de $M = \{M_s = g^{m_s} h^{n_s}\}_{s \in S}$, alors comme $1$ appartient à $M\cup\{1\}$, on peut toujours l'écrire comme produit de $l$ éléments de $M\cup\{1\}$). Par conséquent, le nombre d'éléments de $M_l$ correspond au nombre de combinaisons avec répétitions de $l$ éléments parmi $r + 1$ éléments ($M_l = (M\cup\{1\})^l$ et $M$ est de taille $r$).
+		
+		Le nombre de combinaisons avec répétitions de $p$ éléments parmi $n$ est $\binom{n+p-1}{p}$ ou encore $\binom{n+p-1}{n-1}$. La deuxième formule donne le résultat.
+		
+		Montrons à présent que l'ensemble $M_l$ peut être construit en $\binom{l+r}{r} - r - 1$ multiplications dans $G$.
+		
+		On crée un arbre de cette façon~:
+		
+		\begin{itemize}
+		\item l'arbre a une profondeur de $l$.
+		\item de chaque noeud partent très exactement $r$ branches, qui ont toutes un label différent (allant de $0$ à $r - 1$).
+		\item on donne au noeud se situant à la racine de l'arbre le label $1$.
+		\item le label des autres noeuds est l'élément de $M_l$ correspondant aux produits des éléments de $M$ associés aux labels des branches situées entre ce noeud et le noeud racine.
+		\end{itemize}
+		
+		Dans cette structure, on trouve un même élément de $M_l$ plusieurs fois. Pour construire $M_l$, il suffit de collecter les labels des noeuds de l'arbre correspondant à des chemins dont les branches ont un label décroissant. On a prouvé qu'il y a $\binom{l+r}{r}$ noeuds différents dans les branches retenues. Or parmi ces noeuds il y a~:
+		
+		\begin{itemize}
+		\item un noeud ayant pour label $1$.
+		\item $r$ noeuds ayant pour labels les différents éléments de $M = \{M_s = g^{m_s} h^{n_s}\}_{s \in S}$, que l'on a déjà calculés.
+		\item tous les autres noeuds, qui sont des produits d'éléments de $M$. Il y en a $\binom{l+r}{r} - r - 1$.
+		\end{itemize}
+		
+		Donc on a besoin de $\binom{l+r}{r} - r - 1$ multiplications dans $G$ pour construire $M_l$.
+		
+		Il faut choisir donc choisir les entiers $l$ et $r$ de manière à ce que la table des $M_l$ ait une taille manipulable et que le calcul des éléments de $M_l$ se fasse en un nombre de multiplications négligeable par rapport aux appels de la fonction d'itération.
+		
+		On construit l'ensemble $T$ ainsi~: on choisit un entier positif $b$ et on pose $t = rb$. On pose ensuite $T = \{0,1,\cdots,t-1\}$. On choisit un petit entier $\epsilon$ et on pose $d = \lceil\log_\epsilon(p)\rceil$. On choisit ensuite un entier $\omega'$ tel que $\omega' \ge d(\epsilon - 1) + 1$ et on pose $\omega = t\omega'$. On doit avoir $\omega < p^{1/3}$. On prouvera plus tard que ces contraintes permettent d'assurer que Tag Tracing fonctionne avec les fonctions que nous nous apprêtons à définir. Cependant, les choix optimaux pour ces paramètres sont variables. Ils dépendent en effet de facteurs tels que la taille de $p$, les ressources disponibles et la vitesse à laquelle la machine utilisée est capable de multiplier de grands entiers.
+		
+		Définissons à présent les fonctions~:
+		
+		$\begin{array}{lrcl}
+		\tau : G \longrightarrow & T
+		\end{array}$
+		
+		$\begin{array}{lrcl}
+		\overline{\tau} : G \times M_l \longrightarrow & T \cup \{fail\}
+		\end{array}$
+		
+		$\begin{array}{lrcl}
+		\sigma : T \longrightarrow & S
+		\end{array}$
+		
+		On pose $\sigma(x) = \lfloor x/b \rfloor$. On doit avoir $\sigma : T \longrightarrow S$. Soit $x \in T = \{0,1,\cdots,t-1\}$ On a $t = rb$, donc $0 \leq x < rb$, ce qui implique $0 \leq x/b < r$ et donc $0 \leq \lfloor x/b \rfloor < r$ et comme c'est un entier on a bien $\sigma(x) \in S=\{0,\cdots,r-1\}$. De plus, chaque élément de $S$ a un antécédent par $\sigma$, donc la fonction est surjective.
+		
+		On choisit un entier $B$ satisfaisant les propriétés suivantes~:  $B > p^{2/3}$ et $0 \leq \omega B - p < B^{1/2}$. Il suffit par exemple de poser $B = \lceil p/\omega \rceil$. En effet, comme $w < p^{1/3}$, on a $p/\omega > p/p^{1/3} = p^{2/3}$. On pose ensuite $\tau(x) = \lfloor \frac{x\mod p}{\omega' B} \rfloor$.
+		
+		On doit avoir $\tau : G \longrightarrow T$. On a choisi $B$ de sorte à ce que $0 \leq \omega B - p$ et on a posé $\omega = t\omega'$. On a donc $0 \leq t \omega' B - p$, ce qui implique $\frac{p}{\omega' B} \leq t$. Par conséquent, $\frac{p-1}{\omega' B} < t$. Or $x\mod p \in \{0,1,\cdots,p-1\}$, donc $0 \leq \frac{x\mod p}{\omega' B} < t$ pour tout $x \in G$, et on a bien $\tau(x) \in T$.
+		
+		On a donc défini la fonction d'indexation $s = \sigma \circ \tau : G \longrightarrow S$. $s$ est bien surjective car $\sigma$ et $\tau$ le sont. La deuxième propriété que doit satisfaire $s$ est de diviser $G$ en une partition de $r$ sous-ensembles ayant environ la même taille si on regroupe les éléments de $G$ selon leur image par $s$. C'est une propriété appelée être uniforme par la pré-image. On peut le montrer en prouvant que $\tau$ est uniforme par la pré-image.
+		
+		Il nous reste à définir $\overline{\tau}$. Soient $x$ et $y$ appartenant à $(\mathbb{Z}/p\mathbb{Z})^*$. On a $d = \lceil\log_\epsilon(p)\rceil$, donc on peut écrire $x$ en base $\epsilon$~:
+		
+		$$ \sum_{i=0}^{d-1} x_i \epsilon^i \text{ avec $0 \leq x_i < \epsilon$} $$
+		
+		Pour tout entier $i$ appartenant à $\{0,1,\cdots,d-1\}$, on peut trouver des éléments $\hat{y_i}$ et $\tilde{y_i}$ avec $0 \leq \hat{y_i} \leq \frac{p-1}{B} < \omega$ et $0 \leq \tilde{y_i} < B$ tels que $\epsilon^i y\mod p = \hat{y_i} B + \tilde{y_i}$.
+		
+		On définit $\overline{\overline{\tau}} : G \times M_l \longrightarrow T \cup \{fail\}$ par~:
+		
+		$$\overline{\overline{\tau}}(x,y) = \lfloor \frac{\sum_{i=0}^{d-1} x_i \hat{y_i}\mod \omega}{\omega'} \rfloor$$
+		
+		Montrons que pour $x$ et $y$ de $(\mathbb{Z}/p\mathbb{Z})^*$, on a $\tau(xy) = \overline{\overline{\tau}}x,y)$ ou $\tau(xy) = \overline{\overline{\tau}}(x,y) + 1$, sauf si $\overline{\overline{\tau}}(x,y) = t - 1$.
+		
+		On trouve $a_0$, $a_1$ et $a_2$ tels que~:
+		
+		$$ \sum_{i=0}^{d-1} x_i \hat{y_i} = a_2\omega + a_1\omega' + a_0 $$
+		
+		Pour cela, on divise $\sum_{i=0}^{d-1} x_i \hat{y_i}$ par $\omega$ ; le quotient de cette division est le coefficient $a_0$, le reste correspond à $a_1\omega' + a_0$. Pour trouver $a_1$ et $a_0$, il suffit donc de calculer le quotient et le reste dans la division de $a_1\omega' + a_0$ par $\omega'$.
+		
+		On a $\overline{\overline{\tau}}(x,y) = a_1$. En effet, on a~:
+		
+		\begin{align*}
+		\overline{\overline{\tau}}(x,y) &= \lfloor \frac{\sum_{i=0}^{d-1} x_i \hat{y_i}\mod \omega}{\omega'} \rfloor \\
+		                                &= \lfloor \frac{a_2\omega + a_1\omega' + a_0\mod \omega}{\omega'} \rfloor \\
+		                                &= \lfloor \frac{a_1\omega' + a_0\mod \omega}{\omega'} \rfloor
+		\end{align*}
+		
+		Or, $a_1\omega' + a_0$ est le reste dans la division euclidienne de $a_2\omega + a_1\omega' + a_0$ par $\omega$, donc par définition $0 \leq a_1\omega' + a_0 <  \omega$, par conséquent $\lfloor \frac{a_1\omega' + a_0\mod \omega}{\omega'} \rfloor = \lfloor \frac{a_1\omega' + a_0}{\omega'} \rfloor$. Donc on a $\overline{\overline{\tau}}(x,y) = \lfloor a_1 + a_0/\omega' \rfloor$. Or $a_0$ est le reste dans la division euclidienne de $a_1\omega' + a_0$ par $\omega'$, donc $0 \leq a_0 < \omega'$, donc $0 \leq a_0/\omega' < 1$, et comme $a_1$ entier on a $\lfloor a_1 + a_0/\omega' \rfloor = a_1$.
+		
+		$\sum_{i=0}^{d-1} x_i \hat{y_i} \leq d \text{\ max }\{x_i\} \hat{y_i} \leq d(\epsilon - 1)(\omega - 1)$. Donc $a_2 \leq \frac{d(\epsilon - 1)(\omega - 1)}{\omega}$. On a ainsi~:
+		
+		$$a_2 \leq \frac{d(\epsilon - 1)(\omega - 1)}{\omega} < d(\epsilon - 1) < \omega' < \omega < B^{1/2} $$
+		
+		On a par ailleurs $xy = \sum_{i=0}^{d-1} x_i \epsilon^i y$. Comme $\epsilon^i y\mod p = \hat{y_i} B + \tilde{y_i}$, on a~:
+		
+		\begin{align*}
+        xy &\equiv B(\sum_{i=0}^{d-1} x_i \hat{y_i}) + \sum_{i=0}^{d-1} x_i \tilde{y_i} \text{\ mod} p \\
+           &\equiv B a_2\omega + B a_1\omega' + B a_0 + \sum_{i=0}^{d-1} x_i \tilde{y_i} \text{\ mod} p
+         \end{align*}
+         
+         $-a_2 p \equiv 0 \text{\ mod} p$, donc on peut écrire $xy \equiv a_2(B\omega - p) + B a_1\omega' + B a_0 + \sum_{i=0}^{d-1} x_i \tilde{y_i} \text{\ mod} p$. Concentrons-nous sur $a_2(B\omega - p) + B a_0 + \sum_{i=0}^{d-1} x_i \tilde{y_i}$ et majorons ce nombre.
+         
+         $a_0$ est le reste dans la division euclidienne de $a_1\omega' + a_0$ par $\omega'$, donc $0 \leq a_0 < \omega'$. De plus on a montré précédemment que $a_2 < B^{1/2}$ et on a également $B\omega - p < B^{1/2}$. Enfin, $\tilde{y_i} \leq B - 1$ et $\sum_{i=0}^{d-1} x_i \leq d \text{\ max $\{x_i\}$} \leq d(\epsilon - 1)$ car $x_i \leq \epsilon - 1$. On peut donc en conclure~:
+         
+         \begin{align*}
+         a_2(B\omega - p) + B a_0 + \sum_{i=0}^{d-1} x_i \tilde{y_i} &< B(\omega' - 1) + B^{1/2}B^{1/2} + d(\epsilon - 1)(B - 1) \\
+                                 &< B\omega' + B^{1/2}B^{1/2} + d(\epsilon - 1)(B - 1) \\
+                                 &< B\omega' + d(\epsilon - 1)(B - 1) \\
+                                 &< B\omega' + \omega'(B - 1) \text{\ car $d(\epsilon - 1) < \omega'$} \\
+                                 &< 2B\omega' - B
+         \end{align*}
+         
+         Supposons que $a_1 = \overline{\overline{\tau}}(x,y)$ est strictement inférieur à $t - 1$. On a donc~:
+         
+         \begin{align*}
+         a_2(B\omega - p) + B a_1\omega' + B a_0 + \sum_{i=0}^{d-1} x_i \tilde{y_i} \text{\ mod} p &< (t - 2)B\omega' + 2B\omega' - B \\
+                               &< tB\omega' - B \\
+                               &< B\omega - B \text{\ car $\omega = t\omega'$} \\
+                               &< p \text{\ car $B = \lceil p/\omega \rceil$}
+         \end{align*}
+         
+         Donc $xy \text{\ mod } p = B a_1\omega' + a_2(B\omega - p) + B a_0 + \sum_{i=0}^{d-1} x_i \tilde{y_i}$. De plus, on a montré que $a_2(B\omega - p) + B a_0 + \sum_{i=0}^{d-1} x_i \tilde{y_i} < 2B\omega' - B < 2B\omega'$. Cette quantité est également positive, donc le quotient de la division euclidienne de $xy$ par $B\omega'$ est $a_1$ ou $a_1 + 1$. Or $\tau(xy) = \lfloor \frac{xy\mod p}{\omega' B} \rfloor$ et $\overline{\overline{\tau}}(x,y) = a_1$, donc on a terminé la preuve.
+         
+         On peut alors définir $\overline{\tau}$ de la manière suivante~:
+         
+         \begin{align*}
+          \overline{\tau}(g,M) =
+          \begin{cases}
+            \text{\ fail } & \text{si } \overline{\overline{\tau}}(g,M) \text{\ mod $b$ est $b - 1$ ou $b - 2$} \\
+            \overline{\overline{\tau}}(g,M)  & \text{ sinon}
+          \end{cases}
+          \end{align*}
+          
+          On a ainsi défini la fonction $\overline{s} = \sigma \circ \overline{\tau}$.  Il faut maintenant montrer que si $\overline{\tau}(x,M) \in T$ (et donc $\overline{s}(x,M) \in S$), on a $s(xM)=\overline{s}(x,M)$ et $\tau(xM) \text{\ mod } b \neq b - 1$.
+          
+          $\overline{\tau}(x,M) \in T$ quand $\overline{\overline{\tau}}(x,M) \neq b - 1$ et $\overline{\overline{\tau}}(x,M) \neq b - 2$. Or comme $t = rb$, on a $t - 1 \text{\ mod } b = b - 1$. Donc on n'a pas $\overline{\overline{\tau}}(x,M) = t - 1$. On a prouvé précédemment que dans ce cas $\tau(xM) = \overline{\overline{\tau}}(x,M)$ ou $\overline{\overline{\tau}}(x,M) + 1$.
+          
+          Comme $\overline{\overline{\tau}}(x,M) \neq b - 1$ et $\overline{\overline{\tau}}(x,M) \neq b - 2$, on a $\tau(xM) \text{\ mod } b \neq b - 1$. De plus, $\overline{\tau}(x,M) = \overline{\overline{\tau}}(x,M)$, donc $\overline{\tau}(x,M) \text{\ mod } b \neq b - 1$. Par conséquent~:
+          
+          $$\lfloor \frac{\overline{\tau}(x,M)}{b} \rfloor = \lfloor \frac{\overline{\tau}(x,M) + 1}{b} \rfloor$$
+          
+          On a $\sigma(x) = \lfloor x/b \rfloor$ et $s= \sigma \circ \tau$. Donc $s(xM) = \overline{s}(x,M)$.
