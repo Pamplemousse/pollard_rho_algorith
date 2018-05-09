@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}   % accents
 \usepackage[T1]{fontenc}      % caractères français
 \usepackage{mdframed}
+\usepackage{listings}
 
 \usetheme{metropolis}
 
@@ -92,6 +93,22 @@
   \end{frame}
 
   \begin{frame}{Résultats !}
+  \end{frame}
+
+  \begin{frame}{Améliorations}
+    \begin{itemize}
+      \item meilleure utilisation de GMP
+        \begin{itemize}
+          \item[--] \lstinline{mpz_inits, mpz_clears}
+          \item[--] lecture / écriture depuis IO : \lstinline{mpz_inp_str, mpz_out_str}
+        \end{itemize}
+      \item amélioration des tests
+        \begin{itemize}
+          \item[--] tester les fonctions utilisant de l'aléa
+          \item[--] utiliser un "vrai" framework de tests
+        \end{itemize}
+      \item différents algorithmes dans un même programme
+    \end{itemize}
   \end{frame}
 
   \section{Conclusion}
