@@ -1,5 +1,5 @@
 \chapter{Implémentation de la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard}
-    Dans la partie précédente, nous avons discuté de la méthode de Pollard (telle que présentée dans le \textit{Handbook of Applied Cryptography} \autocite[106]{handbook}) pour résoudre le problème du logarithme discret.
+    Dans la partie précédente, nous avons discuté de la méthode de Pollard (telle que présentée dans le \textit{Handbook of Applied Cryptography}~\autocite[106]{handbook}) pour résoudre le problème du logarithme discret.
 
     Un des objectifs de ce projet est de produire un programme capable de résoudre le problème, que l'on peut formaliser de la façon suivante.
 
@@ -33,7 +33,7 @@
         Dans les grandes lignes, notre programme Sage s'articule autour de trois fonctions~:
         \begin{itemize}
             \item La fonction \lstinline{f} d'itération.
-            \item La fonction \lstinline{rho_table}~: appelle la fonction d'itération jusqu'à détecter une collision (en suivant l'algorithme de Floyd\footnote{Présenté en section~\ref{chapter1:Floyd}.}). Notons que cette fonction stocke l'ensemble des valeurs intermédiaires calculées dans un tableau, pour valider visuellement la correspondance entre la table donnée dans le handbook\autocite[107]{handbook} et les valeurs que l'on obtient.
+            \item La fonction \lstinline{rho_table}~: appelle la fonction d'itération jusqu'à détecter une collision (en suivant l'algorithme de Floyd\footnote{Présenté en section~\ref{chapter1:Floyd}.}). Notons que cette fonction stocke l'ensemble des valeurs intermédiaires calculées dans un tableau, pour valider visuellement la correspondance entre la table donnée dans le \textit{Handbook}~\autocite[107]{handbook} et les valeurs que l'on obtient.
             \item La fonction de calcul du logarithme discret recherché (sobrement nommée \lstinline{solve}) en fonction des exposants obtenus lors de la collision.
         \end{itemize}
 
