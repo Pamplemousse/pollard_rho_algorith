@@ -130,4 +130,43 @@
 
 
       \subsection{Mesure de l'efficacité des algorithmes}
-      % TODO
+      L'intérêt d'implémenter différents algorithmes d'itération et de détection de collision est de pouvoir comparer leur performances lors du calcul de logarithmes discrets. Nous ne parlerons pas ici de performance en terme de temps (rapidité d'exécution), ni en terme d'espace (quantité de mémoire utilisée), mais nous cherchons plutôt à évaluer le nombre d'appels à la fonction d'itération (on parlera de nombre de cycles) nécessaires en moyenne avant d'obtenir une collision nous permettant de résoudre le problème.
+
+      À partir d'un jeu de données généré comme expliqué dans la section~\ref{chapter2:sagemath:data}, nous avons exécuté notre programme sur différentes entrées, tout en mesurant, lors de chaque résolution, le nombre d'appels à la fonction \lstinline{f} (fonction d'itération) qu'il a été nécessaire d'effectuer avant l'obtention d'une collision.
+
+      Pour nous permette de mesurer le nombre d'appels à une fonction spécifique dans notre programme, nous avons utilisé GPROF\footnote{\url{https://sourceware.org/binutils/docs/gprof/}}, en compilant notre programme avec les options \lstinline{-pg -no-pie}. Ces options rajoutent des instructions dites "d'instrumentation", qui permettent de collecter des données lors l'exécution du programme.
+      Ainsi, lorsque l'on lance le programme sur une entrée spécifique, un fichier \lstinline{gmon.out} est généré contenant les données de profilage relative à l'exécution qui vient de se passer. Alors, il nous suffit d'utiliser l'utilitaire \lstinline{gprof} pour en extraire ce qui nous intéresse : le nombre d'appels à la fonction d'itération \lstinline{f}, avec la commande suivante :
+
+      \begin{lstlisting}
+        gprof ../c/pollard -b --exec-counts=f
+      \end{lstlisting}
+
+      La figure~\ref{fig:generate_measurement_data} nous montre comment nous avons utilisé ce procédé pour prendre des mesures de façon automatique sur le jeu de données que nous avons généré dans la section~\ref{chapter2:sagemath:data}\footnote{Pour rappel, nous avons généré 51 valeurs de $q$ (de taille variant de 5 à 55 bits), pour lesquelles nous avons trouvé un générateur, puis calculé 100 entrées pour le problème du logarithme discret (par exponentiation à une puissance aléatoire). Au total, notre fichier de test contient donc 5100 lignes contenant les entrées et la solution d'un problème de logarithme discret.}.
+
+      \begin{figure}
+        \center{}
+        \includegraphics[scale=0.3]{images/generate_measurement_data.png}
+        \caption{Agrégation des données générées et des données de profilage}
+        \label{fig:generate_measurement_data}
+      \end{figure}
+
+      La magie opère à travers le script \lstinline{generate_data.sh}\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/graph/generate_data.sh}}.
+      Pour chaque ligne de notre fichier de données, on formate une entrée pour le programme \lstinline{pollard}, dont on profile l'exécution.
+      Alors, on récupère le nombre d'appel à la fonction d'itération comme nous venons de le voir, et on ajoute une ligne à notre fichier de sortie suivant le format : données d'entrées auxquelles on rajoute le nombre que nous venons d'extraire.
+
+      Finalement, nous pouvons traiter les données ainsi recueillies à l'aide de Python et de la librairie Plotly\footnote{\url{https://plot.ly/}} afin d'afficher les résultats obtenus sous forme de graphe.
+
+      Le graphe~\ref{fig:basic_iteration_results} montre les résultats obtenus par notre programme implémentant la méthode de Pollard "originelle", telle que nous l'avons présentée au cours de ce chapitre : utilisant la fonction d'itération présentée dans le \textit{Handbook}~\autocite[107]{handbook} et la méthode du lièvre et de la tortue pour la détection de collisions.
+
+      On peut voir sur ce graphe que la complexité calculatoire de l'algorithme est en $\mathcal{O}(\sqrt{q})$, ce qui confirme les résultats présentés dans le papier originel : \textit{Monte Carlo Methods for Index Computation}\autocite{pollard0}.
+
+      \begin{figure}
+        \center{}
+        \includegraphics[scale=0.5]{images/iteration_de_base.png}
+        \caption{Nombre d'appels à la fonction d'itération avant la détection d'une collision en fonction de la taille de $q$ (l'ordre du groupe)}
+        \label{fig:basic_iteration_results}
+      \end{figure}
+
+
+    \paragraph{}
+    Maintenant que nous avons présenté le travail effectué relatif à la méthode de Pollard telle que présentée dans le \textit{Handbook}~\autocite[106]{handbook}, ainsi que les tests et mesures mis en places pour assurer sinon la qualité, au moins le bon fonctionnement de notre implémentation, nous allons dans le prochain chapitre discuter des améliorations possibles à travers de nouveaux algorithmes pour la fonction d'itération, la détection de collision ou la combinaison des deux.
