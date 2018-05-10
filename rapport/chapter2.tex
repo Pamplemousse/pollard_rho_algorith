@@ -79,6 +79,19 @@
 
         Avec ceci, nous pourrons mesurer les performances moyennes de notre programme sur en fonction de la taille de $q$. Dans la prochaine section de ce chapitre, nous parlerons finalement de notre implémentation en C de la résolution du Logarithme Discret, et en présenterons les performances sur le jeu de données que nous venons de générer.
 
+        \section{Implémentation en C}
+          Pour l'implémentation de l'algorithme $\rho$ de Pollard en C, nous avons utilisés la bibliothèque GMP\footnote{\url{https://gmplib.org/}}. Cette bibliothèque introduit un nouveau type : mpz\_t, qui permet de manipuler de grands entiers. Ce type est un peu contraignant à utiliser~: en effet, chaque utilisation d'un mpz\_t doit s'accompagner d'une initialisation (fonction mpz\_init) et d'un "nettoyage" (fonction mpz\_clear). En outre, chaque opération sur des mpz\_t se fait grâce à une fonction prédéfinie~: par exemple, une addition de deux mpz\_t ne se fait pas avec un simple "+", il faut utiliser la fonction mpz\_add. Aussi, nous devons à chaque fois faire une opération après l'autre~: chaque fonction fait une opération entre deux mpz\_t (ou un mpz\_t et un int), mais pas plus.\\
+
+          Par ailleurs, lorsque nous utilisons les mpz\_t, nous avons choisi de passer par des pointeurs afin d'éviter des copies en mémoire inutiles lors de différentes opérations, et cela permet évidemment un gain de temps.\\
+
+          Dans le but de résoudre le problème du logarithme discret, nous avons implémenté plusieurs fonctions, en nous appuyant sur ce que nous avons écrit dans le premier chapitre~:
+
+          \begin{itemize}
+            \item La fonction d'itération $f$ (module iteration\_basic.c~\footnote{Disponible \href{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/iteration_basic.c}{ici}.}) décrite en~\ref{chapter1:iteration_basique}, avec $S_1 = \{ x_i \equiv 1 \text{ mod } 3 \}$, $S_2 = \{ x_i \equiv 0 \text{ mod } 3 \}$ et $S_3 = \{ x_i \equiv 2 \text{ mod } 3 \}$. Étant donnés $x_i$, $a_i$ et $b_i$, elle calcule les termes suivant.
+            \item La fonction de détection de cycle de Floyd $collision$ (module collision\_floyd.c~\footnote{Disponible \href{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/collision_floyd.c}{ici}.}) comme vu en~\ref{chapter1:Floyd}~: à partir d'un couple $(x_i, x_{2i})$, elle calcule grâce à la fonction d'itération $f$, $x_{i+1} = f(x_i)$ et $x_{2(i+1)} = x_{2i+2} = f(f(x_{2i})$, et on s'arrête lorsque l'on trouve $j \in \mathbb{N}$ tel que $x_j = x_{2j} \text{ mod } p$ et $b_j \neq b_{2j} \text{ mod } q$.
+            \item La fonction de résolution du problème $discrete\_log\_from\_exponents$ (module equation\_solver.c~\footnote{Disponible \href{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/equation_solver.c}{ici}.}) utilisant~\eqref{eq:résolution}~: en partant d'un couple obtenu avec la fonction précédente, elle nous rend $\log_g(h)$.
+      \end{itemize}
+
 
     \section{Tests et mesures}
       Une bonne pratique de développement logiciel consiste à écrire des tests automatisés visant à valider le bon comportement de tout ou partie d'un programme sous certaines conditions et entrées.
@@ -129,7 +142,11 @@
       Ce test s'appuie sur les données générées par la fonction \lstinline{gen_data}, présentée dans la section~\ref{chapter2:sagemath:data}. Pour rappel, ces données consistent en un ensemble de lignes, chacune formatée comme suit : "$p$ $q$ $g$ $h$ $x$", et respectant $h = g^x$ mod $p$.
 
       Pour chacune de ces lignes, on formate une entrée que notre programme peut reconnaître, puis on l'exécute sur cette entrée, et enfin, on vérifie que le résultat rendu est conforme à ce que l'on sait être la solution du problème sur notre entrée.
+<<<<<<< 9a3b987e9ef4981e1b5b085d1e04c680693d43f8
       Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiant de la santé de notre programme lorsque ces tests passent~: il est capable de calculer correctement des logarithmes discrets.
+=======
+      Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiant de la santé de notre programme lorsque ces tests passent : il est capable de calculer correctement des logarithmes discrets.
+>>>>>>> [Rapport] Chapitre 2 : Implémentation en C
 
 
       \subsection{Mesure de l'efficacité des algorithmes}
