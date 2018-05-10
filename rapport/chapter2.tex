@@ -1,4 +1,4 @@
-\chapter{Implémentation de la version classique de l'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard}
+\chapter{Implémentation «\texorpdfstring{\,}{\ }classique\texorpdfstring{\,}{\ }»}
     Dans la partie précédente, nous avons discuté de la méthode de Pollard (telle que présentée dans le \textit{Handbook of Applied Cryptography}~\autocite[106]{handbook}) pour résoudre le problème du logarithme discret.
 
     Un des objectifs de ce projet est de produire un programme capable de résoudre le problème, que l'on peut formaliser de la façon suivante.
@@ -6,7 +6,8 @@
     En appelant le programme sur des entiers $p, q, g, h$ respectant~:
     \begin{equation} \label{eq:2}
       \begin{split}
-        p \text{\ et } q \text{\ deux nombres premiers tels qu'il existe un unique sous-groupe de } {(\mathbb{Z}/p\mathbb{Z})}^* \text{\ d'ordre } q \\
+        p \text{\ et } q \text{\ deux nombres premiers} \\
+        \text{tels qu'il existe un unique sous-groupe de } {(\mathbb{Z}/p\mathbb{Z})}^* \text{\ d'ordre } q \\
         g \text{\ un générateur de ce groupe multiplicatif, \textit{i.e} } {(\mathbb{Z}/p\mathbb{Z})}^* =\ < g > \\
         h \in {(\mathbb{Z}/p\mathbb{Z})}^*
       \end{split}
@@ -98,7 +99,7 @@
         \item Timely : les tests sont écrit au même moment que le code qu'ils valident.
       \end{itemize}
 
-      Nous avons donc, au cours du projet, écrit nos propres tests en C (se compilant et s'exécutant comme des programmes à part entière), intégré les tests qui ont jalonné nos avancées, et finalement automatisé des tests plus exotiques \footnote{Écrits en Bash, nous permettant de manipuler facilement les entrées et sorties standard lors de l'appel à l'exécutable produit}, que nous placerons sous le label "Tests d'intégration" faute de mieux.
+      Nous avons donc, au cours du projet, écrit nos propres tests en C (se compilant et s'exécutant comme des programmes à part entière), intégré les tests qui ont jalonné nos avancées, et finalement automatisé des tests plus exotiques \footnote{Écrits en Bash, nous permettant de manipuler facilement les entrées et sorties standard lors de l'appel à l'exécutable produit.}, que nous placerons sous le label "Tests d'intégration" faute de mieux.
 
       Ces "Tests d'intégration" nous permettent d'assurer la non régression de notre logiciel lorsque nous en changeons le code. En effet, si les tests passent, c'est que le logiciel calcule correctement le logarithme discret sur les entrées pré calculées. Si on modifie notre code (pour introduire une optimisation ou utiliser un autre algorithme), il nous suffit de lancer les tests pour garantir que notre nouveau programme fonctionne (au moins) aussi bien que le précédent.
 
@@ -121,7 +122,9 @@
 
       Clairement, l'idée est la même que pour les tests unitaires : il s'agit de vérifier le comportement du logiciel (au lieu d'un module) sur des entrées prédéfinies. Comme nous interagissons avec notre programme à travers l'interface en ligne de commande (comme vu en section \ref{}), nous avons choisi d'utiliser un outil nous permettant d'écrire des tests en Bash : bash\_unit \footnote{\url{https://github.com/pgrange/bash_unit}}.
 
-      Le code de ces tests est disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/test/test_pollard_program.sh}.
+      \begin{sloppypar}
+        Le code de ces tests est disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/test/test_pollard_program.sh}.
+      \end{sloppypar}
 
       Ce test s'appuie sur les données générées par la fonction \lstinline{gen_data}, présentée dans la section~\ref{chapter2:sagemath:data}. Pour rappel, ces données consistent en un ensemble de lignes, chacune formatée comme suit : "$p$ $q$ $g$ $h$ $x$", et respectant $h = g^x$ mod $p$.
 
