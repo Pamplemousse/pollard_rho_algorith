@@ -1,0 +1,13 @@
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+Après avoir présenté le problème du logarithme discret, nous avons expliqué que les meilleures performances pour le résoudre seraient obtenues avec une fonction aléatoire. Dans ces circonstances, le théorème des anniversaires assure qu'il faudrait approximativement $O(\sqrt{q})$ opérations dans le groupe $G$ d'ordre $q$ pour trouver $\log_g(h)$.
+
+Au cours de ce rapport, nous avons présenté l'algorithme $\rho$ de Pollard et certaines de ses optimisations, et notre implémentation de ces méthodes nous a permis de nous rapprocher de $\sqrt{q}$ opérations, sans toutefois jamais l'atteindre.
+
+Il aurait été possible d'améliorer notre travail. En effet, nous n'avions jamais utilisé GMP auparavant. Aussi découvrions-nous toutes ses fonctionnalités. Il n'était pas aisé d'utiliser cette librairie et une meilleure connaissance de la chose nous aurait permis de l'utiliser de manière plus judicieuse - et par conséquent d'optimiser certaines parties de notre code.
+
+Nous aurions également pu développer nos programmes de sorte à accepter les options. Nous aurions ainsi pu créer des options destinées à lancer le programme sur telle ou telle méthode. Notre implémentation actuelle nous force à recompiler le code lorsque l'on souhaite changer de méthode, et utiliser des options aurait pu nous permettre de faciliter les choses.
+
+Une autre amélioration aurait été de trouver un moyen de tester efficacement les fonctions aléatoires. En effet, nos tests reposent sur ce principe~: à partir d'entrées particulières on vérifie que l'on obtient des sorties spécifiques, déjà calculées. Pour les fonctions ayant une part importante d'aléatoire, comme la méthode des r-adding walks, cela rend les tests difficiles à mener correctement.
+
+Enfin, nous avons expliqué la théorie derrière la méthode du Tag Tracing, mais nous aurions pu l'implémenter. Les résultats présentés dans le papier \textit{Speeding Up the Pollard Rho Method on Prime Fields} \autocite[13]{pollard1} suggèrent que c'est une optimisation importante, bien plus rapide que l'algorithme $\rho$ de Pollard classique et la méthode des r-adding walks, et il aurait été bon de pouvoir le tester et nous en rendre compte par nous-mêmes.
