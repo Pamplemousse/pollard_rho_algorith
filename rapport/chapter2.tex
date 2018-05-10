@@ -83,20 +83,20 @@
     \section{Tests et mesures}
       Une bonne pratique de développement logiciel consiste à écrire des tests automatisés visant à valider le bon comportement de tout ou partie d'un programme sous certaines conditions et entrées.
 
-      Afin valider le bon fonctionnement de ce que nous avons produit, nous avons donc mis en place une suite de tests
+      Afin de valider le bon fonctionnement de ce que nous avons produit, nous avons donc mis en place une suite de tests
       \begin{enumerate*}
         \item unitaires \footnote{Visant à valider le fonctionnement des différents modules du logiciel, en vérifiant par exemple le résultat de fonctions sur des entrées spécifiques.}
         \item d'intégration\footnote{Validant le fonctionnement de l'ensemble du programme ; en vérifiant en particulier des résolutions de logarithme discret sur des entiers produits par exponentiation (dont nous connaissons donc le résultat).}
       \end{enumerate*}
-      que nous avons écrit.
+      que nous avons écrits.
 
       Lorsque l'on écrit des tests, il est intéressant d'avoir à l'esprit qu'ils devraient respecter certaines propriétés, connues sous l'acronyme FIRST :
       \begin{itemize}
-        \item Fast : les tests s'exécutent rapidement (et il est donc agréable de les lancer régulièrement).
-        \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bords affectant les autres. Nécessaire pour tester de petite unités de notre programme de façon isolée.
-        \item Repeatable : les tests produisent toujours le même résultat étant donnée une même entrée. Cela permet de favoriser l'automatisation des tests et avoir confiance en ce qui a été testé auparavant.
-        \item Self-validating : les tests détectent quand ils passent ou ratent ; il n'est pas nécessaire de forcer un pauvre programmeur à lire des tonnes de logs pour en connaitre le résultat.
-        \item Timely : les tests sont écrit au même moment que le code qu'ils valident.
+        \item Fast : les tests s'exécutent rapidement (et il est donc agréable de les lancer régulièrement).
+        \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bords affectant les autres. Nécessaire pour tester de petite unités de notre programme de façon isolée.
+        \item Repeatable : les tests produisent toujours le même résultat étant donnée une même entrée. Cela permet de favoriser l'automatisation des tests et d'avoir confiance en ce qui a été testé auparavant.
+        \item Self-validating : les tests détectent quand ils passent ou ratent ; il n'est pas nécessaire de forcer un pauvre programmeur à lire des tonnes de logs pour en connaître le résultat.
+        \item Timely : les tests sont écrits au même moment que le code qu'ils valident.
       \end{itemize}
 
       Nous avons donc, au cours du projet, écrit nos propres tests en C (se compilant et s'exécutant comme des programmes à part entière), intégré les tests qui ont jalonné nos avancées, et finalement automatisé des tests plus exotiques \footnote{Écrits en Bash, nous permettant de manipuler facilement les entrées et sorties standard lors de l'appel à l'exécutable produit.}, que nous placerons sous le label "Tests d'intégration" faute de mieux.
@@ -111,7 +111,7 @@
       Sous forme de programme C, chaque jeu de test est contenu dans un fichier et charge le module qu'il est sensé valider. Ensuite, grâce à quelques macros, nous validons le comportement des fonctions dudit module sous différents paramètres.
       Ainsi, et grâce au découpage modulaire de notre programme, nous pouvons attester du bon fonctionnement individuel des différentes fonctions nécessaires à la résolution du logarithme discret.
 
-      Par exemple, ce test permet de valider que la fonction \lstinline{f} retourne un code d'erreur (-1) si le premier paramètre est un pointeur nul :
+      Par exemple, ce test permet de valider que la fonction \lstinline{f} retourne un code d'erreur (-1) si le premier paramètre est un pointeur nul~:
 
       \lstinputlisting[language=C,firstline=32,lastline=36]{code/test_iteration_basic.c}
 
@@ -128,17 +128,17 @@
 
       Ce test s'appuie sur les données générées par la fonction \lstinline{gen_data}, présentée dans la section~\ref{chapter2:sagemath:data}. Pour rappel, ces données consistent en un ensemble de lignes, chacune formatée comme suit : "$p$ $q$ $g$ $h$ $x$", et respectant $h = g^x$ mod $p$.
 
-      Pour chacune de ces lignes, on formate une entrée que notre programme peut reconnaitre, puis on l'exécute sur cette entrée, et enfin, on vérifie que le résultat rendu est conforme à ce que l'on sait être la solution du problème sur notre entrée.
-      Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiant de la santé de notre programme lorsque ces tests passent : il est capable de calculer correctement des logarithmes discrets.
+      Pour chacune de ces lignes, on formate une entrée que notre programme peut reconnaître, puis on l'exécute sur cette entrée, et enfin, on vérifie que le résultat rendu est conforme à ce que l'on sait être la solution du problème sur notre entrée.
+      Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiant de la santé de notre programme lorsque ces tests passent~: il est capable de calculer correctement des logarithmes discrets.
 
 
       \subsection{Mesure de l'efficacité des algorithmes}
-      L'intérêt d'implémenter différents algorithmes d'itération et de détection de collision est de pouvoir comparer leur performances lors du calcul de logarithmes discrets. Nous ne parlerons pas ici de performance en terme de temps (rapidité d'exécution), ni en terme d'espace (quantité de mémoire utilisée), mais nous cherchons plutôt à évaluer le nombre d'appels à la fonction d'itération (on parlera de nombre de cycles) nécessaires en moyenne avant d'obtenir une collision nous permettant de résoudre le problème.
+      L'intérêt d'implémenter différents algorithmes d'itération et de détection de collision est de pouvoir comparer leurs performances lors du calcul de logarithmes discrets. Nous ne parlerons pas ici de performance en terme de temps (rapidité d'exécution), ni en terme d'espace (quantité de mémoire utilisée), mais nous cherchons plutôt à évaluer le nombre d'appels à la fonction d'itération (on parlera de nombre de cycles) nécessaires en moyenne avant d'obtenir une collision nous permettant de résoudre le problème.
 
       À partir d'un jeu de données généré comme expliqué dans la section~\ref{chapter2:sagemath:data}, nous avons exécuté notre programme sur différentes entrées, tout en mesurant, lors de chaque résolution, le nombre d'appels à la fonction \lstinline{f} (fonction d'itération) qu'il a été nécessaire d'effectuer avant l'obtention d'une collision.
 
-      Pour nous permette de mesurer le nombre d'appels à une fonction spécifique dans notre programme, nous avons utilisé GPROF\footnote{\url{https://sourceware.org/binutils/docs/gprof/}}, en compilant notre programme avec les options \lstinline{-pg -no-pie}. Ces options rajoutent des instructions dites "d'instrumentation", qui permettent de collecter des données lors l'exécution du programme.
-      Ainsi, lorsque l'on lance le programme sur une entrée spécifique, un fichier \lstinline{gmon.out} est généré contenant les données de profilage relative à l'exécution qui vient de se passer. Alors, il nous suffit d'utiliser l'utilitaire \lstinline{gprof} pour en extraire ce qui nous intéresse : le nombre d'appels à la fonction d'itération \lstinline{f}, avec la commande suivante :
+      Pour nous permettre de mesurer le nombre d'appels à une fonction spécifique dans notre programme, nous avons utilisé GPROF\footnote{\url{https://sourceware.org/binutils/docs/gprof/}}, en compilant notre programme avec les options \lstinline{-pg -no-pie}. Ces options rajoutent des instructions dites "d'instrumentation", qui permettent de collecter des données lors de l'exécution du programme.
+      Ainsi, lorsque l'on lance le programme sur une entrée spécifique, un fichier \lstinline{gmon.out} est généré contenant les données de profilage relative à l'exécution qui vient de se passer. Alors, il nous suffit d'utiliser l'utilitaire \lstinline{gprof} pour en extraire ce qui nous intéresse : le nombre d'appels à la fonction d'itération \lstinline{f}, avec la commande suivante~:
 
       \begin{lstlisting}
         gprof ../c/pollard -b --exec-counts=f
@@ -155,7 +155,7 @@
 
       La magie opère à travers le script \lstinline{generate_data.sh}\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/graph/generate_data.sh}}.
       Pour chaque ligne de notre fichier de données, on formate une entrée pour le programme \lstinline{pollard}, dont on profile l'exécution.
-      Alors, on récupère le nombre d'appel à la fonction d'itération comme nous venons de le voir, et on ajoute une ligne à notre fichier de sortie suivant le format : données d'entrées auxquelles on rajoute le nombre que nous venons d'extraire.
+      Alors, on récupère le nombre d'appels à la fonction d'itération comme nous venons de le voir, et on ajoute une ligne à notre fichier de sortie suivant le format~: données d'entrées auxquelles on rajoute le nombre que nous venons d'extraire.
 
       Finalement, nous pouvons traiter les données ainsi recueillies à l'aide de Python et de la librairie Plotly\footnote{\url{https://plot.ly/}} afin d'afficher les résultats obtenus sous forme de graphe.
 
@@ -172,4 +172,4 @@
 
 
     \paragraph{}
-    Maintenant que nous avons présenté le travail effectué relatif à la méthode de Pollard telle que présentée dans le \textit{Handbook}~\autocite[106]{handbook}, ainsi que les tests et mesures mis en places pour assurer sinon la qualité, au moins le bon fonctionnement de notre implémentation, nous allons dans le prochain chapitre discuter des améliorations possibles à travers de nouveaux algorithmes pour la fonction d'itération, la détection de collision ou la combinaison des deux.
+    A présent que nous avons présenté le travail effectué relatif à la méthode de Pollard telle que présentée dans le \textit{Handbook}~\autocite[106]{handbook}, ainsi que les tests et mesures mis en place pour assurer sinon la qualité, au moins le bon fonctionnement de notre implémentation, nous allons dans le prochain chapitre discuter des améliorations possibles à travers de nouveaux algorithmes pour la fonction d'itération, la détection de collision ou la combinaison des deux.
