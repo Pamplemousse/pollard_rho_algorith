@@ -95,7 +95,7 @@
         \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bords affectant les autres. Nécessaire pour tester de petite unités de notre programme de façon isolée.
         \item Repeatable : les tests produisent toujours le même résultat étant donnée une même entrée. Cela permet de favoriser l'automatisation des tests et avoir confiance en ce qui a été testé auparavant.
         \item Self-validating : les tests détectent quand ils passent ou ratent ; il n'est pas nécessaire de forcer un pauvre programmeur à lire des tonnes de logs pour en connaitre le résultat.
-        \item Timely : les tests sont écrit au même moment que le code qu'ils valident (avant en TDD !).
+        \item Timely : les tests sont écrit au même moment que le code qu'ils valident.
       \end{itemize}
 
       Nous avons donc, au cours du projet, écrit nos propres tests en C (se compilant et s'exécutant comme des programmes à part entière), intégré les tests qui ont jalonné nos avancées, et finalement automatisé des tests plus exotiques \footnote{Écrits en Bash, nous permettant de manipuler facilement les entrées et sorties standard lors de l'appel à l'exécutable produit}, que nous placerons sous le label "Tests d'intégration" faute de mieux.
@@ -121,9 +121,9 @@
 
       Clairement, l'idée est la même que pour les tests unitaires : il s'agit de vérifier le comportement du logiciel (au lieu d'un module) sur des entrées prédéfinies. Comme nous interagissons avec notre programme à travers l'interface en ligne de commande (comme vu en section \ref{}), nous avons choisi d'utiliser un outil nous permettant d'écrire des tests en Bash : bash\_unit \footnote{\url{https://github.com/pgrange/bash_unit}}.
 
-      Le code de ces tests est disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/test/test_pollard_program.sh} .
+      Le code de ces tests est disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/test/test_pollard_program.sh}.
 
-      Ce test s'appuie sur les données générées par la fonction \lstinline{gen\_data}, présentée dans la section~\ref{chapter2:sagemath:data}. Pour rappel, ces données consistent en un ensemble de lignes, chacune formatée comme suit : "$p$ $q$ $g$ $h$ $x$", et respectant $h = g^x$ mod $p$ .
+      Ce test s'appuie sur les données générées par la fonction \lstinline{gen_data}, présentée dans la section~\ref{chapter2:sagemath:data}. Pour rappel, ces données consistent en un ensemble de lignes, chacune formatée comme suit : "$p$ $q$ $g$ $h$ $x$", et respectant $h = g^x$ mod $p$.
 
       Pour chacune de ces lignes, on formate une entrée que notre programme peut reconnaitre, puis on l'exécute sur cette entrée, et enfin, on vérifie que le résultat rendu est conforme à ce que l'on sait être la solution du problème sur notre entrée.
       Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiant de la santé de notre programme lorsque ces tests passent : il est capable de calculer correctement des logarithmes discrets.
