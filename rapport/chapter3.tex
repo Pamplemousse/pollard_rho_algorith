@@ -71,15 +71,15 @@
 
       Pour partitionner notre groupe, nous posons $T_s = \{ x \in G \text{ tel que } x \equiv s \text{ mod } r \}$.
 
-      Pour plus de facilités de manipulation, nous avons créer une structure Mmn\_t~:
+      Pour plus de facilité de manipulation, nous avons créé une structure Mmn\_t~:
 
       \lstinputlisting[language=C,firstline=6,lastline=10]{code/iteration.h}
 
-      $M$, $m$ et $n$ correspondent respectivement à $M_s$, $m_s$ et $n_s$ comme décrit plus haut.
+      $M$, $m$ et $n$ correspondent respectivement à $M_s$, $m_s$ et $n_s$ comme décrits plus haut.
 
-      La première chose à faire est de générer aléatoirement $r$ valeurs de Mmn\_t, c'est la fonction \textit{gen\_data} qui est chargée de faire ceci~: elle tire aléatoirement un $m$ et un $n$ entre $0$ et $q - 1$ et pose $M = g^m \cdot h^n \text{ mod } p$. Ce procédé est répété $r$ fois.
+      La première chose à faire est de générer aléatoirement $r$ valeurs de Mmn\_t, c'est la fonction \textit{gen\_data} qui est chargée de cette tâche~: elle tire aléatoirement un $m$ et un $n$ entre $0$ et $q - 1$ et pose $M = g^m \cdot h^n \text{ mod } p$. Ce procédé est répété $r$ fois.
 
-      Maintenant que nous avons cela, nous pouvons implémenter la fonction d'itération utilisant la variante des r-adding walks telle que décrite dans la partie théorique (calcul des $a_i$, $b_i$ et $x_i$ grâce au terme précédent de chacune de ces suites).
+      A partir de là, nous pouvons implémenter la fonction d'itération utilisant la variante des r-adding walks telle que décrite dans la partie théorique (calcul des $a_i$, $b_i$ et $x_i$ grâce aux termes précédents de chacune de ces suites).
 
       % TODO
       \subsection{Résultats}
@@ -99,7 +99,7 @@
       \subsection{Théorie}
       Trouver un moyen de détecter une collision le plus rapidement possible après que celle-ci ait eu lieu est un autre problème important.  L'objectif est de limiter au maximum le nombre d'appels à la fonction d'itération avant d'obtenir une collision, tout en utilisant peu de mémoire. Plusieurs méthodes ont été développées ; parmi elles, celle des points distingués de Quisquater et Delescaille~\autocite[4]{pollard1} est considérée comme la plus efficace.
 
-      On commence par choisir une propriété sur les éléments de $G$ qui soit facilement vérifiable - par exemple, avoir une écriture binaire se terminant par un certain nombre de $0$. Les éléments de $G$ satisfaisant cette propriété sont appelés les points distingués.
+      On commence par choisir une propriété sur les éléments de $G$ qui soit facilement vérifiable - par exemple, avoir une écriture binaire se terminant par un certain nombre de zéros. Les éléments de $G$ satisfaisant cette propriété sont appelés les points distingués.
 
       On choisit un élément de $G$ de manière aléatoire et on lance la fonction d'itération dessus. Les appels à cette fonction s'arrêtent lorsqu'on a obtenu un point distingué. Celui-ci est alors stocké dans une table (on stocke également $a_i$ et $b_i$ tels que cet élément de $G$ s'écrit $g^{a_i} \cdot h^{b_i}$), et on choisit un autre élément de $G$ de manière aléatoire avant de réitérer le procédé. L'algorithme s'arrête lorsqu'on a trouvé deux points distingués égaux. Il y a fort à parier qu'on est parti de deux éléments différents de $G$ pour trouver ce point distingué, et que par conséquent on ait trouvé deux écritures différentes du point distingué en fonction de $g$ et $h$. On obtient donc des éléments $a_i$, $b_i$, $a_j$ et $b_j$ tels que $g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j}$ avec $(a_i,b_i) \neq (a_j,b_j)$ et on peut résoudre le problème du logarithme discret.
 
@@ -108,14 +108,14 @@
       \subsection{Implémentation en C}
       Tout d'abord, nous parlerons ici du module distinguished\_points.c\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/distinguished_points.c}} regroupant plusieurs fonctions utilitaires.\\
 
-      Pour définir nos points distingués, il nous fallait une propriété facilement testable~: nous avons choisi celle donnée à titre d'exemple (écriture binaire se terminant par un certain nombre de $0$).
-      Pour déterminer ce nombre de $0$, que l'on notera $k$, nous avons créé la fonction \lstinline{number_of_zeroes} qui renvoie un nombre proportionnel à la taille de $q$ et au nombre de points que l'on peut stocker (ce dernier est défini comme une constante, que l'on a pris égale à $100000$)~: nous avons posé $k = \lceil log_2(\frac{\sqrt{q}}{N}) \rceil $.
+      Pour définir nos points distingués, il nous fallait une propriété facilement testable~: nous avons choisi celle donnée à titre d'exemple (écriture binaire se terminant par un certain nombre de $0$), car elle nous permet de contrôler la proportion de points distingués que nous souhaitons avoir dans le groupe considéré.
+      Pour déterminer ce nombre de zéros, que l'on notera $k$, nous avons créé la fonction \lstinline{number_of_zeroes} qui renvoie un nombre proportionnel à la taille de $q$ et au nombre de points que l'on peut stocker (ce dernier est défini comme une constante, que l'on a prise égale à $100000$)~: nous avons posé $k = \lceil log_2(\frac{\sqrt{q}}{N}) \rceil $.
 
-      En effet, soient $N$ le nombre de points distingués que l'on peut stocker et $\theta$ la proportion de points distingués. Si on prend $\theta \approx \frac{N}{\sqrt{q}}$, on aura alors, lors du parcours de $\sqrt{q}$ éléments du groupe, $\theta \sqrt{q} = N$.
-      Regardons maintenant comment déterminer le nombre $k$ de $0$ à prendre en compte.
+      En effet, soit $N$ le nombre de points distingués que l'on peut stocker et $\theta$ la proportion de points distingués. Si on prend $\theta \approx \frac{N}{\sqrt{q}}$, on aura alors, lors du parcours de $\sqrt{q}$ éléments du groupe, $\theta \sqrt{q} = N$.
+      Regardons maintenant comment déterminer le nombre $k$ de zéros à prendre en compte.
       On a $\theta = \frac{1}{2^k}$, d'où $\frac{N}{\sqrt{q}} = \frac{1}{2^k}$. Ainsi $2^k = \frac{\sqrt{q}}{N}$, et donc $k = log_2(\frac{\sqrt{q}}{N})$.\\
 
-      Dans ce même module, nous avons entre autres une fonction nous permettant de savoir si un point est un point distingué (\lstinline{is_distinguished_point}).
+      Dans ce même module, nous avons entre autre une fonction nous permettant de savoir si un point est un point distingué (\lstinline{is_distinguished_point}).
       De plus, nous avons la fonction \lstinline{is_in_list_of_distinguished_points}~: si l'élément donné en paramètre se trouve dans la liste des points distingués déjà calculés, elle retourne l'indice de cet élément, et $-1$ sinon.\\
 
       Il suffit maintenant d'implémenter la fonction de collision se trouvant dans le module collision\_distinguished\_points.c\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/collision_distinguished_points.c}.} en ayant au préalable calculé le point de départ (fonction \lstinline{generate_starting_point}).
