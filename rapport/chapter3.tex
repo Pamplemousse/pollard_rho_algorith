@@ -118,7 +118,9 @@
       Dans ce même module, nous avons entre autre une fonction nous permettant de savoir si un point est un point distingué (\lstinline{is_distinguished_point}).
       De plus, nous avons la fonction \lstinline{is_in_list_of_distinguished_points}~: si l'élément donné en paramètre se trouve dans la liste des points distingués déjà calculés, elle retourne l'indice de cet élément, et $-1$ sinon.\\
 
-      Il suffit maintenant d'implémenter la fonction de collision se trouvant dans le module collision\_distinguished\_points.c\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/collision_distinguished_points.c}.} en ayant au préalable calculé le point de départ (fonction \lstinline{generate_starting_point}).
+      Il reste maintenant à implémenter la fonction de collision que l'on place dans le module collision\_distinguished\_points.c\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/collision_distinguished_points.c}.}.
+      À l'aide d'une fonction générant des points de départ (\lstinline{generate_starting_point}), on cherche à atteindre des points distingués par appels successifs à la fonction \lstinline{f} d'itération.
+      Pour de détecter des collisions, les points atteints sont comparés avec le contenu du tableau \lstinline{distinguished_points}. Si le point a déjà été calculé, nous avons une collision, sinon, il est rajouté au tableau (avec ces exposants respectant la relation~\ref{eq:1}), puis un nouveau point de départ est choisi ; on recommence.
 
       \subsection{Résultats}
       Toujours en utilisant le protocole défini dans le chapitre précédent (\ref{chapter2:protocole_de_mesure}), nous avons mesuré les performances de l'implémentation de la méthode des points distingués dans notre programme.

@@ -93,7 +93,7 @@
             \item La fonction de résolution du problème discrete\_log\_from\_exponents (module equation\_solver.c~\footnote{Disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/equation_solver.c}.}) utilisant~\eqref{eq:résolution}~: en partant d'un couple obtenu avec la fonction précédente, elle nous rend $\log_g(h)$.
           \end{itemize}
 
-          \textbf{Remarque~:} En parcourant le code, vous pouvez voir apparaître la structure Mmn\_t que nous avons créer. Elle n'est pas utile ici (nous l'appelons avec la valeur NULL dans l'implémentation de base), mais nous l'avons introduite pour des raisons pratiques (pas de changement de signature de \lstinline{f} par rapport à l'optimisation future de la fonction d'itération, ce qui évite les problèmes lors d'un appel à \lstinline{f} avec la fonction de collision). Tout ce qui concerne cette structure est expliqué à la section \ref{chapter3:r-adding:implémentation}.\\
+          \textbf{Remarque~:} En parcourant le code, vous pouvez voir apparaître la structure Mmn\_t que nous avons créée. Inutilisée ici (nous l'appelons avec la valeur NULL dans l'implémentation de base), nous l'avons introduite pour des raisons pratiques (respect de la signature de \lstinline{f} lors d'une optimisation future -- méthode des r-adding walks). Tout ce qui concerne cette structure est expliqué dans la section~\ref{chapter3:r-adding:implémentation}.
 
           Finalement, une fois compilé, notre programme s'utilise de la façon suivante :
           \begin{lstlisting}
