@@ -43,7 +43,7 @@
         Premièrement, nous n'avons pas cherché à optimiser notre programme, avons mal architecturé les différentes briques logiques, et n'avons porté aucune attention à la gestion mémoire.
         On note donc, parmi les points problématiques de cette implémentation~: mélange des fonctions de calcul et d'affichage et stockage non nécessaire des valeurs intermédiaires (impliquant probablement, dès lors que l'on utilisera de grands nombres, une consommation mémoire démesurée, et des temps de calcul interminables).
 
-        C'est pour contrôler aux mieux ces aspects que nous nous sommes tournés vers le langage C pour implémenter une version efficiente de l'algorithme de Pollard.
+        C'est pour contrôler au mieux ces aspects que nous nous sommes tournés vers le langage C pour implémenter une version efficiente de l'algorithme de Pollard.
 
         Finalement, obtenir rapidement un prototype de notre solution à l'aide de SageMath nous a permis de soulever ces questions d'organisation du code et d'esquisser l'architecture dont nous aurons besoin lors de l'implémentation en C.
         Mais avant d'entrer dans ces subtils détails, présentons maintenant un autre sujet pour lequel SageMath a été pertinent~: la génération des nombres $p, q, g, h$ respectant les relations définies en \eqref{eq:2}.
@@ -62,7 +62,7 @@
 
         On obtient ainsi un sous-groupe $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.
 
-        Pour finir, il nous reste à trouver un générateur de ce groupe ainsi formé. On sélectionne un élément $v \in \mathbb{Z}/p\mathbb{Z}$ (concrètement on commence à $v = 2$). On pose alors $g = v^u \text{ mod } p$. Si $g = 1$, on prend un autre élément $v$ (ou on incrémente $v$), sinon $g$ est un générateur du groupe (fonction gen\_group).\\
+        Pour finir, il nous reste à trouver un générateur du groupe ainsi formé. On sélectionne un élément $v \in \mathbb{Z}/p\mathbb{Z}$ (concrètement on commence à $v = 2$). On pose alors $g = v^u \text{ mod } p$. Si $g = 1$, on prend un autre élément $v$ (ou on incrémente $v$), sinon $g$ est un générateur du groupe (fonction gen\_group).\\
         En effet, dans ce dernier cas on aura~:
         \begin{align*}
         g^q & = v^{uq} \\
@@ -80,6 +80,7 @@
         Avec ceci, nous pourrons mesurer les performances moyennes de notre programme en fonction de la taille de $q$. Dans la prochaine section de ce chapitre, nous parlerons finalement de notre implémentation en C de la résolution du Logarithme Discret, et en présenterons les performances sur le jeu de données que nous venons de générer.
 
         \section{Implémentation en C}
+        \label{chapter2:implementation_c}
           Pour implémenter l'algorithme $\rho$ de Pollard en C, nous avons utilisé la bibliothèque GMP\footnote{\url{https://gmplib.org/}}. Cette bibliothèque introduit un nouveau type~: mpz\_t, qui permet de manipuler de grands entiers. Ce type est un peu contraignant à utiliser~: en effet, chaque utilisation d'un mpz\_t doit s'accompagner d'une initialisation (fonction mpz\_init) et d'un nettoyage de la mémoire (fonction mpz\_clear). En outre, chaque opération sur des mpz\_t se fait grâce à une fonction prédéfinie~: par exemple, une addition de deux mpz\_t ne se fait pas avec un simple "+", il faut utiliser la fonction mpz\_add. Aussi, nous devons à chaque fois faire une opération après l'autre~: chaque fonction fait une opération entre deux mpz\_t (ou un mpz\_t et un int), mais pas plus.
 
           Par ailleurs, lorsque nous utilisons les mpz\_t, nous avons choisi de passer par des pointeurs afin d'éviter des copies en mémoire inutiles lors de différentes opérations, et cela permet évidemment un gain de temps durant l'exécution du programme.
@@ -88,7 +89,7 @@
 
           \begin{itemize}
             \item La fonction d'itération $f$ (module iteration\_basic.c~\footnote{Disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/iteration_basic.c}.}) décrite en~\ref{chapter1:iteration_basique}, avec les ensembles $S_1 = \{ x_i \equiv 1 \text{ mod } 3 \}$, $S_2 = \{ x_i \equiv 0 \text{ mod } 3 \}$ et $S_3 = \{ x_i \equiv 2 \text{ mod } 3 \}$. Étant donnés $x_i$, $a_i$ et $b_i$, elle calcule les termes suivants.
-            \item La fonction de détection de cycle de Floyd $collision$ (module collision\_floyd.c~\footnote{Disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/collision_floyd.c}.}) comme vue en~\ref{chapter1:Floyd}~: à partir d'un couple $(x_i, x_{2i})$, elle calcule grâce à la fonction d'itération $f$, $x_{i+1} = f(x_i)$ et $x_{2(i+1)} = x_{2i+2} = f(f(x_{2i})$, et on s'arrête lorsque l'on trouve $j \in \mathbb{N}$ tel que $x_j = x_{2j} \text{ mod } p$ et $b_j \neq b_{2j} \text{ mod } q$.
+            \item La fonction de détection de cycle de Floyd $collision$ (module collision\_floyd.c~\footnote{Disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/collision_floyd.c}.}) comme vue en~\ref{chapter1:Floyd}~: à partir d'un couple $(x_i, x_{2i})$, elle calcule grâce à la fonction d'itération $f$, $x_{i+1} = f(x_i)$ et $x_{2(i+1)} = x_{2i+2} = f(f(x_{2i}))$, et on s'arrête lorsque l'on trouve $j \in \mathbb{N}$ tel que $x_j = x_{2j} \text{ mod } p$ et $b_j \neq b_{2j} \text{ mod } q$.
             \item La fonction de résolution du problème $discrete\_log\_from\_exponents$ (module equation\_solver.c~\footnote{Disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/equation_solver.c}.}) utilisant~\eqref{eq:résolution}~: en partant d'un couple obtenu avec la fonction précédente, elle nous rend $\log_g(h)$.
           \end{itemize}
 
@@ -125,7 +126,7 @@
       Lorsque l'on écrit des tests, il est intéressant d'avoir à l'esprit qu'ils devraient respecter certaines propriétés, connues sous l'acronyme FIRST :
       \begin{itemize}
         \item Fast : les tests s'exécutent rapidement (et il est donc agréable de les lancer régulièrement).
-        \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bords affectant les autres. Nécessaire pour tester de petites unités de notre programme de façon isolée.
+        \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bord affectant les autres. Nécessaire pour tester de petites unités de notre programme de façon isolée.
         \item Repeatable : les tests produisent toujours le même résultat étant donnée une même entrée. Cela permet de favoriser l'automatisation des tests et d'avoir confiance en ce qui a été testé auparavant.
         \item Self-validating : les tests détectent quand ils passent ou ratent ; il n'est pas nécessaire de forcer un pauvre programmeur à lire des tonnes de logs pour en connaître le résultat.
         \item Timely : les tests sont écrits au même moment que le code qu'ils valident.
@@ -152,7 +153,7 @@
       Malheureusement, valider individuellement le comportement de nos fonctions sur certaines entrées ne garantit pas que lorsqu'elles seront utilisées ensemble, le programme se comportera comme nous le souhaiterions.
       Pour se protéger des bugs qui peuvent alors subvenir, nous avons choisi d'écrire des tests de plus "haut niveau", qui valident les sorties du programme sur des entrées contrôlées.
 
-      Clairement, l'idée est la même que pour les tests unitaires : il s'agit de vérifier le comportement du logiciel (au lieu d'un module) sur des entrées prédéfinies. Comme nous interagissons avec notre programme à travers l'interface en ligne de commande (comme vu en section \ref{}), nous avons choisi d'utiliser un outil nous permettant d'écrire des tests en Bash : bash\_unit \footnote{\url{https://github.com/pgrange/bash_unit}}.
+      Clairement, l'idée est la même que pour les tests unitaires : il s'agit de vérifier le comportement du logiciel (au lieu d'un module) sur des entrées prédéfinies. Comme nous interagissons avec notre programme à travers l'interface en ligne de commande (comme vu en section \ref{chapter2:implementation_c}), nous avons choisi d'utiliser un outil nous permettant d'écrire des tests en Bash : bash\_unit \footnote{\url{https://github.com/pgrange/bash_unit}}.
 
       \begin{sloppypar}
         Le code de ces tests est disponible à l'adresse : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/test/test_pollard_program.sh}.
@@ -171,7 +172,7 @@
       À partir d'un jeu de données généré comme expliqué dans la section~\ref{chapter2:sagemath:data}, nous avons exécuté notre programme sur différentes entrées, tout en mesurant, lors de chaque résolution, le nombre d'appels à la fonction \lstinline{f} (fonction d'itération) qu'il a été nécessaire d'effectuer avant l'obtention d'une collision.
 
       Pour nous permettre de mesurer le nombre d'appels à une fonction spécifique dans notre programme, nous avons utilisé GPROF\footnote{\url{https://sourceware.org/binutils/docs/gprof/}}, en compilant notre programme avec les options \lstinline{-pg -no-pie}. Ces options rajoutent des instructions dites "d'instrumentation", qui permettent de collecter des données lors de l'exécution du programme.
-      Ainsi, lorsque l'on lance le programme sur une entrée spécifique, un fichier \lstinline{gmon.out} est généré contenant les données de profilage relative à l'exécution qui vient de se passer. Alors, il nous suffit d'utiliser l'utilitaire \lstinline{gprof} pour en extraire ce qui nous intéresse : le nombre d'appels à la fonction d'itération \lstinline{f}, avec la commande suivante~:
+      Ainsi, lorsque l'on lance le programme sur une entrée spécifique, un fichier \lstinline{gmon.out} est généré contenant les données de profilage relatives à l'exécution qui vient de se passer. Alors, il nous suffit d'utiliser l'utilitaire \lstinline{gprof} pour en extraire ce qui nous intéresse : le nombre d'appels à la fonction d'itération \lstinline{f}, avec la commande suivante~:
 
       \begin{lstlisting}
         gprof ../c/pollard -b --exec-counts=f
