@@ -165,7 +165,8 @@
 
 
       \subsection{Mesure de l'efficacité des algorithmes}
-      L'intérêt d'implémenter différents algorithmes d'itération et de détection de collision est de pouvoir comparer leurs performances lors du calcul de logarithmes discrets. Nous ne parlerons pas ici de performance en terme de temps (rapidité d'exécution), ni en terme d'espace (quantité de mémoire utilisée), mais nous cherchons plutôt à évaluer le nombre d'appels à la fonction d'itération (on parlera de nombre de cycles) nécessaires en moyenne avant d'obtenir une collision nous permettant de résoudre le problème.
+      \label{chapter2:protocole_de_mesure}
+      L'intérêt d'implémenter différents algorithmes d'itération et de détection de collision est de pouvoir comparer leur performances lors du calcul de logarithmes discrets. Nous ne parlerons pas ici de performance en terme de temps (rapidité d'exécution), ni en terme d'espace (quantité de mémoire utilisée), mais nous cherchons plutôt à évaluer le nombre d'appels à la fonction d'itération (on parlera de nombre de cycles) nécessaires en moyenne avant d'obtenir une collision nous permettant de résoudre le problème.
 
       À partir d'un jeu de données généré comme expliqué dans la section~\ref{chapter2:sagemath:data}, nous avons exécuté notre programme sur différentes entrées, tout en mesurant, lors de chaque résolution, le nombre d'appels à la fonction \lstinline{f} (fonction d'itération) qu'il a été nécessaire d'effectuer avant l'obtention d'une collision.
 

@@ -66,6 +66,16 @@
       % TODO
       \subsection{Implémentation}
       \subsection{Résultats}
+      En utilisant le protocole défini dans le chapitre précédent (\ref{chapter2:protocole_de_mesure}), nous avons mesuré les performances de notre implémentation de la méthode "r-adding walks".
+
+      \begin{figure}
+        \center{}
+        \includegraphics[scale=0.5]{images/iteration_r_adding_walks.png}
+        \caption{Nombre d'appels à la fonction d'itération (r-adding walks) avant la détection d'une collision en fonction de la taille de $q$}
+        \label{fig:r_adding_walks_iteration_results}
+      \end{figure}
+
+      Encore une fois, le graphe obtenu (figure \ref{fig:r_adding_walks_iteration_results}) confirme que la complexité de l'algorithme est en $\mathcal{O}(\sqrt{q})$.
 
 
     \section{Méthode des points distingués}
@@ -81,6 +91,48 @@
       % TODO
       \subsection{Implémentation}
       \subsection{Résultats}
+      Toujours en utilisant le protocole défini dans le chapitre précédent (\ref{chapter2:protocole_de_mesure}), nous avons mesuré les performances de l'implémentation de la méthode des points distingués dans notre programme.
+
+      \begin{figure}
+        \center{}
+        \includegraphics[scale=0.5]{images/distinguished_points.png}
+        \caption{Nombre d'appels à la fonction d'itération (r-adding walks) avant la détection d'une collision selon la méthode des points distingués en fonction de la taille de $q$}
+        \label{fig:r_adding_walks_and_distinguished_points_results}
+      \end{figure}
+
+      Le graphe obtenu (figure \ref{fig:r_adding_walks_and_distinguished_points_results}) met en évidence que la méthode des points distingués n'a pas changé que la complexité de l'algorithme, toujours est en $\mathcal{O}(\sqrt{q})$.
+
+
+    \section{Comparaison}
+    Au final, nous avons implémenté deux fonctions d'itération différentes
+    \begin{enumerate*}
+      \item "basique" (telle que présentée dans le \textit{Handbook}~\autocite[107]{handbook})
+      \item r-adding walks
+    \end{enumerate*}
+    , ainsi que deux méthodes de détection de collisions
+    \begin{enumerate*}
+      \item le lièvre et la tortue
+      \item méthode des points distingués
+    \end{enumerate*}
+
+    Ainsi, nous avons pu en mesurer les performances afin de pouvoir les comparer. Finalement, nous avons récolté des données pour les combinaisons suivantes :
+
+    \begin{itemize}
+      \item fonction d'itération basique et méthode du lièvre et de la tortue
+      \item r-adding walks et méthode du lièvre et de la tortue
+      \item r-adding walks et méthode des points distingués
+    \end{itemize}
+
+    Dans la continuité de ce que nous avons présenté jusqu'à présent, nous avons rassemblé sur un même graphe (figure \ref{fig:comparatif}) les performances des différentes combinaisons de méthodes mesurées.
+
+    \begin{figure}
+      \center{}
+      \includegraphics[scale=0.5]{images/comparaison_methodes.png}
+      \caption{Nombre d'appels à la fonction d'itération selon les différentes implémentations avant la détection d'une collision en fonction de la taille de $q$}
+      \label{fig:comparatif}
+    \end{figure}
+
+    On voit alors clairement que la combinaison des méthodes r-adding walks et des points distingués apporte une nette amélioration dans la résolution du problème sans pour autant en changer la complexité calculatoire, toujours en $\mathcal{O}(\sqrt{q})$.
 
 
     \section{Tag Tracing}
