@@ -89,9 +89,9 @@
 
   \begin{frame}{Méthode des points distingués}
     \begin{itemize}
-        \item points distingués~: satisfont une propriété facilement vérifiable (écriture binaire se terminant par $k$ zéros)
-        \item choisir $x \in G$ aléatoirement, lancer la fonction d'itération jusqu'à tomber sur un point distingué, le stocker et réitérer le procédé
-        \item fin~: lorsqu'on a trouvé deux fois le même point distingué, on a alors $g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j}$ avec $(a_i,b_i) \neq (a_j,b_j)$
+        \item points distingués~: éléments de $G$ dont l'écriture binaire se termine par $k$ zéros
+        \item $x_0 \in G$ choisi aléatoirement, tel que $x_0 = g^{a_0} * h^{b_0}$
+        \item fin~: lorsqu'on a atteint deux fois le même point distingué, on a alors $g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j}$
     \end{itemize}
     \begin{figure}
       \center{}
@@ -115,6 +115,11 @@
   \end{frame}
 
   \begin{frame}{Tests et mesures}
+    \begin{figure}
+      \center{}
+      \includegraphics[scale=0.2]{images/generate_measurement_data_for_presentation.png}
+      \caption{Agrégation des données générées et des données de profilage}
+    \end{figure}
   \end{frame}
 
   \begin{frame}{Résultats !}
