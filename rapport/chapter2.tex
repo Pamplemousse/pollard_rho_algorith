@@ -41,7 +41,7 @@
         Notons que ce code est critiquable sur plusieurs points.
 
         Premièrement, nous n'avons pas cherché à optimiser notre programme, avons mal architecturé les différentes briques logiques, et n'avons porté aucune attention à la gestion mémoire.
-        On note donc, parmi les points problématiques de cette implémentation~: mélange des fonctions de calcul et d'affichage et stockage non nécessaire des valeurs intermédiaires (impliquant probablement, dès lors que l'on utilisera de grands nombres, une consommation mémoire démesurée, et des temps de calculs interminables).
+        On note donc, parmi les points problématiques de cette implémentation~: mélange des fonctions de calcul et d'affichage et stockage non nécessaire des valeurs intermédiaires (impliquant probablement, dès lors que l'on utilisera de grands nombres, une consommation mémoire démesurée, et des temps de calcul interminables).
 
         C'est pour contrôler aux mieux ces aspects que nous nous sommes tournés vers le langage C pour implémenter une version efficiente de l'algorithme de Pollard.
 
@@ -58,7 +58,7 @@
 
         Pour ce faire, on choisit tout d'abord $q$ aléatoirement de $k_q$ bits jusqu'à obtenir un entier $q$ qui soit premier (fonction gen\_order).
 
-        Ensuite, on construit $p$ tel que $q$ divise $p - 1$, ce qui assurera le fait qu'il existe un unique sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$. Or on a cela si et seulement s'il existe $u \in\mathbb{Z}$ tel que $p = uq + 1$. Si on veut $p$ de $k_p$ bits, on tire $u$ (toujours aléatoirement) de $k_p - k_q$ bits jusqu'à trouver $p = uq + 1$ premier (fonction gen\_modulus).
+        Ensuite, on construit $p$ tel que $q$ divise $p - 1$, ce qui assurera le fait qu'il existe un unique sous-groupe de $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$. Or on obtient ceci si et seulement s'il existe $u \in\mathbb{Z}$ tel que $p = uq + 1$. Si on veut $p$ de $k_p$ bits, on tire $u$ (toujours aléatoirement) de $k_p - k_q$ bits jusqu'à trouver $p = uq + 1$ premier (fonction gen\_modulus).
 
         On obtient ainsi un sous-groupe $\mathbb{Z}/p\mathbb{Z}$ d'ordre $q$.
 
@@ -75,12 +75,12 @@
 
         Pour cela nous choisissons simplement $x$ aléatoirement, pour ensuite poser $h = g^x$ mod $p$. Notre fonction gen\_data répète ce procédé 100 fois pour ensuite nous retourner ces données.\\
 
-        À présent, grâce à cette dernière fonction, nous pouvons générer un fichier contenant un ensemble de $p, q, g, h, x$ (un par ligne). C'est ce pour quoi nous avons créé la fonction gen\_test\_inputs. Cette fonction construit des groupes d'ordres $q$ de 5 à 55 bits. Pour un $q$ donné de $k_q$ bits, nous prenons un $p$ de $k_q + 10$ bits et avons donc pour chaque couple $(p,q)$ 100 valeurs de $h$ en appliquant la fonction gen\_data.
+        À présent, grâce à cette dernière fonction, nous pouvons générer un fichier contenant un ensemble de $p, q, g, h, x$ (un par ligne). C'est ce pour quoi nous avons créé la fonction gen\_test\_inputs. Cette fonction construit des groupes d'ordre $q$ de 5 à 55 bits. Pour un $q$ donné de $k_q$ bits, nous prenons un $p$ de $k_q + 10$ bits et avons donc pour chaque couple $(p,q)$ 100 valeurs de $h$ en appliquant la fonction gen\_data.
 
-        Avec ceci, nous pourrons mesurer les performances moyennes de notre programme sur en fonction de la taille de $q$. Dans la prochaine section de ce chapitre, nous parlerons finalement de notre implémentation en C de la résolution du Logarithme Discret, et en présenterons les performances sur le jeu de données que nous venons de générer.
+        Avec ceci, nous pourrons mesurer les performances moyennes de notre programme en fonction de la taille de $q$. Dans la prochaine section de ce chapitre, nous parlerons finalement de notre implémentation en C de la résolution du Logarithme Discret, et en présenterons les performances sur le jeu de données que nous venons de générer.
 
         \section{Implémentation en C}
-          Pour implémenter de l'algorithme $\rho$ de Pollard en C, nous avons utilisé la bibliothèque GMP\footnote{\url{https://gmplib.org/}}. Cette bibliothèque introduit un nouveau type~: mpz\_t, qui permet de manipuler de grands entiers. Ce type est un peu contraignant à utiliser~: en effet, chaque utilisation d'un mpz\_t doit s'accompagner d'une initialisation (fonction mpz\_init) et d'un nettoyage de la mémoire (fonction mpz\_clear). En outre, chaque opération sur des mpz\_t se fait grâce à une fonction prédéfinie~: par exemple, une addition de deux mpz\_t ne se fait pas avec un simple "+", il faut utiliser la fonction mpz\_add. Aussi, nous devons à chaque fois faire une opération après l'autre~: chaque fonction fait une opération entre deux mpz\_t (ou un mpz\_t et un int), mais pas plus.
+          Pour implémenter l'algorithme $\rho$ de Pollard en C, nous avons utilisé la bibliothèque GMP\footnote{\url{https://gmplib.org/}}. Cette bibliothèque introduit un nouveau type~: mpz\_t, qui permet de manipuler de grands entiers. Ce type est un peu contraignant à utiliser~: en effet, chaque utilisation d'un mpz\_t doit s'accompagner d'une initialisation (fonction mpz\_init) et d'un nettoyage de la mémoire (fonction mpz\_clear). En outre, chaque opération sur des mpz\_t se fait grâce à une fonction prédéfinie~: par exemple, une addition de deux mpz\_t ne se fait pas avec un simple "+", il faut utiliser la fonction mpz\_add. Aussi, nous devons à chaque fois faire une opération après l'autre~: chaque fonction fait une opération entre deux mpz\_t (ou un mpz\_t et un int), mais pas plus.
 
           Par ailleurs, lorsque nous utilisons les mpz\_t, nous avons choisi de passer par des pointeurs afin d'éviter des copies en mémoire inutiles lors de différentes opérations, et cela permet évidemment un gain de temps durant l'exécution du programme.
 
@@ -125,7 +125,7 @@
       Lorsque l'on écrit des tests, il est intéressant d'avoir à l'esprit qu'ils devraient respecter certaines propriétés, connues sous l'acronyme FIRST :
       \begin{itemize}
         \item Fast : les tests s'exécutent rapidement (et il est donc agréable de les lancer régulièrement).
-        \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bords affectant les autres. Nécessaire pour tester de petite unités de notre programme de façon isolée.
+        \item Isolated ou Independent : les tests ne sont pas reliés entre eux, ne contiennent pas d'effets de bords affectant les autres. Nécessaire pour tester de petites unités de notre programme de façon isolée.
         \item Repeatable : les tests produisent toujours le même résultat étant donnée une même entrée. Cela permet de favoriser l'automatisation des tests et d'avoir confiance en ce qui a été testé auparavant.
         \item Self-validating : les tests détectent quand ils passent ou ratent ; il n'est pas nécessaire de forcer un pauvre programmeur à lire des tonnes de logs pour en connaître le résultat.
         \item Timely : les tests sont écrits au même moment que le code qu'ils valident.
@@ -161,12 +161,12 @@
       Ce test s'appuie sur les données générées par la fonction \lstinline{gen_data}, présentée dans la section~\ref{chapter2:sagemath:data}. Pour rappel, ces données consistent en un ensemble de lignes, chacune formatée comme suit : "$p$ $q$ $g$ $h$ $x$", et respectant $h = g^x$ mod $p$.
 
       Pour chacune de ces lignes, on formate une entrée que notre programme peut reconnaître, puis on l'exécute sur cette entrée, et enfin, on vérifie que le résultat rendu est conforme à ce que l'on sait être la solution du problème sur notre entrée.
-      Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiant de la santé de notre programme lorsque ces tests passent~: il est capable de calculer correctement des logarithmes discrets.
+      Ayant généré beaucoup (plus de 200) de ces solutions, en se plaçant sur différents groupes (en faisant varier $p$ et $q$), nous sommes confiants de la santé de notre programme lorsque ces tests passent~: il est capable de calculer correctement des logarithmes discrets.
 
 
       \subsection{Mesure de l'efficacité des algorithmes}
       \label{chapter2:protocole_de_mesure}
-      L'intérêt d'implémenter différents algorithmes d'itération et de détection de collision est de pouvoir comparer leur performances lors du calcul de logarithmes discrets. Nous ne parlerons pas ici de performance en terme de temps (rapidité d'exécution), ni en terme d'espace (quantité de mémoire utilisée), mais nous cherchons plutôt à évaluer le nombre d'appels à la fonction d'itération (on parlera de nombre de cycles) nécessaires en moyenne avant d'obtenir une collision nous permettant de résoudre le problème.
+      L'intérêt d'implémenter différents algorithmes d'itération et de détection de collision est de pouvoir comparer leurs performances lors du calcul de logarithmes discrets. Nous ne parlerons pas ici de performance en terme de temps (rapidité d'exécution), ni en terme d'espace (quantité de mémoire utilisée), mais nous cherchons plutôt à évaluer le nombre d'appels à la fonction d'itération (on parlera de nombre de cycles) nécessaires en moyenne avant d'obtenir une collision nous permettant de résoudre le problème.
 
       À partir d'un jeu de données généré comme expliqué dans la section~\ref{chapter2:sagemath:data}, nous avons exécuté notre programme sur différentes entrées, tout en mesurant, lors de chaque résolution, le nombre d'appels à la fonction \lstinline{f} (fonction d'itération) qu'il a été nécessaire d'effectuer avant l'obtention d'une collision.
 
@@ -188,11 +188,11 @@
 
       La magie opère à travers le script \lstinline{generate_data.sh}\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/graph/generate_data.sh}}.
       Pour chaque ligne de notre fichier de données, on formate une entrée pour le programme \lstinline{pollard}, dont on profile l'exécution.
-      Alors, on récupère le nombre d'appels à la fonction d'itération comme nous venons de le voir, et on ajoute une ligne à notre fichier de sortie suivant le format~: données d'entrées auxquelles on rajoute le nombre que nous venons d'extraire.
+      Alors, on récupère le nombre d'appels à la fonction d'itération comme nous venons de le voir, et on ajoute une ligne à notre fichier de sortie suivant le format~: données d'entrée auxquelles on rajoute le nombre que nous venons d'extraire.
 
       Finalement, nous pouvons traiter les données ainsi recueillies à l'aide de Python et de la librairie Plotly\footnote{\url{https://plot.ly/}} afin d'afficher les résultats obtenus sous forme de graphe.
 
-      Le graphe~\ref{fig:basic_iteration_results} montre les résultats obtenus par notre programme implémentant la méthode de Pollard "originelle", telle que nous l'avons présentée au cours de ce chapitre : utilisant la fonction d'itération présentée dans le \textit{Handbook}~\autocite[107]{handbook} et la méthode du lièvre et de la tortue pour la détection de collisions.
+      Le graphe~\ref{fig:basic_iteration_results} montre les résultats obtenus par notre programme implémentant la méthode de Pollard "originelle", telle que nous l'avons présentée au cours de ce chapitre : utilisant la fonction d'itération présentée dans le \textit{Handbook}~\autocite[107]{handbook} et la méthode du lièvre et de la tortue pour la détection de collision.
 
       On peut voir sur ce graphe que la complexité calculatoire de l'algorithme est en $\mathcal{O}(\sqrt{q})$, ce qui confirme les résultats présentés dans le papier originel : \textit{Monte Carlo Methods for Index Computation}\autocite{pollard0}.
 
