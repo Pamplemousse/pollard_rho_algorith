@@ -1,5 +1,6 @@
 \chapter{L'algorithme \texorpdfstring{$\rho$}{Rho} de Pollard «\texorpdfstring{\,}{\ }classique\texorpdfstring{\,}{\ }»}
     	\section{Présentation}
+      \label{chapter1:presentation}
       Soit $G$ un groupe fini, cyclique, généré par $g$ et d'ordre $q$. Le problème du logarithme discret consiste, pour un élément $h$ appartenant à $G$, à trouver le logarithme discret de $g$ en base $h$, noté $\log_g(h)$, c'est-à-dire le plus petit entier positif $x$ tel que $g^x = h$.
 
     	L'algorithme $\rho$ de Pollard est une méthode capable de répondre à un tel problème. Durant toute la suite du rapport, on travaillera dans le sous-groupe de $(\mathbb{Z}/p\mathbb{Z})^*$ d'ordre $q$, avec $p$ et $q$ deux nombres premiers. L'algorithme consiste à construire une suite $(x_i)_{i \ge 0}$ d'éléments de $G$ tels que $x_{i+1} = f(x_i)$ avec $f$ une fonction allant de $G$ dans $G$. Cette fonction est choisie de telle sorte à rendre possible le traçage des exposants par rapport à $g$ et $h$. Cela signifie que les appels à la fonction $f$ permettent de définir très simplement deux suites d'entiers $(a_i)_{i \ge 0}$ et $(b_i)_{i \ge 0}$ tels que $x_i = g^{a_i} \cdot h^{b_i}$. On calcule les $x_i$ jusqu'à détecter une collision, c'est-à-dire deux indices $i$ et $j$ tels que $i \ne j$ et $x_i = x_j$. Il est alors facile de trouver $x$. En effet, on a~:
