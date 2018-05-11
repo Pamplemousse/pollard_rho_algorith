@@ -38,6 +38,7 @@
       h \in G \implies \exists k \in \mathbb{Z} \text{\ tel que } h = g^k
     \end{align*}
 
+    \bigskip
     Étant donné $h$, trouver $k$ est difficile.
   \end{frame}
 
@@ -52,10 +53,10 @@
     On cherche une collision : deux indices $i$ et $j$ tels que $i \ne j$, $x_i = x_j$.
 
     \begin{align*}
-       x_i = x_j &\implies g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j} \\
-                 &\implies h^{b_i - b_j} = g^{a_j - a_i} \\
-                 &\implies (b_i - b_j) \cdot \log_g(h) \equiv a_j - a_i \text{\ mod } q
-     \end{align*}
+      x_i = x_j &\implies g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j} \\
+                &\implies h^{b_i - b_j} = g^{a_j - a_i} \\
+                &\implies (b_i - b_j) \cdot \log_g(h) \equiv a_j - a_i \text{\ mod } q
+    \end{align*}
   \end{frame}
 
 
@@ -92,6 +93,11 @@
         \item choisir $x \in G$ aléatoirement, lancer la fonction d'itération jusqu'à tomber sur un point distingué, le stocker et réitérer le procédé
         \item fin~: lorsqu'on a trouvé deux fois le même point distingué, on a alors $g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j}$ avec $(a_i,b_i) \neq (a_j,b_j)$
     \end{itemize}
+    \begin{figure}
+      \center{}
+      \includegraphics[scale=0.3]{images/lambda_distinguished_points.png}
+      \caption{}
+    \end{figure}
   \end{frame}
 
 
@@ -113,15 +119,16 @@
 
   \begin{frame}{Résultats !}
     \begin{figure}
-            \center{}
-            \includegraphics[scale=0.4]{../rapport/images/comparaison_methodes.png}
-            \caption{Comparaison des trois méthodes}
-     \end{figure}
+      \center{}
+      \includegraphics[scale=0.4]{../rapport/images/comparaison_methodes.png}
+      \caption{Comparaison des trois méthodes}
+    \end{figure}
   \end{frame}
-  
+
+
   \section{Conclusion}
 
-  \begin{frame}{Conclusion}
+  \begin{frame}{Améliorations}
     \begin{itemize}
       \item meilleure utilisation de GMP
         \begin{itemize}
