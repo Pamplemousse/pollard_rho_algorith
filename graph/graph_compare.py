@@ -75,19 +75,6 @@ for values in tab_values:
 # Use sqrt(q) as a reference
 sqrt_q_values = [ math.sqrt(q) for q in uniq_q_values ]
 
-# f_count = const * sqrt(q)
-tab_zipped = []
-for avg_f_counts in tab_avg_f_counts:
-    tab_zipped.append(zip(avg_f_counts, sqrt_q_values))
-tab_const = []
-for zipped in tab_zipped:
-    tab_const.append(list(map(
-        lambda x: round(x[0] / x[1], 3), zipped)))
-
-for a in tab_const:
-    print a
-    print(round(avg(a), 3))
-
 # Define traces to show on the chart
 sqrt_trace = Scatter(
     x=uniq_q_values,
