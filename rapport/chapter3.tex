@@ -63,8 +63,25 @@
         \subsubsection*{Conclusion}
         On a montré que la relation est vraie pour $i = 0$, et que si elle est vérifiée au rang $k$, elle l'est aussi au rang $k + 1$. Donc pour tout $i \in \mathbb{N}$, $x_i = g^{a_i} \cdot h^{b_i}$.
 
+      \subsection{Implémentation en C}
+      \label{chapter3:r-adding:implémentation}
+      Le code relatif à cette fonction est disponible à l'adresse suivante : \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/iteration_r_adding_walks.c}.
+
+      Nous avons choisi de travailler avec $r = 20$ partitions. Dans notre code, ce $r$ est défini comme une constante, donc si nous voulons le changer, cela est très facile. Comme ci-dessus, $s \in \{ 0,..., r - 1 \}$.
+
+      Pour partitionner notre groupe, nous posons $T_s = \{ x \in G \text{ tel que } x \equiv s \text{ mod } r \}$.
+
+      Pour plus de facilités de manipulation, nous avons créer une structure Mmn\_t~:
+
+      \lstinputlisting[language=C,firstline=6,lastline=10]{code/iteration.h}
+
+      $M$, $m$ et $n$ correspondent respectivement à $M_s$, $m_s$ et $n_s$ comme décrit plus haut.
+
+      La première chose à faire est de générer aléatoirement $r$ valeurs de Mmn\_t, c'est la fonction \textit{gen\_data} qui est chargée de faire ceci~: elle tire aléatoirement un $m$ et un $n$ entre $0$ et $q - 1$ et pose $M = g^m \cdot h^n \text{ mod } p$. Ce procédé est répété $r$ fois.
+
+      Maintenant que nous avons cela, nous pouvons implémenter la fonction d'itération utilisant la variante des r-adding walks telle que décrite dans la partie théorique (calcul des $a_i$, $b_i$ et $x_i$ grâce au terme précédent de chacune de ces suites).
+
       % TODO
-      \subsection{Implémentation}
       \subsection{Résultats}
       En utilisant le protocole défini dans le chapitre précédent (\ref{chapter2:protocole_de_mesure}), nous avons mesuré les performances de notre implémentation de la méthode "r-adding walks".
 
@@ -88,8 +105,21 @@
 
       Pour que cette méthode fonctionne correctement, il faut choisir la propriété de telle sorte à ce que la table soit de taille manipulable. Cependant, si la propriété fixe quelques bits, alors ces bits n'ont pas besoin d'être stockés dans la table, ce qui permet des économies de mémoire (par exemple, si tous les points distingués se terminent par un même chiffre, inutile de le stocker dans la table). Si on note $\theta$ la fraction des éléments de $G$ satisfaisant la propriété des points distingués, alors l'algorithme doit terminer avec collision après environ $\sqrt{q\pi/2} + 1/\theta$ appels à la fonction d'itération. L'intérêt majeur de la méthode est qu'elle permet le traitement parallèle par plusieurs processeurs, ce qui permet des résultats encore meilleurs.
 
-      % TODO
-      \subsection{Implémentation}
+      \subsection{Implémentation en C}
+      Tout d'abord, nous parlerons ici du module distinguished\_points.c\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/distinguished_points.c}} regroupant plusieurs fonctions utilitaires.\\
+
+      Pour définir nos points distingués, il nous fallait une propriété facilement testable~: nous avons choisi celle donnée à titre d'exemple (écriture binaire se terminant par un certain nombre de $0$).
+      Pour déterminer ce nombre de $0$, que l'on notera $k$, nous avons créé la fonction \lstinline{number_of_zeroes} qui renvoie un nombre proportionnel à la taille de $q$ et au nombre de points que l'on peut stocker (ce dernier est défini comme une constante, que l'on a pris égale à $100000$)~: nous avons posé $k = \lceil log_2(\frac{\sqrt{q}}{N}) \rceil $.
+
+      En effet, soient $N$ le nombre de points distingués que l'on peut stocker et $\theta$ la proportion de points distingués. Si on prend $\theta \approx \frac{N}{\sqrt{q}}$, on aura alors, lors du parcours de $\sqrt{q}$ éléments du groupe, $\theta \sqrt{q} = N$.
+      Regardons maintenant comment déterminer le nombre $k$ de $0$ à prendre en compte.
+      On a $\theta = \frac{1}{2^k}$, d'où $\frac{N}{\sqrt{q}} = \frac{1}{2^k}$. Ainsi $2^k = \frac{\sqrt{q}}{N}$, et donc $k = log_2(\frac{\sqrt{q}}{N})$.\\
+
+      Dans ce même module, nous avons entre autres une fonction nous permettant de savoir si un point est un point distingué (\lstinline{is_distinguished_point}).
+      De plus, nous avons la fonction \lstinline{is_in_list_of_distinguished_points}~: si l'élément donné en paramètre se trouve dans la liste des points distingués déjà calculés, elle retourne l'indice de cet élément, et $-1$ sinon.\\
+
+      Il suffit maintenant d'implémenter la fonction de collision se trouvant dans le module collision\_distinguished\_points.c\footnote{Disponible à l'adresse~: \url{https://github.com/Pamplemousse/pollard_rho_algorithm/blob/master/c/collision_distinguished_points.c}.} en ayant au préalable calculé le point de départ (fonction \lstinline{generate_starting_point}).
+
       \subsection{Résultats}
       Toujours en utilisant le protocole défini dans le chapitre précédent (\ref{chapter2:protocole_de_mesure}), nous avons mesuré les performances de l'implémentation de la méthode des points distingués dans notre programme.
 
