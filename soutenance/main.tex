@@ -97,7 +97,14 @@
   \section{Implémentations}
 
   \begin{frame}{Généralités}
-    en C utilisant GMP
+    \begin{itemize}
+        \item bibliothèque GMP (type mpz\_t, pour les grands entiers)
+        \item iteration\_basic.c~: fonction d'itération, qui calcule les termes suivants à partir de $x_i$, $a_i$ et $b_i$
+        \item collision\_floyd.c~: calcule $x_{i+1}$ et $x_{2(i+1)}$ pour $(x_i,x_{2i})$ et s'arrête quand il y a collision
+        \item equation\_solver.c~: donne $\log_g(h)$ à partir du couple retourné par collision\_floyd.c
+        \item \texttt{./pollard input.txt} retourne sur la sortie standard~: 
+        $$\text{\ Log of } <h> \text{\ in base } <g> = <x>$$
+    \end{itemize}
   \end{frame}
 
   \begin{frame}{Tests et mesures}
