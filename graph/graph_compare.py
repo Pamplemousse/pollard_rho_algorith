@@ -5,9 +5,9 @@ import math
 from plotly.offline import download_plotlyjs, plot, iplot
 from plotly.graph_objs import Box, Figure, Layout, Scatter
 
-tab_data = [ 'data_iteration_de_base.txt', 'data_iteration_r_adding_walks.txt' ]
-color = [ '#0c7c71', '#af0736' ]
-name = [ 'basic iteration function', 'r-adding walk iteration function' ]
+tab_data = [ 'data_iteration_de_base.txt', 'data_iteration_r_adding_walks.txt', 'data_distinguished_points.txt' ]
+color = [ '#0c7c71', '#af0736', '#66095e' ]
+name = [ 'basic iteration / Floyd ', 'r-adding walks / Floyd', 'r-adding walks / distinguished points' ]
 
 def extract_lines(data):
     with open(data, 'r') as f:
