@@ -46,7 +46,7 @@
   \begin{frame}{Méthode de Pollard (idée générale)}
     \begin{itemize}
       \item $(x_i)_{i \ge 0}$ éléments de $G$ tels que $x_{i+1} = f(x_i)$
-      \item $f: G \rightarrow G$ permet d'avoir : $\forall i, x_i = g^{a_i} \cdot h^{b_i}$ (\textbf{traçage des exposants})
+      \item $f: G \rightarrow G$ telle que : $\forall i, x_i = g^{a_i} \cdot h^{b_i}$ (\textbf{traçage des exposants})
     \end{itemize}
 
 
@@ -104,7 +104,7 @@
   \begin{frame}{Méthode des points distingués}
     \begin{itemize}
         \item points distingués~: éléments de $G$ dont l'écriture binaire se termine par $k$ zéros
-        \item $x_0 \in G$ choisi aléatoirement, tel que $x_0 = g^{a_0} \cdot h^{b_0}$
+        \item $x_0 \in G$ choisi "aléatoirement", tel que $x_0 = g^{a_0} \cdot h^{b_0}$
         \item fin~: lorsqu'on a atteint deux fois le même point distingué, on a alors $g^{a_i} \cdot h^{b_i} = g^{a_j} \cdot h^{b_j}$
     \end{itemize}
     \begin{figure}
@@ -120,10 +120,10 @@
   \begin{frame}{Généralités}
     \begin{itemize}
         \item bibliothèque GMP (type mpz\_t, pour les grands entiers)
-        \item iteration\_basic.c~: fonction d'itération, qui calcule les termes suivants à partir de $x_i$, $a_i$ et $b_i$
-        \item collision\_floyd.c~: calcule $x_{i+1}$ et $x_{2(i+1)}$ pour $(x_i,x_{2i})$ et s'arrête quand il y a collision
-        \item equation\_solver.c~: donne $\log_g(h)$ à partir du couple retourné par collision\_floyd.c
-        \item \texttt{./pollard input.txt} retourne sur la sortie standard~: 
+        \item iteration.h~: fonction d'itération, qui calcule les termes suivants à partir de $x_i$, $a_i$ et $b_i$
+        \item collision.h~: calcule des éléments $x_i$ jusqu'à tomber sur une collision, puis retourne les exposants trouvés
+        \item equation\_solver.c, distinguished\_points.c
+        \item \texttt{./pollard input.txt} retourne sur la sortie standard~:
         $$\text{\ Log of } <h> \text{\ in base } <g> = <x>$$
     \end{itemize}
   \end{frame}
